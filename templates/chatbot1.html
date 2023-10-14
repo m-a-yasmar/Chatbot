@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>🇯🇲 Ask Shen About Jamaica Chatbot 🇯🇲</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <style>
         :root {
             --primary-bg-color: #fdb913;  /* gold */
@@ -16,7 +18,8 @@
             padding: 0;
         }
         #chat-container {
-            width: 400px;
+            max-width: 400px;
+            width: 100%;
             height: 600px;
             background: white;
             border-radius: 15px;
@@ -26,6 +29,7 @@
             display: flex;
             flex-direction: column;
         }
+        
         #chat-header {
             background: var(--primary-bg-color);
             color: var(--primary-text-color);
@@ -70,6 +74,12 @@
             color: var(--primary-text-color);
             border: none;
             cursor: pointer;
+            
+        /* Media Query */
+        @media screen and (max-width: 600px) {
+            #chat-container {
+                margin: 20px 5px;
+            }
         }
     </style>
 </head>
