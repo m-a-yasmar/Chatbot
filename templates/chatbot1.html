@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Jamaica Tourist Board Chatbot</title>
+    <title>🇯🇲 Ask Shen About Jamaica Chatbot 🇯🇲</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         :root {
-            --primary-bg-color: #fdb913;  /* gold */
+            --primary-bg-color: #fdb913;
             --primary-text-color: white;
-            --secondary-bg-color: #20603d;  /* green */
-            --button-bg: #000000;  /* black */
+            --secondary-bg-color: #20603d;
+            --button-bg: #000000;
         }
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;  /* light grey */
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
         #chat-container {
-            width: 400px;
+            max-width: 400px;
+            width: 100%;
             height: 600px;
             background: white;
             border-radius: 15px;
@@ -71,10 +73,14 @@
             border: none;
             cursor: pointer;
         }
+        @media screen and (max-width: 600px) {
+            #chat-container {
+                margin: 20px 5px;
+            }
+        }
     </style>
 </head>
 <body>
-
 <section id="chat-container">
     <header id="chat-header">Jamaica Tourist Board Chatbot</header>
     <article id="chat-box"></article>
@@ -83,6 +89,7 @@
         <button id="send-button" onclick="askQuestion()">Ask</button>
     </div>
 </section>
+
 
 <script>
 async function askQuestion() {
@@ -95,7 +102,7 @@ async function askQuestion() {
         
         displayMessage(query, 'user-message');
 
-        const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
+        const response = await fetch('http://get2jamaica/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
