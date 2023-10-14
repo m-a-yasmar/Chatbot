@@ -3,6 +3,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
 import json
+import os  # Missing import
 
 chatbot = Flask(__name__)
 
@@ -379,7 +380,7 @@ def ask():
     #chatbot.run(debug=True)
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    chatbot.run(host='0.0.0.0', port=port)
 
 
 
