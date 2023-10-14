@@ -253,7 +253,7 @@ predefined_answers = {
     'What activities are good for solo travellers?': "Solo travellers might enjoy a hike up the Blue Mountains, a visit to the Bob Marley Museum in Kingston, or surfing lessons at Boston Bay Beach.",
     'Are there any social events or places for solo travellers?': "Kingston's Dub Club, Rick's Café in Negril, or various 'fish fry' events offer social atmospheres suitable for solo travellers.",
     'What should I do if I only have a weekend to visit?': "With limited time, focus on closer attractions like Dunn's River Falls and the Blue Hole if you're in Ocho Rios, or the Hip Strip if you're in Montego Bay.",
-    'What if I'm staying for a week or more?': "With more time, consider exploring multiple parishes, such as a few days in Negril for beach activities and another few in Portland for a more laid-back, natural setting.",
+    "What if I'm staying for a week or more?": "With more time, consider exploring multiple parishes, such as a few days in Negril for beach activities and another few in Portland for a more laid-back, natural setting.",
     'What are some notable museums to visit?': "Consider the National Gallery of Jamaica in Kingston, the Outameni Experience in Trelawny, or the Hanover Museum in Lucea.",
     'What are some popular festivals?': "Carnival in Kingston, the Accompong Maroon Festival in St. Elizabeth, and the Portland Jerk Festival are vibrant cultural experiences.",
     'Where can I experience traditional Jamaican dance?': "The Jamaica Dance Umbrella festival in Kingston or performances by the National Dance Theatre Company offer traditional dance experiences.",
