@@ -3,17 +3,16 @@
 <head>
     <title>🇯🇲 Ask Shen About Jamaica Chatbot 🇯🇲</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
     <style>
         :root {
-            --primary-bg-color: #fdb913;  /* gold */
+            --primary-bg-color: #fdb913;
             --primary-text-color: white;
-            --secondary-bg-color: #20603d;  /* green */
-            --button-bg: #000000;  /* black */
+            --secondary-bg-color: #20603d;
+            --button-bg: #000000;
         }
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;  /* light grey */
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
@@ -29,7 +28,6 @@
             display: flex;
             flex-direction: column;
         }
-        
         #chat-header {
             background: var(--primary-bg-color);
             color: var(--primary-text-color);
@@ -74,8 +72,7 @@
             color: var(--primary-text-color);
             border: none;
             cursor: pointer;
-            
-        /* Media Query */
+        }
         @media screen and (max-width: 600px) {
             #chat-container {
                 margin: 20px 5px;
@@ -84,14 +81,22 @@
     </style>
 </head>
 <body>
+    <section id="chat-container">
+        <header id="chat-header">Jamaica Tourist Board Chatbot</header>
+        <article id="chat-box"></article>
+        <div id="chat-input">
+            <input type="text" id="query" placeholder="Ask a question...">
+            <button id="send-button" onclick="askQuestion()">Ask</button>
+        </div>
+    </section>
 
-<section id="chat-container">
-    <header id="chat-header">Jamaica Tourist Board Chatbot</header>
-    <article id="chat-box"></article>
-    <div id="chat-input">
-        <input type="text" id="query" placeholder="Ask a question...">
-        <button id="send-button" onclick="askQuestion()">Ask</button>
-    </div>
+    <script>
+        // Your existing JavaScript code here
+    </script>
+
+</body>
+</html>
+
 </section>
 
 <script>
