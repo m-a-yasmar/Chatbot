@@ -81,23 +81,15 @@
     </style>
 </head>
 <body>
-    <section id="chat-container">
-        <header id="chat-header">Jamaica Tourist Board Chatbot</header>
-        <article id="chat-box"></article>
-        <div id="chat-input">
-            <input type="text" id="query" placeholder="Ask a question...">
-            <button id="send-button" onclick="askQuestion()">Ask</button>
-        </div>
-    </section>
-
-    <script>
-        // Your existing JavaScript code here
-    </script>
-
-</body>
-</html>
-
+<section id="chat-container">
+    <header id="chat-header">Jamaica Tourist Board Chatbot</header>
+    <article id="chat-box"></article>
+    <div id="chat-input">
+        <input type="text" id="query" placeholder="Ask a question...">
+        <button id="send-button" onclick="askQuestion()">Ask</button>
+    </div>
 </section>
+
 
 <script>
 async function askQuestion() {
@@ -110,7 +102,7 @@ async function askQuestion() {
         
         displayMessage(query, 'user-message');
 
-        const response = await fetch('http://localhost:5000/ask', {
+        const response = await fetch('http://get2jamaica/ask', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
