@@ -430,9 +430,9 @@ def ask():
             #answer = response.json()['choices'][0]['text'].strip()
         
             # Post-process the answer to remove mentions of being an AI or training data
-            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes"]
+            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
             for phrase in forbidden_phrases:
-                answer = answer.replace(phrase, "")
+                answer = answer.replace(phrase, "I am unable")
         else:
             answer = "I'm sorry, I couldn't understand the question."
         
