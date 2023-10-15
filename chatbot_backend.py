@@ -406,17 +406,12 @@ def ask():
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
+        prompt = f"Answer the following question as if you're an expert on Jamaica: {query}"
         payload = {
-            "model": "gpt-4",
+            "model": "gpt-4",  # Or whichever model we are using
             "messages": [
-                {
-                    "role": "system",
-                    "content": "You are a helpful assistant."
-                },
-                {
-                    "role": "user",
-                    "content": query
-                }
+                {"role": "system", "content": "You are a helpful assistant focused on Jamaica."},
+                {"role": "user", "content": prompt}
             ]
         }
         response = requests.post(api_endpoint, headers=headers, json=payload)
