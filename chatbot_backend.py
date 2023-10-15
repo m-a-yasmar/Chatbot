@@ -373,27 +373,22 @@ predefined_answers = {
     }
 
 
-
 # Create a TF-IDF Vectorizer
 vectorizer = TfidfVectorizer()
 
 # Fit the vectorizer to the questions
 vectorizer.fit(predefined_answers.keys())
 
-@chatbot.route('/', methods=['GET'])
-def home():
-    return render_template('chatbot1.html')
-
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.7  # You can set the threshold value as needed
+    threshold = 0.7  # Adjust this threshold as needed
 
     query = request.json.get('query')
     query_vector = vectorizer.transform([query])
 
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
-    
+
     max_index = np.argmax(similarity_scores)
     max_score = similarity_scores[max_index]
 
@@ -401,30 +396,39 @@ def ask():
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
     else:
-        # Use OpenAI's GPT API for the answer
+        # Use OpenAI's GPT-4 API for the answer
         api_endpoint = "https://api.openai.com/v1/chat/completions"
         headers = {
-            "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}"
+            "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
+            "Content-Type": "application/json"
         }
         payload = {
-            "model": "text-davinci-002",  # You can use other models like "text-ada" as well
-            "prompt": query,
-            "max_tokens": 50
+            "model": "gpt-4",
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant."
+                },
+                {
+                    "role": "user",
+                    "content": query
+                }
+            ]
         }
         response = requests.post(api_endpoint, headers=headers, json=payload)
-         # Debugging information
+
+        # Debugging information
         print(f"API Response Status Code: {response.status_code}")
         print(f"API Response: {response.json()}")
-        
+
         if response.status_code == 200:
-            answer = response.json()['choices'][0]['text'].strip()
+            answer = response.json()['choices'][0]['message']['content']
         else:
             answer = "I'm sorry, I couldn't understand the question."
 
     return jsonify({"answer": answer})
 
-#if __name__ == '__main__':
-    #chatbot.run(debug=True)
+# Your existing 'if __name__ == "__main__":' block remains unchanged
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     chatbot.run(host='0.0.0.0', port=port)
