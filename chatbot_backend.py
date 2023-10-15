@@ -1,13 +1,14 @@
-from flask import Flask, request, jsonify, render_template
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
-import json
-import os  # Missing import
+import os  # for environment variables
+import json  # for JSON handling
+import numpy as np  # for numerical operations
+from sklearn.feature_extraction.text import TfidfVectorizer  # for TF-IDF
+from sklearn.metrics.pairwise import cosine_similarity  # for cosine similarity
+from flask import Flask, request, jsonify, render_template  # for Flask
+import requests  # for HTTP requests
 
 chatbot = Flask(__name__)
 
-from flask_cors import CORS
+from flask_cors import CORS # for CORS
 
 CORS(chatbot)
 
@@ -385,7 +386,7 @@ def home():
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.5  # You can set the threshold value as needed
+    threshold = 0.7  # You can set the threshold value as needed
 
     query = request.json.get('query')
     query_vector = vectorizer.transform([query])
@@ -400,10 +401,23 @@ def ask():
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
     else:
-        answer = "I don't understand, can you rephrase?"
+        # Use OpenAI's GPT API for the answer
+        api_endpoint = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}"
+        }
+        payload = {
+            "model": "text-davinci-002",  # You can use other models like "text-ada" as well
+            "prompt": query,
+            "max_tokens": 50
+        }
+        response = requests.post(api_endpoint, headers=headers, json=payload)
+        if response.status_code == 200:
+            answer = response.json()['choices'][0]['text'].strip()
+        else:
+            answer = "I'm sorry, I couldn't understand the question."
 
     return jsonify({"answer": answer})
-
 
 #if __name__ == '__main__':
     #chatbot.run(debug=True)
