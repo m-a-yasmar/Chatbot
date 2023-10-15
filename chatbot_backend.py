@@ -412,6 +412,10 @@ def ask():
             "max_tokens": 50
         }
         response = requests.post(api_endpoint, headers=headers, json=payload)
+         # Debugging information
+        print(f"API Response Status Code: {response.status_code}")
+        print(f"API Response: {response.json()}")
+        
         if response.status_code == 200:
             answer = response.json()['choices'][0]['text'].strip()
         else:
