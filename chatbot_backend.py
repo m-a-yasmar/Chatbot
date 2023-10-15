@@ -5,6 +5,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer  # for TF-IDF
 from sklearn.metrics.pairwise import cosine_similarity  # for cosine similarity
 from flask import Flask, request, jsonify, render_template  # for Flask
 import requests  # for HTTP requests
+from flask import send_from_directory # To help insert image
 
 chatbot = Flask(__name__)
 
@@ -382,6 +383,10 @@ vectorizer.fit(predefined_answers.keys())
 @chatbot.route('/', methods=['GET'])
 def home():
     return render_template('chatbot1.html')
+
+@chatbot.route('/image/<path:filename>')
+def serve_image(filename):
+    return send_from_directory('image', filename)
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
