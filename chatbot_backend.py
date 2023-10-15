@@ -383,20 +383,27 @@ vectorizer.fit(predefined_answers.keys())
 def home():
     return render_template('chatbot1.html')
 
-
 @chatbot.route('/ask', methods=['POST'])
 def ask():
+    threshold = 0.7  # You can set the threshold value as needed
+
     query = request.json.get('query')
     query_vector = vectorizer.transform([query])
 
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
-    similarity_scores = cosine_similarity(query_vector, predefined_vectors)
+    similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
+    
     max_index = np.argmax(similarity_scores)
+    max_score = similarity_scores[max_index]
 
-    most_similar_question = list(predefined_answers.keys())[max_index]
-    answer = predefined_answers[most_similar_question]
+    if max_score >= threshold:
+        most_similar_question = list(predefined_answers.keys())[max_index]
+        answer = predefined_answers[most_similar_question]
+    else:
+        answer = "I don't understand, can you rephrase?"
 
     return jsonify({"answer": answer})
+
 
 #if __name__ == '__main__':
     #chatbot.run(debug=True)
