@@ -9,6 +9,7 @@ from flask import send_from_directory # To help insert image
 from flask import session #for keeping history
 
 chatbot = Flask(__name__)
+chatbot.secret_key = 'your_very_secret_key_here' #for sessions
 
 from flask_cors import CORS # for CORS
 
