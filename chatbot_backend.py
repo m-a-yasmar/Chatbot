@@ -385,7 +385,7 @@ def home():
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.7  # You can set the threshold value as needed
+    threshold = 0.5  # You can set the threshold value as needed
 
     query = request.json.get('query')
     query_vector = vectorizer.transform([query])
