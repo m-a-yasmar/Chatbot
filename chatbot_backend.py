@@ -411,7 +411,7 @@ def ask():
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        prompt = f"Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can answer just State that you cant answer in the most human way. make your responses conversational. use the previous questions and responses to guide future responses : {query}"
+        prompt = f"Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can answer just State that you cant answer in the most human way : {query}"
         payload = {
             "model": "gpt-4",  # Or whichever model we are using
             "messages": [
