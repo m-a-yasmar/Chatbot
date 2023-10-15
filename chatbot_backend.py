@@ -426,9 +426,16 @@ def ask():
         print(f"API Response: {response.json()}")
 
         if response.status_code == 200:
-            answer = response.json()['choices'][0]['message']['content']
-        else:
-            answer = "I'm sorry, I couldn't understand the question."
+        answer = response.json()['choices'][0]['text'].strip()
+        
+        # Post-process the answer to remove mentions of being an AI or training data
+        forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes"]
+        for phrase in forbidden_phrases:
+            answer = answer.replace(phrase, "")
+    else:
+        answer = "I'm sorry, I couldn't understand the question."
+        
+          
 
     return jsonify({"answer": answer})
 
