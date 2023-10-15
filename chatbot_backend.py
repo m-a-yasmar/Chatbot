@@ -426,7 +426,8 @@ def ask():
         print(f"API Response: {response.json()}")
 
         if response.status_code == 200:
-            answer = response.json()['choices'][0]['text'].strip()
+            answer = response.json()['choices'][0]['message']['content'].strip()
+            #answer = response.json()['choices'][0]['text'].strip()
         
             # Post-process the answer to remove mentions of being an AI or training data
             forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes"]
