@@ -81,15 +81,15 @@
     </style>
 </head>
 <body>
-<section id="chat-container">
-    <header id="chat-header">ChattyChatty</header>
-    <article id="chat-box"></article>
-    <div id="chat-input">
-        <input type="text" id="query" placeholder="Ask a question...">
-        <button id="send-button" onclick="askQuestion()">Ask</button>
-    </div>
-</section>
-
+    <section id="chat-container">
+        <header id="chat-header">ChattyChatty</header>
+        <div id="disclaimer">Disclaimer: The information provided here is for general informational purposes on Jamaica and should not be considered as professional advice.</div>
+        <article id="chat-box"></article>
+        <div id="chat-input">
+            <input type="text" id="query" placeholder="Ask a question..." onkeydown="if (event.keyCode == 13) askQuestion()">
+            <button id="send-button" onclick="askQuestion()">Ask</button>
+        </div>
+    </section>
 
 <script>
 async function askQuestion() {
