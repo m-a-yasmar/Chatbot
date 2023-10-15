@@ -374,11 +374,6 @@ predefined_answers = {
     
     }
 
-# Initialize a session to hold conversation history
-@chatbot.before_request
-def setup_conversation():
-    if 'conversation' not in session:
-        session['conversation'] = []
 
 # Create a TF-IDF Vectorizer
 vectorizer = TfidfVectorizer()
@@ -393,6 +388,12 @@ def home():
 @chatbot.route('/image/<path:filename>')
 def serve_image(filename):
     return send_from_directory('image', filename)
+
+# Initialize a session to hold conversation history
+@chatbot.before_request
+def setup_conversation():
+    if 'conversation' not in session:
+        session['conversation'] = []
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
