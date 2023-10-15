@@ -379,6 +379,10 @@ vectorizer = TfidfVectorizer()
 # Fit the vectorizer to the questions
 vectorizer.fit(predefined_answers.keys())
 
+@chatbot.route('/', methods=['GET'])
+def home():
+    return render_template('chatbot1.html')
+
 @chatbot.route('/ask', methods=['POST'])
 def ask():
     threshold = 0.7  # Adjust this threshold as needed
