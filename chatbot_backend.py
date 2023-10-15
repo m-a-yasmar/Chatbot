@@ -374,10 +374,17 @@ predefined_answers = {
     
     }
 
+# Initialize a session to hold conversation history
 @chatbot.before_request
-def setup_user_session():
-    if 'history' not in session:
-        session['history'] = []
+def setup_conversation():
+    if 'conversation' not in session:
+        session['conversation'] = []
+
+# Create a TF-IDF Vectorizer
+vectorizer = TfidfVectorizer()
+
+# Fit the vectorizer to the questions
+vectorizer.fit(predefined_answers.keys())
 
 @chatbot.route('/', methods=['GET'])
 def home():
@@ -389,14 +396,16 @@ def serve_image(filename):
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.7
+    threshold = 0.7  # Adjust this threshold as needed
+
     query = request.json.get('query')
-
-    session['history'].append({"role": "user", "content": query})
-
     query_vector = vectorizer.transform([query])
+     # Add the user's query to the session-based conversation history
+    session['conversation'].append({"role": "user", "content": query})
+
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
+
     max_index = np.argmax(similarity_scores)
     max_score = similarity_scores[max_index]
 
@@ -404,38 +413,41 @@ def ask():
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
     else:
+        # Use OpenAI's GPT-4 API for the answer
         api_endpoint = "https://api.openai.com/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        prompt = f"Answer the following question as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can't answer, just state that you can't answer in the most human way. Consider your previous answers where possible: {query}"
+        prompt = f"Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can answer just State that you cant answer in the most human way. In your answersing where possible consider your previous answers  : {query}"
         payload = {
             "model": "gpt-4",
-            "messages": session['history'] + [{"role": "user", "content": prompt}]
+            "messages": session['conversation'] + [{"role": "user", "content": prompt}]
         }
 
         response = requests.post(api_endpoint, headers=headers, json=payload)
 
+        # Debugging information
+        print(f"API Response Status Code: {response.status_code}")
+        print(f"API Response: {response.json()}")
+
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
-            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes", "As an artificial intelligence", "ChatGPT", "OpenAI"]
+            #answer = response.json()['choices'][0]['text'].strip()
+        
+            # Post-process the answer to remove mentions of being an AI or training data
+            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
             for phrase in forbidden_phrases:
-                answer = answer.replace(phrase, "I am unable")
-            session['history'].append({"role": "assistant", "content": answer})
+                answer = answer.replace(phrase, "")
+                 # Add the assistant's answer to the session-based conversation history
+            session['conversation'].append({"role": "assistant", "content": answer})
         else:
             answer = "I'm sorry, I couldn't understand the question."
-
+        
+          
     return jsonify({"answer": answer})
 
+# Your existing 'if __name__ == "__main__":' block remains unchanged
 if __name__ == '__main__':
-    vectorizer = TfidfVectorizer()
-    vectorizer.fit(predefined_answers.keys())
     port = int(os.environ.get("PORT", 5000))
     chatbot.run(host='0.0.0.0', port=port)
-    
-
-
-
-
-
