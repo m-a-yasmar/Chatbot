@@ -438,7 +438,7 @@ def ask():
         
           
 
-        return jsonify({"answer": answer})
+    return jsonify({"answer": answer})
 
 # Your existing 'if __name__ == "__main__":' block remains unchanged
 if __name__ == '__main__':
