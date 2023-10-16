@@ -392,11 +392,14 @@ def serve_image(filename):
 
 @chatbot.before_request
 def setup_conversation():
-    print("Initial session:", session.get('conversation'))
     if 'conversation' not in session:
+        print("New session being initialized")
         session['conversation'] = [
             {"role": "system", "content": "You are a helpful assistant named Michael focused on Jamaica. You are a Rasta Jamaican. Your role is to assist the user with accurate and informative responses."}
         ]
+    else:
+        print("Existing session found")
+    print("Initial session:", session.get('conversation'))
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
