@@ -403,6 +403,7 @@ def setup_conversation():
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
+    system_message = {}
     threshold = 0.7
     query = request.json.get('query')
     print("User query:", query)
@@ -420,7 +421,10 @@ def ask():
                 "role": "system",
                 "content": f"The user's query seems incomplete. Refer back to your last message: '{last_assistant_message}' to better interpret what they might be asking."
             }
-            session['conversation'].append(system_message)
+            if system_message:
+                session['conversation'].append(system_message)
+
+            
 
     query_vector = vectorizer.transform([query])
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
@@ -463,7 +467,6 @@ def ask():
             
             answer = "I'm sorry, I couldn't understand the question."
     session['conversation'].append({"role": "assistant", "content": answer})
-    session['conversation'].append(system_message)
     session.modified = True
     print("After appending assistant answer:", session['conversation'])
     return jsonify({"answer": answer})
