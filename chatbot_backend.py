@@ -410,6 +410,8 @@ def ask():
 
     max_index = np.argmax(similarity_scores)
     max_score = similarity_scores[max_index]
+    print("Current session data before processing:", session['conversation'])  # Debugging line
+    
 
     if max_score >= threshold:
         most_similar_question = list(predefined_answers.keys())[max_index]
@@ -449,7 +451,17 @@ def ask():
             session['conversation'].append({"role": "assistant", "content": answer})
         else:
             answer = "I'm sorry, I couldn't understand the question."
+
+    
+        if response.status_code == 200:
+            answer = response.json()['choices'][0]['message']['content'].strip()
+            # Add the assistant's reply to the conversation history
+            session['conversation'].append({"role": "assistant", "content": answer})
+        else:
+            answer = "I'm sorry, I couldn't understand the question."
+            session['conversation'].append({"role": "assistant", "content": answer})
         
+    print("Current session data after processing:", session['conversation'])  # Debugging line
           
     return jsonify({"answer": answer})
 
