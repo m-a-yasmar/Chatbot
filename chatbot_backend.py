@@ -391,7 +391,8 @@ def setup_conversation():
     if 'conversation' not in session:
         # Initialize the conversation with a system message
         session['conversation'] = [
-            {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can't answer, state that you can't in the most human way. Consider your previous answers where possible."},
+            {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Your role is to assist the user with accurate and informative responses. It's crucial that you consider the context of the conversation and previous interactions to provide the most helpful and coherent answers."
+."},
         ]
 
 @chatbot.route('/ask', methods=['POST'])
