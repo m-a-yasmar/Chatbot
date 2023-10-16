@@ -438,29 +438,19 @@ def ask():
         # Debugging information
         print(f"API Response Status Code: {response.status_code}")
         print(f"API Response: {response.json()}")
-
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
-            #answer = response.json()['choices'][0]['text'].strip()
         
             # Post-process the answer to remove mentions of being an AI or training data
             forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
             for phrase in forbidden_phrases:
                 answer = answer.replace(phrase, "")
-                 # Add the assistant's answer to the session-based conversation history
+                 
+        # Add the assistant's answer to the session-based conversation history only once
             session['conversation'].append({"role": "assistant", "content": answer})
         else:
             answer = "I'm sorry, I couldn't understand the question."
-
-    
-        if response.status_code == 200:
-            answer = response.json()['choices'][0]['message']['content'].strip()
-            # Add the assistant's reply to the conversation history
-            session['conversation'].append({"role": "assistant", "content": answer})
-        else:
-            answer = "I'm sorry, I couldn't understand the question."
-            session['conversation'].append({"role": "assistant", "content": answer})
-        
+                
     print("Current session data after processing:", session['conversation'])  # Debugging line
           
     return jsonify({"answer": answer})
