@@ -374,6 +374,7 @@ predefined_answers = {
     'Can we have a same-sex wedding in Jamaica?': "Same-sex marriage is not legally recognized in Jamaica. Please consult the most current legal guidelines."
     
     }
+
 # Create a TF-IDF Vectorizer
 vectorizer = TfidfVectorizer()
 vectorizer.fit(predefined_answers.keys())
@@ -392,22 +393,28 @@ def setup_conversation():
         session['conversation'] = [
             {"role": "system", "content": "You are a helpful assistant named Michael focused on Jamaica. You are a Rasta Jamaican. Your role is to assist the user with accurate and informative responses."}
         ]
+    print("Initial session:", session['conversation'])
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
     threshold = 0.7
     query = request.json.get('query')
+    print("User query:", query)
+
     session['conversation'].append({"role": "user", "content": query})
+    print("After appending user query:", session['conversation'])
 
     if len(query.split()) < 3:
         last_assistant_message = next((message['content'] for message in reversed(session['conversation']) if message['role'] == 'assistant'), None)
-        
+        print("Last assistant message:", last_assistant_message)
+
         if last_assistant_message:
             system_message = {
                 "role": "system",
                 "content": f"The user's query seems incomplete. Refer back to your last message: '{last_assistant_message}' to better interpret what they might be asking."
             }
             session['conversation'].append(system_message)
+            print("After appending system message:", session['conversation'])
 
     query_vector = vectorizer.transform([query])
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
@@ -445,8 +452,10 @@ def ask():
             for phrase in forbidden_phrases:
                 answer = answer.replace(phrase, "")
         else:
+            
             answer = "I'm sorry, I couldn't understand the question."
     session['conversation'].append({"role": "assistant", "content": answer})
+    print("After appending assistant answer:", session['conversation'])
     return jsonify({"answer": answer})
             
 if __name__ == '__main__':
