@@ -375,54 +375,33 @@ predefined_answers = {
     
     }
 
-# Create a TF-IDF Vectorizer
+# TF-IDF Vectorizer
 vectorizer = TfidfVectorizer()
 vectorizer.fit(predefined_answers.keys())
 
-chatbot = Flask(__name__)
-chatbot.secret_key = 'your_secret_key_here'  # Replace with your actual secret key
-
-@chatbot.route('/', methods=['GET'])
+@app.route('/', methods=['GET'])
 def home():
     return render_template('chatbot1.html')
 
-@chatbot.route('/image/<path:filename>')
+@app.route('/image/<path:filename>')
 def serve_image(filename):
     return send_from_directory('image', filename)
 
-@chatbot.before_request
+@app.before_request
 def setup_conversation():
     if 'conversation' not in session:
-        print("New session being initialized")
         session['conversation'] = [
             {"role": "system", "content": "You are a helpful assistant named Michael focused on Jamaica. You are a Rasta Jamaican. Your role is to assist the user with accurate and informative responses."}
         ]
-    else:
-        print("Existing session found")
-    print("Initial session:", session.get('conversation'))
+    print("Session initialized:", session['conversation'])
 
-@chatbot.route('/ask', methods=['POST'])
+@app.route('/ask', methods=['POST'])
 def ask():
     threshold = 0.7
-    query = request.json.get('query')
-    print("User query:", query)
+    user_query = request.json.get('query')
+    session['conversation'].append({"role": "user", "content": user_query})
 
-    session['conversation'].append({"role": "user", "content": query})
-    
-    print("After appending user query:", session['conversation'])
-    
-    if len(query.split()) < 3:
-        last_assistant_message = next((message['content'] for message in reversed(session['conversation']) if message['role'] == 'assistant'), None)
-        print("Last assistant message:", last_assistant_message)
-        
-        if last_assistant_message:
-            system_message = {
-                "role": "system",
-                "content": f"The user's query seems incomplete. Refer back to your last message: '{last_assistant_message}' to better interpret what they might be asking."
-            }
-            session['conversation'].append(system_message)
-
-    query_vector = vectorizer.transform([query])
+    query_vector = vectorizer.transform([user_query])
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
     max_index = similarity_scores.argmax()
@@ -430,45 +409,29 @@ def ask():
 
     if max_score >= threshold:
         most_similar_question = list(predefined_answers.keys())[max_index]
-        answer = predefined_answers[most_similar_question]
+        assistant_reply = predefined_answers[most_similar_question]
     else:
-        # If no predefined answer is found, call OpenAI API
+        # OpenAI API call
         api_endpoint = "https://api.openai.com/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        custom_prompt = {"role": "system", "content": "You are a helpful assistant with expertise on Jamaica. Your primary role is to assist the user by providing accurate and informative responses. It's essential that you maintain the context of the ongoing conversation, incorporating previous questions and answers to create a coherent and seamless dialogue. Each of your responses should logically follow from or relate to what has been previously discussed. This will ensure that the conversation flows naturally and that the user receives the most contextually relevant and helpful information."}
-        # Add custom prompt to the beginning of the conversation history
-        conversation_with_prompt = [custom_prompt] + session['conversation']
-      
-        # Use the conversation history for context-aware API call
         payload = {
             "model": "gpt-4",
-            "messages": conversation_with_prompt,
-            "frequency_penalty": 1.5,  
-            "presence_penalty": -1
+            "messages": session['conversation']
         }
-        # frequency -2 to 2. higher increase repetition of answer  presence -2 to 2. higher likely to switch topic
-        #response = requests.post(api_endpoint, headers=headers, json=payload)
-        response = requests.post(api_endpoint, headers=headers, json=payload, timeout=15)  # 15-second timeout
-
+        response = requests.post(api_endpoint, headers=headers, json=payload, timeout=15)
         if response.status_code == 200:
-            answer = response.json()['choices'][0]['message']['content'].strip()
-            # Remove any forbidden phrases
-            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
-            for phrase in forbidden_phrases:
-                answer = answer.replace(phrase, "")
+            assistant_reply = response.json()['choices'][0]['message']['content'].strip()
         else:
+            assistant_reply = "I'm sorry, I couldn't understand the question."
             
-            answer = "I'm sorry, I couldn't understand the question."
-    session['conversation'].append({"role": "assistant", "content": answer})
-    session['conversation'].append(system_message)
+    session['conversation'].append({"role": "assistant", "content": assistant_reply})
     session.modified = True
-    print("After appending assistant answer:", session['conversation'])
-    return jsonify({"answer": answer})
-    
-            
+
+    return jsonify({"answer": assistant_reply})
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     chatbot.run(host='0.0.0.0', port=port)
