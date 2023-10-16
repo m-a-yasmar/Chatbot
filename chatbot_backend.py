@@ -391,8 +391,7 @@ def setup_conversation():
     if 'conversation' not in session:
         # Initialize the conversation with a system message
         session['conversation'] = [
-            {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Your role is to assist the user with accurate and informative responses. It's crucial that you consider the context of the conversation and previous interactions to provide the most helpful and coherent answers."
-."}
+            {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Your role is to assist the user with accurate and informative responses. It's crucial that you consider the context of the conversation and previous interactions to provide the most helpful and coherent answers."}
         ]
 
 @chatbot.route('/ask', methods=['POST'])
@@ -421,7 +420,7 @@ def ask():
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        custom_prompt = {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Please consider previous interactions when generating your responses."}
+        custom_prompt = {"role": "system", "content": "You are a helpful assistant with expertise on Jamaica. Your primary role is to assist the user by providing accurate and informative responses. It's essential that you maintain the context of the ongoing conversation, incorporating previous questions and answers to create a coherent and seamless dialogue. Each of your responses should logically follow from or relate to what has been previously discussed. This will ensure that the conversation flows naturally and that the user receives the most contextually relevant and helpful information."}
         # Add custom prompt to the beginning of the conversation history
         conversation_with_prompt = [custom_prompt] + session['conversation']
       
