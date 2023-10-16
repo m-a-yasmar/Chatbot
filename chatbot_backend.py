@@ -374,13 +374,8 @@ predefined_answers = {
     'Can we have a same-sex wedding in Jamaica?': "Same-sex marriage is not legally recognized in Jamaica. Please consult the most current legal guidelines."
     
     }
-
-# Initialize logger
-logging.basicConfig(level=logging.INFO)
-
 # Create a TF-IDF Vectorizer
 vectorizer = TfidfVectorizer()
-# Assuming predefined_answers is a dictionary
 vectorizer.fit(predefined_answers.keys())
 
 @chatbot.route('/', methods=['GET'])
@@ -394,10 +389,10 @@ def serve_image(filename):
 @chatbot.before_request
 def setup_conversation():
     if 'conversation' not in session:
+        # Initialize the conversation with a system message
         session['conversation'] = [
             {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can't answer, state that you can't in the most human way. Consider your previous answers where possible."},
         ]
-    logging.info(f"Current session: {session['conversation']}")
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
@@ -406,7 +401,6 @@ def ask():
 
     # Add user's query to conversation history
     session['conversation'].append({"role": "user", "content": query})
-    logging.info(f"Updated session after user query: {session['conversation']}")
 
     # TF-IDF similarity check
     query_vector = vectorizer.transform([query])
@@ -420,37 +414,33 @@ def ask():
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
     else:
-        # OpenAI API call
+        # If no predefined answer is found, call OpenAI API
         api_endpoint = "https://api.openai.com/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
+        
+        # Use the conversation history for context-aware API call
         payload = {
             "model": "gpt-4",
             "messages": session['conversation'],
-            "frequency_penalty": 1.5,
+            "frequency_penalty": 1.5,  
             "presence_penalty": -1
         }
-        
+        # frequency -2 to 2. higher increase repetition of answer  presence -2 to 2. higher likely to switch topic
         response = requests.post(api_endpoint, headers=headers, json=payload)
-        logging.info(f"API response status: {response.status_code}")
-        
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
-            logging.info(f"API response content: {answer}")
-
             # Remove any forbidden phrases
-            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes", "As an artificial intelligence", "ChatGPT", "OpenAI"]
+            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
             for phrase in forbidden_phrases:
                 answer = answer.replace(phrase, "")
         else:
             answer = "I'm sorry, I couldn't understand the question."
-            logging.error(f"API call failed with status {response.status_code}: {response.text}")
-
+    
     # Add the generated answer to the conversation history
     session['conversation'].append({"role": "assistant", "content": answer})
-    logging.info(f"Updated session after assistant's answer: {session['conversation']}")
 
     return jsonify({"answer": answer})
 
