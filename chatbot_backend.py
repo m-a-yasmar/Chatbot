@@ -378,8 +378,6 @@ predefined_answers = {
 
 # Create a TF-IDF Vectorizer
 vectorizer = TfidfVectorizer()
-
-# Fit the vectorizer to the questions
 vectorizer.fit(predefined_answers.keys())
 
 @chatbot.route('/', methods=['GET'])
@@ -390,7 +388,6 @@ def home():
 def serve_image(filename):
     return send_from_directory('image', filename)
 
-# Initialize a session to hold conversation history
 @chatbot.before_request
 def setup_conversation():
     if 'conversation' not in session:
@@ -402,14 +399,25 @@ def ask():
 
     query = request.json.get('query')
     query_vector = vectorizer.transform([query])
-
     session['conversation'].append({"role": "user", "content": query})
 
-    print("Conversation before API call: ", session['conversation'])  # Debugging line
+    # Get last question and answer
+    last_user_question = ""
+    last_assistant_answer = ""
+    for entry in reversed(session['conversation']):
+        if entry["role"] == "user":
+            last_user_question = entry["content"]
+            break
+    for entry in reversed(session['conversation']):
+        if entry["role"] == "assistant":
+            last_assistant_answer = entry["content"]
+            break
+
+    # Create explicit query
+    explicit_query = f"Previously, the user asked: '{last_user_question}' and the assistant answered: '{last_assistant_answer}'. Now, the user is asking: '{query}'"
 
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
-
     max_index = np.argmax(similarity_scores)
     max_score = similarity_scores[max_index]
 
@@ -417,37 +425,26 @@ def ask():
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
     else:
-        api_endpoint = "https://api.openai.com/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        
         payload = {
-            "model": "gpt-4",  
-            "messages": session['conversation']
+            "model": "gpt-4",
+            "messages": [{"role": "user", "content": explicit_query}]
         }
-
-        response = requests.post(api_endpoint, headers=headers, json=payload)
-        print("Raw API Response: ", response.json())  # Debugging line
-
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
-            
-            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
+            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes", "As an artificial intelligence", "ChatGPT", "OpenAI"]
             for phrase in forbidden_phrases:
                 answer = answer.replace(phrase, "")
-            
             session['conversation'].append({"role": "assistant", "content": answer})
         else:
             answer = "I'm sorry, I couldn't understand the question."
 
-    print("Conversation after API call: ", session['conversation'])  # Debugging line
-
     return jsonify({"answer": answer})
 
-
-# Your existing 'if __name__ == "__main__":' block remains unchanged
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     chatbot.run(host='0.0.0.0', port=port)
