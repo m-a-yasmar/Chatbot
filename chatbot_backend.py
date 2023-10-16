@@ -392,7 +392,7 @@ def setup_conversation():
         # Initialize the conversation with a system message
         session['conversation'] = [
             {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Your role is to assist the user with accurate and informative responses. It's crucial that you consider the context of the conversation and previous interactions to provide the most helpful and coherent answers."
-."},
+."}
         ]
 
 @chatbot.route('/ask', methods=['POST'])
