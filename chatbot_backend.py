@@ -408,6 +408,7 @@ def ask():
     print("User query:", query)
 
     session['conversation'].append({"role": "user", "content": query})
+    
     print("After appending user query:", session['conversation'])
     
     if len(query.split()) < 3:
@@ -460,6 +461,7 @@ def ask():
             
             answer = "I'm sorry, I couldn't understand the question."
     session['conversation'].append({"role": "assistant", "content": answer})
+    session.modified = True
     print("After appending assistant answer:", session['conversation'])
     return jsonify({"answer": answer})
     
