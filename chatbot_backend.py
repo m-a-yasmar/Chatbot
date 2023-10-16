@@ -391,46 +391,56 @@ def serve_image(filename):
 @chatbot.before_request
 def setup_conversation():
     if 'conversation' not in session:
+        # Initialize the conversation with a system message
         session['conversation'] = [
-    {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can't answer, state that you can't in the most human way. Consider your previous answers where possible."},]
+            {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can't answer, state that you can't in the most human way. Consider your previous answers where possible."},
+        ]
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.7  # Adjust this threshold as needed
+    threshold = 0.7  # Similarity threshold
     query = request.json.get('query')
-    query_vector = vectorizer.transform([query])
+
+    # Add user's query to conversation history
     session['conversation'].append({"role": "user", "content": query})
 
+    # TF-IDF similarity check
+    query_vector = vectorizer.transform([query])
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
     max_index = np.argmax(similarity_scores)
     max_score = similarity_scores[max_index]
 
     if max_score >= threshold:
+        # If a predefined answer is found
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
-        session['conversation'].append({"role": "assistant", "content": answer})
     else:
+        # If no predefined answer is found, call OpenAI API
         api_endpoint = "https://api.openai.com/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
         
+        # Use the conversation history for context-aware API call
         payload = {
             "model": "gpt-4",
             "messages": session['conversation']
         }
-        
+
         response = requests.post(api_endpoint, headers=headers, json=payload)
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
+            # Remove any forbidden phrases
             forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
             for phrase in forbidden_phrases:
                 answer = answer.replace(phrase, "")
-            session['conversation'].append({"role": "assistant", "content": answer})
         else:
             answer = "I'm sorry, I couldn't understand the question."
+    
+    # Add the generated answer to the conversation history
+    session['conversation'].append({"role": "assistant", "content": answer})
 
     return jsonify({"answer": answer})
 
