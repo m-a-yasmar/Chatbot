@@ -396,13 +396,13 @@ def setup_conversation():
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.7  # Similarity threshold
-    query = request.json.get('query')
+threshold = 0.7  # Similarity threshold
+query = request.json.get('query')
 
-    # Add user's query to conversation history
-    session['conversation'].append({"role": "user", "content": query})
+# Add user's query to conversation history
+session['conversation'].append({"role": "user", "content": query})
 
-    if len(query.split()) < 3:  # Assuming an 'incomplete' query has fewer than 3 words
+if len(query.split()) < 3:  # Assuming an 'incomplete' query has fewer than 3 words
     last_assistant_message = next((message['content'] for message in reversed(session['conversation']) if message['role'] == 'assistant'), None)
     
     if last_assistant_message:
