@@ -398,13 +398,14 @@ def setup_conversation():
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.7  # Adjust this threshold as needed
+    threshold = 0.7
 
     query = request.json.get('query')
     query_vector = vectorizer.transform([query])
-    
-    # Add the user's query to the session-based conversation history
+
     session['conversation'].append({"role": "user", "content": query})
+
+    print("Conversation before API call: ", session['conversation'])  # Debugging line
 
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
@@ -428,17 +429,20 @@ def ask():
         }
 
         response = requests.post(api_endpoint, headers=headers, json=payload)
-        
+        print("Raw API Response: ", response.json())  # Debugging line
+
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
             
             forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
             for phrase in forbidden_phrases:
                 answer = answer.replace(phrase, "")
-                
+            
             session['conversation'].append({"role": "assistant", "content": answer})
         else:
             answer = "I'm sorry, I couldn't understand the question."
+
+    print("Conversation after API call: ", session['conversation'])  # Debugging line
 
     return jsonify({"answer": answer})
 
