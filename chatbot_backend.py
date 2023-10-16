@@ -450,7 +450,9 @@ def ask():
             "presence_penalty": -1
         }
         # frequency -2 to 2. higher increase repetition of answer  presence -2 to 2. higher likely to switch topic
-        response = requests.post(api_endpoint, headers=headers, json=payload)
+        #response = requests.post(api_endpoint, headers=headers, json=payload)
+        response = requests.post(api_endpoint, headers=headers, json=payload, timeout=15)  # 15-second timeout
+
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
             # Remove any forbidden phrases
