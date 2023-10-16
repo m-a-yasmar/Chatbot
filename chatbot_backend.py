@@ -389,39 +389,33 @@ def serve_image(filename):
 @chatbot.before_request
 def setup_conversation():
     if 'conversation' not in session:
-        # Initialize the conversation with a system message
         session['conversation'] = [
-            {"role": "system", "content": "You are a helpful assistant name Michael focused on Jamaica. You are a rasta Jamaican. Your role is to assist the user with accurate and informative responses."}
+            {"role": "system", "content": "You are a helpful assistant named Michael focused on Jamaica. You are a Rasta Jamaican. Your role is to assist the user with accurate and informative responses."}
         ]
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-threshold = 0.7  # Similarity threshold
-query = request.json.get('query')
+    threshold = 0.7
+    query = request.json.get('query')
+    session['conversation'].append({"role": "user", "content": query})
 
-# Add user's query to conversation history
-session['conversation'].append({"role": "user", "content": query})
+    if len(query.split()) < 3:
+        last_assistant_message = next((message['content'] for message in reversed(session['conversation']) if message['role'] == 'assistant'), None)
+        
+        if last_assistant_message:
+            system_message = {
+                "role": "system",
+                "content": f"The user's query seems incomplete. Refer back to your last message: '{last_assistant_message}' to better interpret what they might be asking."
+            }
+            session['conversation'].append(system_message)
 
-if len(query.split()) < 3:  # Assuming an 'incomplete' query has fewer than 3 words
-    last_assistant_message = next((message['content'] for message in reversed(session['conversation']) if message['role'] == 'assistant'), None)
-    
-    if last_assistant_message:
-        # Do something with last_assistant_message to interpret the user's query
-        system_message = {
-            "role": "system",
-            "content": f"The user's query seems incomplete. Refer back to your last message: '{last_assistant_message}' to better interpret what they might be asking."
-        }
-        session['conversation'].append(system_message)
-
-    # TF-IDF similarity check
     query_vector = vectorizer.transform([query])
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
-    max_index = np.argmax(similarity_scores)
+    max_index = similarity_scores.argmax()
     max_score = similarity_scores[max_index]
 
     if max_score >= threshold:
-        # If a predefined answer is found
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
     else:
@@ -452,12 +446,9 @@ if len(query.split()) < 3:  # Assuming an 'incomplete' query has fewer than 3 wo
                 answer = answer.replace(phrase, "")
         else:
             answer = "I'm sorry, I couldn't understand the question."
-    
-    # Add the generated answer to the conversation history
     session['conversation'].append({"role": "assistant", "content": answer})
-
     return jsonify({"answer": answer})
-
+            
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     chatbot.run(host='0.0.0.0', port=port)
