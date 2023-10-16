@@ -422,10 +422,14 @@ def ask():
             "Content-Type": "application/json"
         }
         prompt = f"Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can answer just State that you cant answer in the most human way. In your answersing where possible consider your previous answers  : {query}"
+       
         payload = {
-            "model": "gpt-4",
-            "messages": session['conversation'] + [{"role": "user", "content": prompt}]
+            "model": "gpt-4",  
+            "messages": session['conversation']
         }
+
+        # Add the latest user query to the payload
+        payload['messages'].append({"role": "user", "content": query})
 
         response = requests.post(api_endpoint, headers=headers, json=payload)
 
