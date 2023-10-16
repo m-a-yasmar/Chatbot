@@ -403,7 +403,7 @@ def ask():
     query = request.json.get('query')
     query_vector = vectorizer.transform([query])
      # Add the user's query to the session-based conversation history
-    session['conversation'].append({"role": "user", "content": query})
+    #session['conversation'].append({"role": "user", "content": query})
 
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
