@@ -398,8 +398,17 @@ def ask():
     threshold = 0.7
 
     query = request.json.get('query')
+
+    # Concatenate the last assistant's answer and the new user query
+    if session['conversation']:
+        last_assistant_message = session['conversation'][-1]['content']
+        query = last_assistant_message + " " + query
+
     query_vector = vectorizer.transform([query])
+
     session['conversation'].append({"role": "user", "content": query})
+
+    print("Conversation before API call: ", session['conversation'])
 
     # Get last question and answer
     last_user_question = ""
