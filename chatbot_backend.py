@@ -375,11 +375,12 @@ predefined_answers = {
     
     }
 
+# Initialize logger
+logging.basicConfig(level=logging.INFO)
 
 # Create a TF-IDF Vectorizer
 vectorizer = TfidfVectorizer()
-
-# Fit the vectorizer to the questions
+# Assuming predefined_answers is a dictionary
 vectorizer.fit(predefined_answers.keys())
 
 @chatbot.route('/', methods=['GET'])
@@ -390,60 +391,69 @@ def home():
 def serve_image(filename):
     return send_from_directory('image', filename)
 
+@chatbot.before_request
+def setup_conversation():
+    if 'conversation' not in session:
+        session['conversation'] = [
+            {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can't answer, state that you can't in the most human way. Consider your previous answers where possible."},
+        ]
+    logging.info(f"Current session: {session['conversation']}")
+
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.7  # Adjust this threshold as needed
-
+    threshold = 0.7  # Similarity threshold
     query = request.json.get('query')
-    query_vector = vectorizer.transform([query])
 
+    # Add user's query to conversation history
+    session['conversation'].append({"role": "user", "content": query})
+    logging.info(f"Updated session after user query: {session['conversation']}")
+
+    # TF-IDF similarity check
+    query_vector = vectorizer.transform([query])
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
-
     max_index = np.argmax(similarity_scores)
     max_score = similarity_scores[max_index]
 
     if max_score >= threshold:
+        # If a predefined answer is found
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
     else:
-        # Use OpenAI's GPT-4 API for the answer
+        # OpenAI API call
         api_endpoint = "https://api.openai.com/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        prompt = f"Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can answer just State that you cant answer in the most human way. In your answersing where possible consider your previous answers  : {query}"
         payload = {
-            "model": "gpt-4",  # Or whichever model we are using
-            "messages": [
-                {"role": "system", "content": "You are a helpful assistant focused on Jamaica."},
-                {"role": "user", "content": prompt}
-            ]
+            "model": "gpt-4",
+            "messages": session['conversation'],
+            "frequency_penalty": 1.5,
+            "presence_penalty": -1
         }
+        
         response = requests.post(api_endpoint, headers=headers, json=payload)
-
-        # Debugging information
-        print(f"API Response Status Code: {response.status_code}")
-        print(f"API Response: {response.json()}")
-
+        logging.info(f"API response status: {response.status_code}")
+        
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
-            #answer = response.json()['choices'][0]['text'].strip()
-        
-            # Post-process the answer to remove mentions of being an AI or training data
-            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
+            logging.info(f"API response content: {answer}")
+
+            # Remove any forbidden phrases
+            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes", "As an artificial intelligence", "ChatGPT", "OpenAI"]
             for phrase in forbidden_phrases:
-                answer = answer.replace(phrase, "I am unable")
+                answer = answer.replace(phrase, "")
         else:
             answer = "I'm sorry, I couldn't understand the question."
-        
-          
+            logging.error(f"API call failed with status {response.status_code}: {response.text}")
+
+    # Add the generated answer to the conversation history
+    session['conversation'].append({"role": "assistant", "content": answer})
+    logging.info(f"Updated session after assistant's answer: {session['conversation']}")
 
     return jsonify({"answer": answer})
 
-# Your existing 'if __name__ == "__main__":' block remains unchanged
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     chatbot.run(host='0.0.0.0', port=port)
-
