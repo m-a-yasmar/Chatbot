@@ -461,6 +461,7 @@ def ask():
             
             answer = "I'm sorry, I couldn't understand the question."
     session['conversation'].append({"role": "assistant", "content": answer})
+    session['conversation'].append(system_message)
     session.modified = True
     print("After appending assistant answer:", session['conversation'])
     return jsonify({"answer": answer})
