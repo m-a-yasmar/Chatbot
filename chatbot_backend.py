@@ -430,9 +430,6 @@ def ask():
             "messages": session['conversation']
         }
 
-        # Add the latest user query to the payload
-        payload['messages'].append({"role": "user", "content": query})
-
         response = requests.post(api_endpoint, headers=headers, json=payload)
 
         # Debugging information
@@ -448,6 +445,7 @@ def ask():
                  
         # Add the assistant's answer to the session-based conversation history only once
             session['conversation'].append({"role": "assistant", "content": answer})
+            
         else:
             answer = "I'm sorry, I couldn't understand the question."
                 
