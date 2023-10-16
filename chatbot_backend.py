@@ -427,8 +427,10 @@ def ask():
         payload = {
             "model": "gpt-4",
             "messages": session['conversation']
+            "frequency_penalty": 1.5,  
+            "presence_penalty": -1
         }
-
+        # frequency -2 to 2. higher increase repetition of answer  presence -2 to 2. higher likely to switch topic
         response = requests.post(api_endpoint, headers=headers, json=payload)
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
