@@ -420,11 +420,14 @@ def ask():
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        
+        custom_prompt = {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Please consider previous interactions when generating your responses."}
+        # Add custom prompt to the beginning of the conversation history
+        conversation_with_prompt = [custom_prompt] + session['conversation']
+      
         # Use the conversation history for context-aware API call
         payload = {
             "model": "gpt-4",
-            "messages": session['conversation'],
+            "messages": conversation_with_prompt,
             "frequency_penalty": 1.5,  
             "presence_penalty": -1
         }
