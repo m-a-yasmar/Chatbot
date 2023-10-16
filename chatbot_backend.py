@@ -391,7 +391,7 @@ def setup_conversation():
     if 'conversation' not in session:
         # Initialize the conversation with a system message
         session['conversation'] = [
-            {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Your role is to assist the user with accurate and informative responses. It's crucial that you consider the context of the conversation and previous interactions to provide the most helpful and coherent answers."}
+            {"role": "system", "content": "You are a helpful assistant name Michael focused on Jamaica. You are a rasta Jamaican. Your role is to assist the user with accurate and informative responses."}
         ]
 
 @chatbot.route('/ask', methods=['POST'])
@@ -401,6 +401,17 @@ def ask():
 
     # Add user's query to conversation history
     session['conversation'].append({"role": "user", "content": query})
+
+    if len(query.split()) < 3:  # Assuming an 'incomplete' query has fewer than 3 words
+    last_assistant_message = next((message['content'] for message in reversed(session['conversation']) if message['role'] == 'assistant'), None)
+    
+    if last_assistant_message:
+        # Do something with last_assistant_message to interpret the user's query
+        system_message = {
+            "role": "system",
+            "content": f"The user's query seems incomplete. Refer back to your last message: '{last_assistant_message}' to better interpret what they might be asking."
+        }
+        session['conversation'].append(system_message)
 
     # TF-IDF similarity check
     query_vector = vectorizer.transform([query])
