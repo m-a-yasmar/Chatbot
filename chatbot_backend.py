@@ -391,39 +391,15 @@ def serve_image(filename):
 @chatbot.before_request
 def setup_conversation():
     if 'conversation' not in session:
-        session['conversation'] = []
+        session['conversation'] = [
+    {"role": "system", "content": "You are a helpful assistant focused on Jamaica. Answer the following questions as if you're an expert on Jamaica. Do not identify yourself as an AI. If you can't answer, state that you can't in the most human way. Consider your previous answers where possible."},]
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    threshold = 0.7
-
+    threshold = 0.7  # Adjust this threshold as needed
     query = request.json.get('query')
-
-    # Concatenate the last assistant's answer and the new user query
-    if session['conversation']:
-        last_assistant_message = session['conversation'][-1]['content']
-        query = last_assistant_message + " " + query
-
     query_vector = vectorizer.transform([query])
-
     session['conversation'].append({"role": "user", "content": query})
-
-    print("Conversation before API call: ", session['conversation'])
-
-    # Get last question and answer
-    last_user_question = ""
-    last_assistant_answer = ""
-    for entry in reversed(session['conversation']):
-        if entry["role"] == "user":
-            last_user_question = entry["content"]
-            break
-    for entry in reversed(session['conversation']):
-        if entry["role"] == "assistant":
-            last_assistant_answer = entry["content"]
-            break
-
-    # Create explicit query
-    explicit_query = f"Previously, the user asked: '{last_user_question}' and the assistant answered: '{last_assistant_answer}'. Now, the user is asking: '{query}'"
 
     predefined_vectors = vectorizer.transform(predefined_answers.keys())
     similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
@@ -433,19 +409,23 @@ def ask():
     if max_score >= threshold:
         most_similar_question = list(predefined_answers.keys())[max_index]
         answer = predefined_answers[most_similar_question]
+        session['conversation'].append({"role": "assistant", "content": answer})
     else:
+        api_endpoint = "https://api.openai.com/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
+        
         payload = {
             "model": "gpt-4",
-            "messages": [{"role": "user", "content": explicit_query}]
+            "messages": session['conversation']
         }
-        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+        
+        response = requests.post(api_endpoint, headers=headers, json=payload)
         if response.status_code == 200:
             answer = response.json()['choices'][0]['message']['content'].strip()
-            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes", "As an artificial intelligence", "ChatGPT", "OpenAI"]
+            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
             for phrase in forbidden_phrases:
                 answer = answer.replace(phrase, "")
             session['conversation'].append({"role": "assistant", "content": answer})
