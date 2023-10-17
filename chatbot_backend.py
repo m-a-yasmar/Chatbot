@@ -15,6 +15,13 @@ from flask_cors import CORS # for CORS
 
 CORS(chatbot)
 
+# Add this part for affiliate keywords
+affiliate_keywords = {
+    "bookings.com": "You can book here with <a href='https://www.booking.com/?aid=355028'>bookings.com</a>",
+    "Airbnb": "Check out options on <a href='https://www.airbnb.co.uk/'>Airbnb</a>"
+}
+
+
 # Predefined answers in a dictionary
 
 predefined_answers = {
@@ -466,6 +473,9 @@ def ask():
         else:
             
             answer = "I'm sorry, I couldn't understand the question."
+    for keyword, replacement in affiliate_keywords.items():
+        if keyword.lower() in answer.lower():
+            answer = answer.replace(keyword, replacement)
     session['conversation'].append({"role": "assistant", "content": answer})
     session.modified = True
     print("After appending assistant answer:", session['conversation'])
