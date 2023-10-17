@@ -16,11 +16,19 @@ from flask_cors import CORS # for CORS
 CORS(chatbot)
 
 # Add this part for affiliate keywords
-affiliate_keywords = {
-    "bookings.com": "You can book here with <a href='https://www.booking.com/?aid=355028'>bookings.com</a>",
-    "Airbnb": "Check out options on <a href='https://www.airbnb.co.uk/'>Airbnb</a>"
-}
 
+affiliate_keywords = {
+    "Booking.com": "You can book here with <a href='https://www.booking.com/'>Booking.com</a>",
+    "Airbnb": "Check out options on <a href='https://www.airbnb.com/'>Airbnb</a>",
+    "Expedia": "Find deals on <a href='https://www.expedia.com/'>Expedia</a>",
+    "TripAdvisor": "Read reviews on <a href='https://www.tripadvisor.com/'>TripAdvisor</a>",
+    "Kayak": "Compare prices on <a href='https://www.kayak.com/'>Kayak</a>",
+    "Skyscanner": "Search for flights on <a href='https://www.skyscanner.net/'>Skyscanner</a>",
+    "Hotels.com": "Find hotels at <a href='https://www.hotels.com/'>Hotels.com</a>",
+    "Trivago": "Compare hotel prices on <a href='https://www.trivago.com/'>Trivago</a>",
+    "Orbitz": "Find various travel deals on <a href='https://www.orbitz.com/'>Orbitz</a>",
+    "Priceline": "Get discounted rates on <a href='https://www.priceline.com/'>Priceline</a>"
+}
 
 # Predefined answers in a dictionary
 
