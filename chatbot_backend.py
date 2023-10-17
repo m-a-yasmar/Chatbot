@@ -470,6 +470,12 @@ def ask():
     session.modified = True
     print("After appending assistant answer:", session['conversation'])
     return jsonify({"answer": answer})
+
+from datetime import timedelta
+
+# set session timeout
+chatbot.permanent_session_lifetime = timedelta(minutes=5)
+
     
             
 if __name__ == '__main__':
