@@ -142,7 +142,7 @@ function displayMessage(message, className) {
     const chatBox = document.getElementById('chat-box');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${className}`;
-    messageDiv.innerText = message;
+    messageDiv.innerHTML = message;
     chatBox.appendChild(messageDiv);
 }
 </script>
