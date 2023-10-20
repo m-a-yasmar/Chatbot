@@ -466,9 +466,9 @@ def ask():
             "model": "gpt-4",
             "messages": conversation_with_prompt,
             "frequency_penalty": 1.5,  
-            "presence_penalty": -1,
-            "max_tokens": 80
+            "presence_penalty": -1
         }
+        #             "max_tokens": 80
         # frequency -2 to 2. higher increase repetition of answer  presence -2 to 2. higher likely to switch topic
         #response = requests.post(api_endpoint, headers=headers, json=payload)
         response = requests.post(api_endpoint, headers=headers, json=payload, timeout=60)  # 15-second timeout
