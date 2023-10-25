@@ -23,11 +23,7 @@ CORS(chatbot)
 def custom_limit_request_error():
     return jsonify({"message": "Too many requests, please try again later"}), 429
 
-limiter = Limiter(
-    app=chatbot, 
-    key_func=get_remote_address, 
-    request_limit_exceeded=custom_limit_request_error
-)
+
 
 # Add this part for affiliate keywords
 
@@ -77,6 +73,11 @@ def setup_conversation():
     else:
         print("Existing session found")
     print("Initial session:", session.get('conversation'))
+
+limiter = Limiter(
+    app=chatbot, 
+    key_func=get_remote_address
+)
 
 @limiter.request_filter
 def exempt_users():
