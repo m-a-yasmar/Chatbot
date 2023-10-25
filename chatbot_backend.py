@@ -83,7 +83,7 @@ limiter = Limiter(
 def exempt_users():
     return False  # return True to exempt a user from the rate limit
 
-@limiter.request_limit("5 per minute", override_defaults=False)
+@limiter.limit("5 per minute")
 def custom_limit_request_error():
     return jsonify({"message": "Too many requests, please try again later"}), 429
 
