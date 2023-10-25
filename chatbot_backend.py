@@ -92,6 +92,12 @@ def ask():
     query = request.json.get('query')
     print("User query:", query)
 
+    max_tokens = 20  # Set your desired limit
+    tokens = query.split()
+    if len(tokens) > max_tokens:
+        answer = "Your query is too long. Please limit it to 20 words or less."
+        return jsonify({"answer": answer})
+
     session['conversation'].append({"role": "user", "content": query})
     
     print("After appending user query:", session['conversation'])
