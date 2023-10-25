@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify, render_template  # for Flask
 import requests  # for HTTP requests
 from flask import send_from_directory # To help insert image
 from flask import session #for keeping history
+from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
 
