@@ -405,11 +405,6 @@ def home():
 def serve_image(filename):
     return send_from_directory('image', filename)
 
-@chatbot.route('/image/<path:filename>')
-def serve_image(filename):
-    return send_from_directory('image', filename)
-
-
 @chatbot.before_request
 def setup_conversation():
     if 'conversation' not in session:
