@@ -78,7 +78,13 @@ def setup_conversation():
         print("Existing session found")
     print("Initial session:", session.get('conversation'))
 
-@limiter.limit("5 per minute")
+@limiter.request_filter
+def exempt_users():
+    return False  # return True to exempt a user from the rate limit
+
+@limiter.request_limit("5 per minute", override_defaults=False)
+def custom_limit_request_error():
+    return jsonify({"message": "Too many requests, please try again later"}), 429
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
