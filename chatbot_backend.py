@@ -20,8 +20,6 @@ CORS(chatbot)
 
 
 
-def custom_limit_request_error():
-    return jsonify({"message": "Too many requests, please try again later"}), 429
 
 
 
@@ -74,21 +72,18 @@ def setup_conversation():
         print("Existing session found")
     print("Initial session:", session.get('conversation'))
 
-#limiter = Limiter(
- #   app=chatbot, 
-  #  key_func=get_remote_address
-#)
+limiter = Limiter(
+    app=chatbot, 
+    key_func=get_remote_address
+)
 
-#@limiter.request_filter
-#def exempt_users():
- #   return False  # return True to exempt a user from the rate limit
+@limiter.request_filter
+def exempt_users():
+    return False  # return True to exempt a user from the rate limit
 
-#@limiter.limit("5 per minute")
-#def custom_limit_request_error():
- #   return jsonify({"message": "Too many requests, please try again later"}), 429
-
-limiter = Limiter(chatbot, key_func=get_remote_address)
 @limiter.limit("5 per minute")
+def custom_limit_request_error():
+    return jsonify({"message": "Too many requests, please try again later"}), 429
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
