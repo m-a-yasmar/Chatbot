@@ -24,7 +24,7 @@ def custom_limit_request_error():
     return jsonify({"message": "Too many requests, please try again later"}), 429
 
 limiter = Limiter(
-    chatbot, 
+    app=chatbot, 
     key_func=get_remote_address, 
     request_limit_exceeded=custom_limit_request_error
 )
