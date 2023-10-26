@@ -42,8 +42,8 @@ affiliate_keywords = {
 
 predefined_answers = {
     
-    "What are you? ": "I am an AI programmed to answer your questions.",
-    "How are you?": "I am doing ok. Thanks for asking."
+    "Fuck ": "Inappropriate content detected.",
+    "Shit": "Inappropriate content detected."
     }
 
 # Create a TF-IDF Vectorizer
@@ -89,7 +89,7 @@ def custom_limit_request_error():
 @chatbot.route('/ask', methods=['POST'])
 def ask():
     system_message = {}
-    threshold = 0.7
+    threshold = 0.9
     query = request.json.get('query')
     print("User query:", query)
 
