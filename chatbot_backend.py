@@ -42,8 +42,8 @@ affiliate_keywords = {
 
 predefined_answers = {
     
-    "What is the currency in Jamaica?": "The currency in Jamaica is the Jamaican Dollar.",
-    "What is the capital of Jamaica?": "The capital of Jamaica is Kingston."
+    "What are you? ": "I am an AI programmed to answer your questions.",
+    "How are you?": "I am doing ok. Thanks for asking."
     }
 
 # Create a TF-IDF Vectorizer
