@@ -90,7 +90,7 @@ def custom_limit_request_error():
 @chatbot.route('/ask', methods=['POST'])
 def ask():
     system_message = {}
-    threshold = 0.9
+    threshold = 0.7
     query = request.json.get('query')
     print("User query:", query)
 
