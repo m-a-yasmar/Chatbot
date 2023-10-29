@@ -43,9 +43,8 @@ affiliate_keywords = {
 predefined_answers = {
     
     "Fuck ": "Inappropriate content detected.",
-    "Shit": "Inappropriate content detected.",
-    "Who is the Founder of BritJam": "The Founder of BritJam is Khori Hyde."
-    }
+    "Shit": "Inappropriate content detected."
+       }
 
 # Create a TF-IDF Vectorizer
 vectorizer = TfidfVectorizer()
