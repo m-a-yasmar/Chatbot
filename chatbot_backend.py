@@ -133,7 +133,7 @@ def ask():
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        custom_prompt = {"role": "system", "content": "You are a helpful assistant with expertise on Jamaica. Your primary role is to assist the user by providing accurate and informative responses. It's essential that you maintain the context of the ongoing conversation, incorporating previous questions and answers to create a coherent and seamless dialogue. Each of your responses should logically follow from or relate to what has been previously discussed. This will ensure that the conversation flows naturally and that the user receives the most contextually relevant and helpful information."}
+        custom_prompt = {"role": "system", "content": "You are a helpful assistant with expertise on Jamaica. Your primary role is to assist the user by providing accurate and informative responses. It's essential that you maintain the context of the ongoing conversation, incorporating previous questions and answers to create a coherent and seamless dialogue. Each of your responses should logically follow from or relate to what has been previously discussed. This will ensure that the conversation flows naturally and that the user receives the most contextually relevant and helpful information. If asked about the meaning of 'Chattie' or 'Chatty' refer to first talk about a talkative person."}
         # Add custom prompt to the beginning of the conversation history
         conversation_with_prompt = [custom_prompt] + session['conversation']
       
