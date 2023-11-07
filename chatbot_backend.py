@@ -139,7 +139,7 @@ def ask():
       
         # Use the conversation history for context-aware API call
         payload = {
-            "model": "gpt-4",
+            "model": "gpt-4-1106-preview",
             "messages": conversation_with_prompt,
             "frequency_penalty": 1.5,  
             "presence_penalty": -1
