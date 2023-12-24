@@ -15,18 +15,23 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
             line-height: 1.6;
-            background: url('image/talkaiimage.png') center/cover no-repeat;
+            background: url('image/jaflagimage.jpg') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure full height */
         }
 
         /* Header Styling */
         header {
             background-color: #1a1a1a;
-            padding: 20px 0; /* Adjusted padding */
-            text-align: center;
+            color: #fff;
+            padding-top: 10px;
             position: relative;
-        }
-        header h1, header p {
-            color: white;
+            text-align: center;
+            background-image: url('image/talkaiimage.png'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
         }
 
         /* Logo Styling */
@@ -34,9 +39,9 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            max-width: 100px;
+            width: 100px;
             height: auto;
-            border-radius: 50%;
+            border-radius: 50%; /* Round logo */
         }
 
         /* Navigation Bar Styling */
@@ -45,7 +50,10 @@
             justify-content: center;
             background: rgba(51, 51, 51, 0.8);
             padding: 0.5rem;
-            margin-top: 100px; /* Adjusted to move below the logo */
+            position: absolute;
+            top: 120px; /* Below logo */
+            width: 100%;
+            box-sizing: border-box;
         }
         nav a {
             color: white;
@@ -62,6 +70,7 @@
             background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
             color: white;
             text-align: center;
+            flex-grow: 1;
         }
 
         /* Services Section Styling */
@@ -86,7 +95,7 @@
             color: white;
             text-align: center;
             padding: 1rem 0;
-            position: relative;
+            margin-top: auto; /* Push to bottom */
         }
 
         /* Chatbot Styles */
@@ -144,11 +153,8 @@
 
         /* Media Queries for Responsiveness */
         @media screen and (max-width: 600px) {
-            header, .intro, .services, footer {
-                padding: 10px;
-            }
             nav {
-                margin-top: 70px;
+                top: 100px;
             }
         }
     </style>
@@ -202,7 +208,35 @@
     </footer>
 
     <script>
-        // JavaScript code remains the same
+        async function askQuestion() {
+            try {
+                document.getElementById('send-button').disabled = true;
+                const query = document.getElementById('query').value;
+                const chatBox = document.getElementById('chat-box');
+                displayMessage(query, 'user-message');
+                const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query })
+                });
+                const data = await response.json();
+                displayMessage(data.answer, 'bot-message');
+                chatBox.scrollTop = chatBox.scrollHeight;
+                document.getElementById('query').value = '';
+            } catch (error) {
+                console.error('An error occurred:', error);
+            } finally {
+                document.getElementById('send-button').disabled = false;
+            }
+        }
+
+        function displayMessage(message, className) {
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.innerHTML = message;
+            chatBox.appendChild(messageDiv);
+        }
     </script>
 </body>
 </html>
