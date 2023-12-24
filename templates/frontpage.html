@@ -12,53 +12,43 @@
             box-sizing: border-box;
         }
 
-        /* Font */
+        /* Font and Body */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
             line-height: 1.6;
             background: url('image/talkaiimage.png') center/cover no-repeat;
-            overflow-y: scroll;
-            padding-bottom: 5rem; /* Add padding to view the bottom content without scrolling */
+            overflow-y: auto;
         }
 
         /* Header */
         header {
             background-color: #1a1a1a;
             color: #fff;
-            padding-top: 10px; /* Reduced padding */
-            padding-bottom: 20px;
-            background: url('image/talkaiimage.png') ;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            color: #fff;
-            padding: 1rem 0 3rem; /* Adjusted bottom padding */
+            padding: 20px 0;
             text-align: center;
             position: relative;
-        }
-
-        header h1, header p {
-            color: white;
         }
 
         /* Logo Image */
         .logo {
             position: absolute;
-            top: 1rem;
-            left: 1rem;
-            max-width: 100px; /* Adjust as needed */
+            top: 10px;
+            left: 10px;
+            max-width: 80px;
             height: auto;
-            border-radius: 50%; /* Make the logo round */
+            border-radius: 50%;
         }
 
         /* Navigation Bar */
         nav {
             display: flex;
             justify-content: center;
-            background: rgba(51, 51, 51, 0.8); /* Slightly transparent background */
+            background: rgba(51, 51, 51, 0.8);
             padding: 0.5rem;
-            margin-top: 60px;
+            position: absolute;
+            top: 100px; /* Adjust based on logo size */
+            width: 100%;
         }
 
         nav a {
@@ -71,29 +61,16 @@
         /* Intro Section */
         .intro {
             font-size: 1rem;
-            font-weight: bold;
-            padding: 1rem; /* Reduced padding */
+            padding: 1rem;
             background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
             color: white;
             text-align: center;
-        }
-
-        .intro h1, .intro h2 {
-            color: white;
-        }
-
-        .intro h2 {
-            font-size: 1.5rem;
         }
 
         /* Services Section */
         .services {
             padding: 2rem;
             background: #f4f4f4;
-            color: blue;
-        }
-
-        .services h2, .services p {
             color: blue;
         }
 
@@ -110,13 +87,12 @@
             color: white;
             text-align: center;
             padding: 1rem 0;
-            position: relative;
         }
 
-        /* Chatbot styles */
+        /* Chatbot Styles */
         #chat-container {
             width: 100%;
-            height: 210px;
+            height: 300px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -138,47 +114,34 @@
         #chat-box {
             flex: 1;
             padding: 1rem;
-            overflow-y: scroll;
+            overflow-y: auto;
         }
 
         .message {
-            margin-bottom: 20px;
-            padding: 5px;
+            margin-bottom: 10px;
+            padding: 10px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
 
-        .user-message, .bot-message {
-            text-align: left;
-            background-color: var(--secondary-bg-color, #4364f7);
-            color: var(--primary-text-color, white);
-        }
-
-        #chat-input {
-            display: flex;
-            border-top: 1px solid #ccc;
-        }
-
-        #query {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-        }
-
-        #send-button {
-            width: 80px;
-            background: var(--button-bg, #000);
-            color: var(--primary-text-color, white);
-            border: none;
-            cursor: pointer;
-        }
-
-         @media screen and (max-width: 600px) {
+        /* Media Queries for Responsiveness */
+        @media screen and (max-width: 600px) {
             header, .intro, .services, footer {
-                padding: 10px; /* Reduced padding for smaller screens */
+                padding: 10px;
             }
+
+            .logo {
+                top: 5px;
+                left: 5px;
+                max-width: 60px;
+            }
+
             nav {
-                margin-top: 30px; /*
+                top: 70px;
+            }
+
+            #chat-container {
+                height: 200px;
             }
         }
     </style>
