@@ -43,10 +43,20 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+	position: relative;
     }
         
     header h1, header p {
         color: #00BFFF; /* Set text color specifically for h1 and p tags inside header */
+    }
+     /* Logo Image */
+    .logo {
+        position: absolute;
+        top: 50%; /* Center vertically */
+        left: 50%; /* Center horizontally */
+        transform: translate(-50%, -50%); /* Offset the position by half the width and height of the image */
+        max-width: 100px; /* Adjust the size as needed */
+        height: auto; /* Maintain aspect ratio */
     }
     /* Navigation Bar */
     nav {
@@ -184,7 +194,10 @@
 
 </head>
 <body style="background-image: url('/image/jaflagimage.jpg');">
-
+    <header>
+    	<!-- Add your logo image here -->
+        <img src="path/to/your/talkailogo.png" alt="TalkAI Logo" class="logo">
+        <h1>TalkAI Global</h1>
     <nav>
     	<a href="frontpage.html">Home</a>
     	<a href="services.html">Services</a>
