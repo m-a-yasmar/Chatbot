@@ -55,7 +55,7 @@ vectorizer.fit(predefined_answers.keys())
 
 @chatbot.route('/', methods=['GET'])
 def home():
-    return render_template('chatbot1.html')
+    return render_template('frontpage.html')
 
 @chatbot.route('/image/<path:filename>')
 def serve_image(filename):
