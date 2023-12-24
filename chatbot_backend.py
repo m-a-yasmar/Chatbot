@@ -60,18 +60,17 @@ def home():
 @chatbot.route('/image/<path:filename>')
 def serve_image(filename):
     return send_from_directory('image', filename)
-
 @chatbot.before_request
 def setup_conversation():
     if 'conversation' not in session:
         print("New session being initialized")
         session['conversation'] = [
-            {"role": "system", "content": "You are a helpful assistant named 'Chatti' focused on Jamaica. You are a Rasta Jamaican. Your role is to assist the user with accurate and informative responses."}
+            {"role": "system", "content": "You are an advanced AI agent for TalkAI Global, a pioneering company in AI automation. Your primary role is to assist users with comprehensive and accurate information about our AI services and products. Provide detailed explanations, tailored advice, and innovative solutions to inquiries related to autonomous systems, strategic AI consulting, and custom AI solutions. Your responses should be professional, informative, and reflect the cutting-edge nature of our services. Handle all queries with a focus on showcasing how TalkAI Global can empower businesses with AI technology. Support, educate, and inspire potential clients about the transformative potential of AI in their operations."}
         ]
     else:
         print("Existing session found")
     print("Initial session:", session.get('conversation'))
-
+    
 limiter = Limiter(
     app=chatbot,
     key_func=get_remote_address
@@ -146,7 +145,7 @@ def ask():
             "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
             "Content-Type": "application/json"
         }
-        custom_prompt = {"role": "system", "content": "You are a helpful assistant name 'Chatti' with expertise on Jamaica. Your primary role is to assist the user by providing accurate and informative responses. It's essential that you maintain the context of the ongoing conversation, incorporating previous questions and answers to create a coherent and seamless dialogue. Each of your responses should logically follow from or relate to what has been previously discussed. This will ensure that the conversation flows naturally and that the user receives the most contextually relevant and helpful information. If asked about the meaning of 'Chattie' or 'Chatty' refer to first talk about a talkative person."}
+        custom_prompt = {"role": "system", "content":"You are an advanced AI agent for TalkAI Global, a pioneering company in AI automation. Your primary role is to assist users with comprehensive and accurate information about our AI services and products. Provide detailed explanations, tailored advice, and innovative solutions to inquiries related to autonomous systems, strategic AI consulting, and custom AI solutions. Your responses should be professional, informative, and reflect the cutting-edge nature of our services. Handle all queries with a focus on showcasing how TalkAI Global can empower businesses with AI technology. Support, educate, and inspire potential clients about the transformative potential of AI in their operations."} 
         # Add custom prompt to the beginning of the conversation history
         conversation_with_prompt = [custom_prompt] + session['conversation']
       
