@@ -87,15 +87,15 @@ def custom_limit_request_error():
     return jsonify({"message": "Too many requests, please try again later"}), 429
 
 @app.route('/frontpage')
-def page1():
+def frontpage():
     return render_template('frontpage.html')
 
 @app.route('/contact')
-def page2():
+def contact():
     return render_template('contact.html')
 
 @app.route('/services')
-def page3():
+def services():
     return render_template('services.html')
 
 
