@@ -5,204 +5,184 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TalkAI Global - Pioneers in AI Automation</title>
     <style>
-    /* Basic Reset */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-
-    /* Header */
-    header {
-        background-color: #1a1a1a;
-        color: #fff;
-        padding-top: 1rem; /* Increase top padding */
-        padding-bottom: 5rem; /* Increase bottom padding */
-        text-align: center;
-        background-image: url('image/talkaiimage.png'); 
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-	position: relative;
-    }
-        
-    header h1, header p {
-        color: white; /* Set text color specifically for h1 and p tags inside header */
-    }
-    <h2 class="expertise-heading">Our Expertise</h2>
-
-     /* Logo Image */
-    .logo {
-        position: absolute;
-    }
-    /* Navigation Bar */
-    nav {
-        display: flex;
-        justify-content: center;
-        background: #333;
-        padding: 0.5rem;
-    }
-
-    nav a {
-        color: white;
-        text-decoration: none;
-        padding: 0 15px;
-        font-weight: bold;
-    }
-
-    /* Intro Section */
-    .intro {
-	font-size: 1rem; 
-	font-weight: bold;
-        padding: 2rem;
-        background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
-        color: white;
-        text-align: center;
-    }
-    .intro h3 {
-        font-size: 1rem; /* This sets the base size for h3 */
-	color: blue;
-    }
-    .intro h2 {
-        font-size: 1.5rem; /* This sets the base size for h2 */
-	color: white
-    }
-
-    .intro h1 {
-        font-size: 2rem; /* This sets the h1 size to be larger than h2 */
-	color: white
-    }
-	    
-    .expertise-heading {
-        color: blue;
-    }
-
-
-    /* Services Section */
-    .services {
-        padding: 2rem;
-        background: #f4f4f4;
-	color: blue
-    }
-    .services h2 {
-        color: blue; /* Set the color to blue for h2 tags inside .services */
-        font-size: 1.5rem; /* Adjust font size as needed */
-    }
-
-    .service-item {
-        background: white;
-	color: blue;
-        margin-bottom: 1rem;
-        padding: 1rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-	/* Service Item Description */
-    .service-item p {
-        color: blue; /* Set the color to blue for paragraph tags inside .service-item */
-    }
-    /* Footer */
-    footer {
-        background-color: #333;
-        color: white;
-        text-align: center;
-        padding: 1rem 0;
-    }
-
-    /* Chatbot styles */
-    :root {
-        --primary-bg-color: #0052d4;
-        --primary-text-color: white;
-        --secondary-bg-color: #4364f7;
-        --button-bg: #000000;
-    }
-
-    #chat-container {
-        width: 100%;
-        height: 300px;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        overflow: hidden;
-        margin: 20px auto;
-        display: flex;
-        flex-direction: column;
-    }
-
-    #chat-header {
-        background: var(--primary-bg-color);
-        color: var(--primary-text-color);
-        padding: 1rem;
-        text-align: center;
-        border-top-left-radius: 15px;
-        border-top-right-radius: 15px;
-    }
-
-    #chat-box {
-        flex: 1;
-        padding: 1rem;
-        overflow-y: scroll;
-    }
-
-    .message {
-        margin-bottom: 20px;
-        padding: 10px;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    .user-message {
-        text-align: right;
-        background-color: var(--secondary-bg-color);
-        color: var(--primary-text-color);
-    }
-
-    .bot-message {
-        text-align: left;
-        background-color: var(--primary-bg-color);
-        color: var(--primary-text-color);
-    }
-
-    #chat-input {
-        display: flex;
-        border-top: 1px solid #ccc;
-    }
-
-    #query {
-        flex: 1;
-        padding: 1rem;
-        border: none;
-    }
-
-    #send-button {
-        width: 80px;
-        background: var(--button-bg);
-        color: var(--primary-text-color);
-        border: none;
-        cursor: pointer;
-    }
-
-    @media screen and (max-width: 600px) {
-        #chat-container {
-            margin: 20px 5px;
+        /* Basic Reset */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    }
-</style>
 
+        /* Font */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background: url('image/jaflagimage.jpg') center/cover no-repeat;
+        }
+
+        /* Header */
+        header {
+            background: url('image/talkaiimage.png') center/cover no-repeat, #1a1a1a;
+            color: #fff;
+            padding: 1rem 0 5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1, header p {
+            color: white;
+        }
+
+        /* Logo Image */
+        .logo {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            max-width: 100px; /* Adjust as needed */
+            height: auto;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #333;
+            padding: 0.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+            font-weight: bold;
+        }
+
+        /* Intro Section */
+        .intro {
+            padding: 2rem;
+            background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
+            color: white;
+            text-align: center;
+        }
+
+        .intro h1, .intro h2 {
+            color: white;
+        }
+
+        .intro h2 {
+            font-size: 1.5rem;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 2rem;
+            background: #f4f4f4;
+        }
+
+        .services h2, .services p {
+            color: blue;
+        }
+
+        .service-item {
+            background: white;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        /* Chatbot styles */
+        #chat-container {
+            width: 100%;
+            height: 300px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-header {
+            background: var(--primary-bg-color, #0052d4);
+            color: var(--primary-text-color, white);
+            padding: 1rem;
+            text-align: center;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+
+        #chat-box {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: scroll;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: var(--secondary-bg-color, #4364f7);
+            color: white;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: var(--primary-bg-color, #0052d4);
+            color: white;
+        }
+
+        #chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+
+        #query {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+        }
+
+        #send-button {
+            width: 80px;
+            background: var(--button-bg, #000000);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 600px) {
+            #chat-container {
+                margin: 20px 5px;
+            }
+        }
+    </style>
 </head>
+<body>
     <header>
-    	<!-- Add your logo image here -->
-        <img src="image/talk.jpg" alt="TalkAI Logo" class="logo">
-    <nav>
-    	<a href="frontpage.html">Home</a>
-    	<a href="services.html">Services</a>
-    	<a href="contact.html">Contact</a>
-    </nav>
+        <img src="image/talkailogo.png" alt="TalkAI Logo" class="logo">
+        <nav>
+            <a href="frontpage.html">Home</a>
+            <a href="services.html">Services</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
 
     <section class="intro" id="intro">
-	<h1>TalkAI Global</h1>
-
+        <h1>TalkAI Global</h1>
         <h2>Empowering Enterprises with AI</h2>
         <p>At TalkAI Global, we leverage the power of artificial intelligence to deliver innovative, scalable, and efficient solutions for businesses worldwide.</p>
     </section>
@@ -221,68 +201,54 @@
             <h3>Custom AI Solutions</h3>
             <p>Developing bespoke AI solutions tailored to the unique challenges and opportunities of your enterprise.</p>
         </div>
+    </section>
 
     <section id="chat-container">
-    <header id="chat-header">TalkAI</header>
-    <div id="welcome-message">
-        Welcome to TalkAI Global! I'm here to assist you with innovative AI solutions and insights. How can I help you today?
-    </div>
-            <article id="chat-box"></article>
+        <header id="chat-header">TalkAI</header>
+        <div id="welcome-message">
+            Welcome to TalkAI Global! I'm here to assist you with innovative AI solutions and insights. How can I help you today?
+        </div>
+        <article id="chat-box"></article>
         <div id="chat-input">
             <input type="text" id="query" placeholder="Ask a question..." onkeydown="if (event.keyCode == 13) askQuestion()">
             <button id="send-button" onclick="askQuestion()">Ask</button>
         </div>
     </section>
-  <footer>
+
+    <footer>
         <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
-   </footer>
+    </footer>
 
+    <script>
+        async function askQuestion() {
+            try {
+                document.getElementById('send-button').disabled = true;
+                const query = document.getElementById('query').value;
+                const chatBox = document.getElementById('chat-box');
+                displayMessage(query, 'user-message');
+                const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query })
+                });
+                const data = await response.json();
+                displayMessage(data.answer, 'bot-message');
+                chatBox.scrollTop = chatBox.scrollHeight;
+                document.getElementById('query').value = '';
+            } catch (error) {
+                console.error('An error occurred:', error);
+            } finally {
+                document.getElementById('send-button').disabled = false;
+            }
+        }
 
-<script>
-async function askQuestion() {
-    try {
-        // Disable the "Ask" button
-        document.getElementById('send-button').disabled = true;
-
-        const query = document.getElementById('query').value;
-        const chatBox = document.getElementById('chat-box');
-        
-        displayMessage(query, 'user-message');
-        
-        const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ query: query }),
-        });
-        
-        const data = await response.json();
-        
-        displayMessage(data.answer, 'bot-message');
-
-        // Scroll to the bottom
-        chatBox.scrollTop = chatBox.scrollHeight;
-        
-        // Clear the input field
-        document.getElementById('query').value = '';
-
-    } catch (error) {
-        console.error('An error occurred:', error);
-    } finally {
-        // Re-enable the "Ask" button
-        document.getElementById('send-button').disabled = false;
-    }
-}
-
-function displayMessage(message, className) {
-    const chatBox = document.getElementById('chat-box');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${className}`;
-    messageDiv.innerHTML = message;
-    chatBox.appendChild(messageDiv);
-}
-</script>
-  
+        function displayMessage(message, className) {
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.innerHTML = message;
+            chatBox.appendChild(messageDiv);
+        }
+    </script>
 </body>
 </html>
