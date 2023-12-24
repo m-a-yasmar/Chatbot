@@ -35,8 +35,9 @@
     header {
         background-color: #1a1a1a;
         color: #fff;
-        padding-top: 5rem;
-        padding-bottom: 2rem;
+        padding-top: 5rem; /* Increase top padding */
+        padding-bottom: 20rem; /* Increase bottom padding */
+        padding: 1rem 0;
         text-align: center;
         background-image: url('image/talkaiimage.png'); 
         background-size: cover;
@@ -45,13 +46,7 @@
     }
         
     header h1, header p {
-        color: #C0C0C0; /* Set text color specifically for h1 and p tags inside header */
-    }
-     .text-background {
-        background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
-        padding: 0.2rem 0.4rem; /* Space around the text */
-        border-radius: 5px; /* Rounded corners for the background */
-        display: inline-block; /* Ensures the background only covers the text */
+        color: #00BFFF; /* Set text color specifically for h1 and p tags inside header */
     }
     /* Navigation Bar */
     nav {
@@ -60,6 +55,7 @@
         background: #333;
         padding: 0.5rem;
     }
+
     nav a {
         color: white;
         text-decoration: none;
@@ -69,11 +65,21 @@
 
     /* Intro Section */
     .intro {
+	font-size: 1rem; 
+	font-weight: bold;
         padding: 2rem;
         background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
         color: white;
         text-align: center;
     }
+    .intro h2 {
+        font-size: 1.5rem; /* This sets the base size for h2 */
+    }
+
+    .intro h1 {
+        font-size: 2rem; /* This sets the h1 size to be larger than h2 */
+    }
+
 
     /* Services Section */
     .services {
@@ -178,11 +184,6 @@
 
 </head>
 <body style="background-image: url('/image/jaflagimage.jpg');">
-    <header>
-        <h1><span class="text-background">TalkAI Global</span></h1>
-        <p><span class="text-background">Revolutionizing Business with AI Automation</span></p>
-    </header>
-
 
     <nav>
     	<a href="frontpage.html">Home</a>
@@ -192,6 +193,8 @@
 
 
     <section class="intro" id="intro">
+	<h1>TalkAI Global</h1>
+
         <h2>Empowering Enterprises with AI</h2>
         <p>At TalkAI Global, we leverage the power of artificial intelligence to deliver innovative, scalable, and efficient solutions for businesses worldwide.</p>
     </section>
