@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - TalkAI Global</title>
+    <style>
+        /* Reuse styles from previous pages for consistency */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #333;
+            padding: 0.5rem;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 15px;
+            font-weight: bold;
+        }
+        .contact-section {
+            padding: 2rem;
+            text-align: center;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        form {
+            max-width: 500px;
+            margin: auto;
+            padding: 1rem;
+            background: #f4f4f4;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        label, input, textarea {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        input[type="submit"] {
+            background-color: #0056b3;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #004494;
+        }
+    
+    </style>
+
+ 	<script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+    	<script type="text/javascript">
+            (function(){
+            	emailjs.init("ajci8FDK0qRcFjxTD"); // Your public API key
+        })();
+        </script>
+</head>
+<body>
+    <header>
+        <h1>TalkAI Global</h1>
+        <p>Contact Us for AI Solutions</p>
+    </header>
+
+    <nav>
+        <a href="frontpage.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <section class="contact-section">
+        <h2>Get in Touch</h2>
+        <p>We'd love to hear from you. Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.</p>
+                <form id="contact-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="user_name" required> <!-- Adjust the name attribute -->
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="user_email" required> <!-- Adjust the name attribute -->
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            
+            <input type="submit" value="Send Message">
+        </form>
+
+        <script type="text/javascript">
+            document.getElementById('contact-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                emailjs.sendForm('service_p12xn48', 'template_3m61oz8', this)
+                    .then(function() {
+                        alert('Message sent successfully!');
+                        document.getElementById('contact-form').reset();
+                    }, function(error) {
+                        alert('Failed to send message: ' + JSON.stringify(error));
+                    });
+            });
+        </script>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
