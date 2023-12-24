@@ -163,7 +163,46 @@
         </nav>
     </header>
 
-    <!-- Rest of the body content remains the same -->
+    <section class="intro" id="intro">
+        <h1>TalkAI Global</h1>
+        <h2>Empowering Enterprises with AI</h2>
+        <p>At TalkAI Global, we leverage the power of artificial intelligence to deliver innovative, scalable, and efficient solutions for businesses worldwide.</p>
+    </section>
 
+    <section class="services" id="services">
+        <h2>Our Expertise</h2>
+        <div class="service-item">
+            <h3>Autonomous Systems</h3>
+            <p>Transforming operational efficiency with self-learning and adaptive AI systems.</p>
+        </div>
+        <div class="service-item">
+            <h3>Strategic AI Consulting</h3>
+            <p>Providing in-depth analysis and strategic planning to harness the full potential of AI in your business.</p>
+        </div>
+        <div class="service-item">
+            <h3>Custom AI Solutions</h3>
+            <p>Developing bespoke AI solutions tailored to the unique challenges and opportunities of your enterprise.</p>
+        </div>
+    </section>
+
+    <section id="chat-container">
+        <header id="chat-header">TalkAI</header>
+        <div id="welcome-message">
+            Welcome to TalkAI Global! I'm here to assist you with innovative AI solutions and insights. How can I help you today?
+        </div>
+        <article id="chat-box"></article>
+        <div id="chat-input">
+            <input type="text" id="query" placeholder="Ask a question..." onkeydown="if (event.keyCode == 13) askQuestion()">
+            <button id="send-button" onclick="askQuestion()">Ask</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // JavaScript code remains the same
+    </script>
 </body>
 </html>
