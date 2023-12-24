@@ -6,7 +6,7 @@
     <title>Contact Us - TalkAI Global</title>
     <style>
         /* Reuse styles from previous pages for consistency */
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -15,18 +15,29 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
             line-height: 1.6;
+            background: url('image/talkaiimage.png') center/cover no-repeat;
         }
         header {
             background-color: #1a1a1a;
             color: #fff;
             padding: 1rem 0;
             text-align: center;
+            position: relative;
+        }
+        .logo {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            max-width: 100px;
+            height: auto;
+            border-radius: 50%;
         }
         nav {
             display: flex;
             justify-content: center;
             background: #333;
             padding: 0.5rem;
+            margin-top: 60px;
         }
         nav a {
             color: white;
@@ -66,60 +77,135 @@
         input[type="submit"]:hover {
             background-color: #004494;
         }
-    
-    </style>
 
- 	<script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
-    	<script type="text/javascript">
-            (function(){
-            	emailjs.init("ajci8FDK0qRcFjxTD"); // Your public API key
-        })();
-        </script>
+        /* Chatbot styles */
+        #chat-container {
+            width: 100%;
+            height: 210px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            overflow: hidden;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+        }
+        #chat-header {
+            background: var(--primary-bg-color, #0052d4);
+            color: var(--primary-text-color, white);
+            padding: 1rem;
+            text-align: center;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        #chat-box {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: scroll;
+        }
+        .message {
+            margin-bottom: 20px;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .user-message, .bot-message {
+            text-align: left;
+            background-color: var(--secondary-bg-color, #4364f7);
+            color: var(--primary-text-color, white);
+        }
+        #chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+        #query {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+        }
+        #send-button {
+            width: 80px;
+            background: var(--button-bg, #000);
+            color: var(--primary-text-color, white);
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>TalkAI Global</h1>
-        <p>Contact Us for AI Solutions</p>
+        <img src="image/talkailogo.png" alt="TalkAI Logo" class="logo">
+        <nav>
+            <a href="frontpage.html">Home</a>
+            <a href="services.html">Services</a>
+            <a href="contact.html">Contact</a>
+        </nav>
     </header>
-
-    <nav>
-        <a href="frontpage.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="contact.html">Contact</a>
-    </nav>
 
     <section class="contact-section">
         <h2>Get in Touch</h2>
         <p>We'd love to hear from you. Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.</p>
-                <form id="contact-form">
+        <form id="contact-form">
             <label for="name">Name:</label>
-            <input type="text" id="name" name="user_name" required> <!-- Adjust the name attribute -->
+            <input type="text" id="name" name="user_name" required>
             
             <label for="email">Email:</label>
-            <input type="email" id="email" name="user_email" required> <!-- Adjust the name attribute -->
+            <input type="email" id="email" name="user_email" required>
             
             <label for="message">Message:</label>
             <textarea id="message" name="message" rows="4" required></textarea>
             
             <input type="submit" value="Send Message">
         </form>
+    </section>
 
-        <script type="text/javascript">
-            document.getElementById('contact-form').addEventListener('submit', function(event) {
-                event.preventDefault();
-                emailjs.sendForm('service_p12xn48', 'template_3m61oz8', this)
-                    .then(function() {
-                        alert('Message sent successfully!');
-                        document.getElementById('contact-form').reset();
-                    }, function(error) {
-                        alert('Failed to send message: ' + JSON.stringify(error));
-                    });
-            });
-        </script>
+    <section id="chat-container">
+        <header id="chat-header">TalkAI</header>
+        <div id="welcome-message">
+            Welcome to TalkAI Global! I'm here to assist you with innovative AI solutions and insights. How can I help you today?
+        </div>
+        <article id="chat-box"></article>
+        <div id="chat-input">
+            <input type="text" id="query" placeholder="Ask a question..." onkeydown="if (event.keyCode == 13) askQuestion()">
+            <button id="send-button" onclick="askQuestion()">Ask</button>
+        </div>
     </section>
 
     <footer>
         <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        async function askQuestion() {
+            try {
+                document.getElementById('send-button').disabled = true;
+                const query = document.getElementById('query').value;
+                const chatBox = document.getElementById('chat-box');
+                displayMessage(query, 'user-message');
+                const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: query })
+                });
+                const data = await response.json();
+                displayMessage(data.answer, 'bot-message');
+                chatBox.scrollTop = chatBox.scrollHeight;
+                document.getElementById('query').value = '';
+            } catch (error) {
+                console.error('An error occurred:', error);
+            } finally {
+                document.getElementById('send-button').disabled = false;
+            }
+        }
+
+        function displayMessage(message, className) {
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.innerHTML = message;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+        }
+    </script>
 </body>
 </html>
