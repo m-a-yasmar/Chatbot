@@ -24,7 +24,14 @@
 
         /* Header */
         header {
-            background: url('image/talkaiimage.png') center/cover no-repeat, #1a1a1a;
+            background-color: #1a1a1a;
+            color: #fff;
+            padding-top: 20px; /* Reduced padding */
+            padding-bottom: 20px;
+            background: url('image/talkaiimage.png') ;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
             color: #fff;
             padding: 1rem 0 3rem; /* Adjusted bottom padding */
             text-align: center;
@@ -51,7 +58,7 @@
             justify-content: center;
             background: rgba(51, 51, 51, 0.8); /* Slightly transparent background */
             padding: 0.5rem;
-            margin-top: 120px;
+            margin-top: 60px;
         }
 
         nav a {
@@ -63,11 +70,12 @@
 
         /* Intro Section */
         .intro {
-            padding: 2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 1rem; /* Reduced padding */
             background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
             color: white;
             text-align: center;
-            margin-top: 6rem; /* Space for header */
         }
 
         .intro h1, .intro h2 {
@@ -82,6 +90,7 @@
         .services {
             padding: 2rem;
             background: #f4f4f4;
+            color: blue;
         }
 
         .services h2, .services p {
@@ -101,9 +110,7 @@
             color: white;
             text-align: center;
             padding: 1rem 0;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
+            position: relative;
         }
 
         /* Chatbot styles */
@@ -166,9 +173,12 @@
             cursor: pointer;
         }
 
-        @media screen and (max-width: 600px) {
-            #chat-container {
-                margin: 20px 5px;
+         @media screen and (max-width: 600px) {
+            header, .intro, .services, footer {
+                padding: 10px; /* Reduced padding for smaller screens */
+            }
+            nav {
+                margin-top: 30px; /*
             }
         }
     </style>
