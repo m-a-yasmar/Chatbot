@@ -12,7 +12,7 @@
             box-sizing: border-box;
         }
 
-        /* Font and Body */
+        /* Font */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
@@ -25,9 +25,13 @@
         header {
             background-color: #1a1a1a;
             color: #fff;
-            padding: 20px 0;
+            padding: 10px 0;
             text-align: center;
             position: relative;
+        }
+
+        header h1, header p {
+            color: white;
         }
 
         /* Logo Image */
@@ -47,7 +51,7 @@
             background: rgba(51, 51, 51, 0.8);
             padding: 0.5rem;
             position: absolute;
-            top: 100px; /* Adjust based on logo size */
+            top: 100px;
             width: 100%;
         }
 
@@ -89,10 +93,10 @@
             padding: 1rem 0;
         }
 
-        /* Chatbot Styles */
+        /* Chatbot styles */
         #chat-container {
             width: 100%;
-            height: 300px;
+            max-height: 300px;
             background: white;
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
@@ -118,10 +122,35 @@
         }
 
         .message {
-            margin-bottom: 10px;
-            padding: 10px;
+            margin-bottom: 20px;
+            padding: 5px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        .user-message, .bot-message {
+            text-align: left;
+            background-color: var(--secondary-bg-color, #4364f7);
+            color: var(--primary-text-color, white);
+        }
+
+        #chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+
+        #query {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+        }
+
+        #send-button {
+            width: 80px;
+            background: var(--button-bg, #000);
+            color: var(--primary-text-color, white);
+            border: none;
+            cursor: pointer;
         }
 
         /* Media Queries for Responsiveness */
@@ -141,7 +170,7 @@
             }
 
             #chat-container {
-                height: 200px;
+                max-height: 200px;
             }
         }
     </style>
@@ -213,7 +242,7 @@
             } catch (error) {
                 console.error('An error occurred:', error);
             } finally {
-                document.getElementById('send-button').disabled = false;
+                document.getElementById('send-button').disabled = false.
             }
         }
 
@@ -223,7 +252,7 @@
             messageDiv.className = `message ${className}`;
             messageDiv.innerHTML = message;
             chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
     </script>
 </body>
