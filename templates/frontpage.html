@@ -5,56 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TalkAI Global - Pioneers in AI Automation</title>
     <style>
-        /* Basic Reset and Fonts */
+        /* Basic Reset */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
+        /* Font */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
             line-height: 1.6;
-            background: url('image/jaflagimage.jpg') center/cover no-repeat;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Ensure full height */
+            background: url('image/talkaiimage.png') center/cover no-repeat;
         }
 
-        /* Header Styling */
+        /* Header */
         header {
-            background-color: #1a1a1a;
+            background: url('image/talkaiimage.png') center/cover no-repeat, #1a1a1a;
             color: #fff;
-            padding-top: 10px;
-            position: relative;
+            padding: 1rem 0 5rem;
             text-align: center;
-            background-image: url('image/talkaiimage.png'); 
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
+            position: relative;
         }
 
-        /* Logo Styling */
+        header h1, header p {
+            color: white;
+        }
+
+        /* Logo Image */
         .logo {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 100px;
+            top: 1rem;
+            left: 1rem;
+            max-width: 100px; /* Adjust as needed */
             height: auto;
-            border-radius: 50%; /* Round logo */
         }
 
-        /* Navigation Bar Styling */
+        /* Navigation Bar */
         nav {
             display: flex;
             justify-content: center;
-            background: rgba(51, 51, 51, 0.8);
+            background: #333;
             padding: 0.5rem;
-            position: absolute;
-            top: 120px; /* Below logo */
-            width: 100%;
-            box-sizing: border-box;
         }
+
         nav a {
             color: white;
             text-decoration: none;
@@ -62,26 +57,32 @@
             font-weight: bold;
         }
 
-        /* Intro Section Styling */
+        /* Intro Section */
         .intro {
-            font-size: 1rem;
-            font-weight: bold;
-            padding: 1rem;
+            padding: 2rem;
             background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
             color: white;
             text-align: center;
-            flex-grow: 1;
         }
 
-        /* Services Section Styling */
+        .intro h1, .intro h2 {
+            color: white;
+        }
+
+        .intro h2 {
+            font-size: 1.5rem;
+        }
+
+        /* Services Section */
         .services {
             padding: 2rem;
             background: #f4f4f4;
-            color: blue;
         }
+
         .services h2, .services p {
             color: blue;
         }
+
         .service-item {
             background: white;
             margin-bottom: 1rem;
@@ -89,16 +90,15 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* Footer Styling */
+        /* Footer */
         footer {
             background-color: #333;
             color: white;
             text-align: center;
             padding: 1rem 0;
-            margin-top: auto; /* Push to bottom */
         }
 
-        /* Chatbot Styles */
+        /* Chatbot styles */
         #chat-container {
             width: 100%;
             height: 300px;
@@ -110,6 +110,7 @@
             display: flex;
             flex-direction: column;
         }
+
         #chat-header {
             background: var(--primary-bg-color, #0052d4);
             color: var(--primary-text-color, white);
@@ -118,43 +119,54 @@
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
         }
+
         #chat-box {
             flex: 1;
             padding: 1rem;
             overflow-y: scroll;
         }
+
         .message {
             margin-bottom: 20px;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
-        .user-message, .bot-message {
-            text-align: left;
+
+        .user-message {
+            text-align: right;
             background-color: var(--secondary-bg-color, #4364f7);
-            color: var(--primary-text-color, white);
+            color: white;
         }
+
+        .bot-message {
+            text-align: left;
+            background-color: var(--primary-bg-color, #0052d4);
+            color: white;
+        }
+
         #chat-input {
             display: flex;
             border-top: 1px solid #ccc;
         }
+
         #query {
             flex: 1;
             padding: 1rem;
             border: none;
         }
+
         #send-button {
             width: 80px;
-            background: var(--button-bg, #000);
-            color: var(--primary-text-color, white);
+            background: var(--button-bg, #000000);
+            color: white;
             border: none;
             cursor: pointer;
         }
 
-        /* Media Queries for Responsiveness */
         @media screen and (max-width: 600px) {
-            nav {
-                top: 100px;
+            #chat-container {
+                margin: 20px 5px;
             }
         }
     </style>
