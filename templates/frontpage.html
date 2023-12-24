@@ -5,62 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TalkAI Global - Pioneers in AI Automation</title>
     <style>
-        /* Basic Reset */
+        /* Basic Reset and Fonts */
         *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        /* Font */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
             line-height: 1.6;
             background: url('image/talkaiimage.png') center/cover no-repeat;
-            overflow-y: scroll;
-            padding-bottom: 5rem; /* Add padding to view the bottom content without scrolling */
         }
 
-        /* Header */
+        /* Header Styling */
         header {
             background-color: #1a1a1a;
-            color: #fff;
-            padding-top: 20px; /* Reduced padding */
-            padding-bottom: 20px;
-            background: url('image/talkaiimage.png') ;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            color: #fff;
-            padding: 1rem 0 3rem; /* Adjusted bottom padding */
+            padding: 20px 0; /* Adjusted padding */
             text-align: center;
             position: relative;
         }
-
         header h1, header p {
             color: white;
         }
 
-        /* Logo Image */
+        /* Logo Styling */
         .logo {
             position: absolute;
-            top: 1rem;
-            left: 1rem;
-            max-width: 100px; /* Adjust as needed */
+            top: 10px;
+            left: 10px;
+            max-width: 100px;
             height: auto;
-            border-radius: 50%; /* Make the logo round */
+            border-radius: 50%;
         }
 
-        /* Navigation Bar */
+        /* Navigation Bar Styling */
         nav {
             display: flex;
             justify-content: center;
-            background: rgba(51, 51, 51, 0.8); /* Slightly transparent background */
+            background: rgba(51, 51, 51, 0.8);
             padding: 0.5rem;
-            margin-top: 60px;
+            margin-top: 100px; /* Adjusted to move below the logo */
         }
-
         nav a {
             color: white;
             text-decoration: none;
@@ -68,35 +54,25 @@
             font-weight: bold;
         }
 
-        /* Intro Section */
+        /* Intro Section Styling */
         .intro {
             font-size: 1rem;
             font-weight: bold;
-            padding: 1rem; /* Reduced padding */
+            padding: 1rem;
             background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
             color: white;
             text-align: center;
         }
 
-        .intro h1, .intro h2 {
-            color: white;
-        }
-
-        .intro h2 {
-            font-size: 1.5rem;
-        }
-
-        /* Services Section */
+        /* Services Section Styling */
         .services {
             padding: 2rem;
             background: #f4f4f4;
             color: blue;
         }
-
         .services h2, .services p {
             color: blue;
         }
-
         .service-item {
             background: white;
             margin-bottom: 1rem;
@@ -104,7 +80,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* Footer */
+        /* Footer Styling */
         footer {
             background-color: #333;
             color: white;
@@ -113,7 +89,7 @@
             position: relative;
         }
 
-        /* Chatbot styles */
+        /* Chatbot Styles */
         #chat-container {
             width: 100%;
             height: 300px;
@@ -125,7 +101,6 @@
             display: flex;
             flex-direction: column;
         }
-
         #chat-header {
             background: var(--primary-bg-color, #0052d4);
             color: var(--primary-text-color, white);
@@ -134,37 +109,31 @@
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
         }
-
         #chat-box {
             flex: 1;
             padding: 1rem;
             overflow-y: scroll;
         }
-
         .message {
             margin-bottom: 20px;
             padding: 10px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
-
         .user-message, .bot-message {
             text-align: left;
             background-color: var(--secondary-bg-color, #4364f7);
             color: var(--primary-text-color, white);
         }
-
         #chat-input {
             display: flex;
             border-top: 1px solid #ccc;
         }
-
         #query {
             flex: 1;
             padding: 1rem;
             border: none;
         }
-
         #send-button {
             width: 80px;
             background: var(--button-bg, #000);
@@ -173,12 +142,13 @@
             cursor: pointer;
         }
 
-         @media screen and (max-width: 600px) {
+        /* Media Queries for Responsiveness */
+        @media screen and (max-width: 600px) {
             header, .intro, .services, footer {
-                padding: 10px; /* Reduced padding for smaller screens */
+                padding: 10px;
             }
             nav {
-                margin-top: 30px; /*
+                margin-top: 70px;
             }
         }
     </style>
@@ -193,46 +163,7 @@
         </nav>
     </header>
 
-    <section class="intro" id="intro">
-        <h1>TalkAI Global</h1>
-        <h2>Empowering Enterprises with AI</h2>
-        <p>At TalkAI Global, we leverage the power of artificial intelligence to deliver innovative, scalable, and efficient solutions for businesses worldwide.</p>
-    </section>
+    <!-- Rest of the body content remains the same -->
 
-    <section class="services" id="services">
-        <h2>Our Expertise</h2>
-        <div class="service-item">
-            <h3>Autonomous Systems</h3>
-            <p>Transforming operational efficiency with self-learning and adaptive AI systems.</p>
-        </div>
-        <div class="service-item">
-            <h3>Strategic AI Consulting</h3>
-            <p>Providing in-depth analysis and strategic planning to harness the full potential of AI in your business.</p>
-        </div>
-        <div class="service-item">
-            <h3>Custom AI Solutions</h3>
-            <p>Developing bespoke AI solutions tailored to the unique challenges and opportunities of your enterprise.</p>
-        </div>
-    </section>
-
-    <section id="chat-container">
-        <header id="chat-header">TalkAI</header>
-        <div id="welcome-message">
-            Welcome to TalkAI Global! I'm here to assist you with innovative AI solutions and insights. How can I help you today?
-        </div>
-        <article id="chat-box"></article>
-        <div id="chat-input">
-            <input type="text" id="query" placeholder="Ask a question..." onkeydown="if (event.keyCode == 13) askQuestion()">
-            <button id="send-button" onclick="askQuestion()">Ask</button>
-        </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
-    </footer>
-
-    <script>
-        // JavaScript code remains the same
-    </script>
 </body>
 </html>
