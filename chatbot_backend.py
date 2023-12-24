@@ -86,15 +86,15 @@ def exempt_users():
 def custom_limit_request_error():
     return jsonify({"message": "Too many requests, please try again later"}), 429
 
-@app.route('/frontpage')
+@chatbot.route('/frontpage')
 def frontpage():
     return render_template('frontpage.html')
 
-@app.route('/contact')
+@chatbot.route('/contact')
 def contact():
     return render_template('contact.html')
 
-@app.route('/services')
+@chatbot.route('/services')
 def services():
     return render_template('services.html')
 
