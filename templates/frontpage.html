@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TalkAI Global - Pioneers in AI Automation</title>
+    <meta property="og:image" content="https://get2jamaica-f5858d819214.herokuapp.com/image/jaflagimage.jpeg">
+    <meta property="og:url" content="https://get2jamaica-f5858d819214.herokuapp.com">
+    <meta name="twitter:image" content="https://get2jamaica-f5858d819214.herokuapp.com/image/jaflagimage.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <style>
+    /* Basic Reset */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    /* Font */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        line-height: 1.6;
+        background-image: url('image/jaflagimage.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header */
+    header {
+        background-color: #1a1a1a;
+        color: #fff;
+        padding: 1rem 0;
+        text-align: center;
+    }
+
+    /* Navigation Bar */
+    nav {
+        display: flex;
+        justify-content: center;
+        background: #333;
+        padding: 0.5rem;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 0 15px;
+        font-weight: bold;
+    }
+
+    /* Intro Section */
+    .intro {
+        padding: 2rem;
+        background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
+        color: white;
+        text-align: center;
+    }
+
+    /* Services Section */
+    .services {
+        padding: 2rem;
+        background: #f4f4f4;
+    }
+
+    .service-item {
+        background: white;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Footer */
+    footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 1rem 0;
+    }
+
+    /* Chatbot styles */
+    :root {
+        --primary-bg-color: #fdb913;
+        --primary-text-color: white;
+        --secondary-bg-color: #20603d;
+        --button-bg: #000000;
+    }
+
+    #chat-container {
+        max-width: 400px;
+        width: 100%;
+        height: 600px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        overflow: hidden;
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #chat-header {
+        background: var(--primary-bg-color);
+        color: var(--primary-text-color);
+        padding: 1rem;
+        text-align: center;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    #chat-box {
+        flex: 1;
+        padding: 1rem;
+        overflow-y: scroll;
+    }
+
+    .message {
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .user-message {
+        text-align: right;
+        background-color: var(--secondary-bg-color);
+        color: var(--primary-text-color);
+    }
+
+    .bot-message {
+        text-align: left;
+        background-color: var(--primary-bg-color);
+        color: var(--primary-text-color);
+    }
+
+    #chat-input {
+        display: flex;
+        border-top: 1px solid #ccc;
+    }
+
+    #query {
+        flex: 1;
+        padding: 1rem;
+        border: none;
+    }
+
+    #send-button {
+        width: 80px;
+        background: var(--button-bg);
+        color: var(--primary-text-color);
+        border: none;
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 600px) {
+        #chat-container {
+            margin: 20px 5px;
+        }
+    }
+</style>
+
+</head>
+<body style="background-image: url('/image/jaflagimage.jpg');">
+    <header>
+        <h1>TalkAI Global</h1>
+        <p>Revolutionizing Business with AI Automation</p>
+    </header>
+
+
+    <nav>
+    	<a href="frontpage.html">Home</a>
+    	<a href="services.html">Services</a>
+    	<a href="contact.html">Contact</a>
+    </nav>
+
+
+    <section class="intro" id="intro">
+        <h2>Empowering Enterprises with AI</h2>
+        <p>At TalkAI Global, we leverage the power of artificial intelligence to deliver innovative, scalable, and efficient solutions for businesses worldwide.</p>
+    </section>
+
+    <section class="services" id="services">
+        <h2>Our Expertise</h2>
+        <div class="service-item">
+            <h3>Autonomous Systems</h3>
+            <p>Transforming operational efficiency with self-learning and adaptive AI systems.</p>
+        </div>
+        <div class="service-item">
+            <h3>Strategic AI Consulting</h3>
+            <p>Providing in-depth analysis and strategic planning to harness the full potential of AI in your business.</p>
+        </div>
+        <div class="service-item">
+            <h3>Custom AI Solutions</h3>
+            <p>Developing bespoke AI solutions tailored to the unique challenges and opportunities of your enterprise.</p>
+        </div>
+
+
+    <section id="chat-container">
+    <header id="chat-header">Chatti</header>
+    <div id="welcome-message">
+        🇯🇲 Welcome to Chatti! Your personal guide to exploring the heart and soul of Jamaica. Whether you're looking for places to visit, local cuisine to try, or have any questions about this beautiful island, we're here to help! 🇯🇲
+    </div>
+            <article id="chat-box"></article>
+        <div id="chat-input">
+            <input type="text" id="query" placeholder="Ask a question..." onkeydown="if (event.keyCode == 13) askQuestion()">
+            <button id="send-button" onclick="askQuestion()">Ask</button>
+        </div>
+    <div id="disclaimer">
+        Disclaimer: The information provided here is for general informational purposes on Jamaica and should not be considered as professional advice.
+    </div>
+    </section>
+  <footer>
+        <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
+   </footer>
+
+
+<script>
+async function askQuestion() {
+    try {
+        // Disable the "Ask" button
+        document.getElementById('send-button').disabled = true;
+
+        const query = document.getElementById('query').value;
+        const chatBox = document.getElementById('chat-box');
+        
+        displayMessage(query, 'user-message');
+        
+        const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query: query }),
+        });
+        
+        const data = await response.json();
+        
+        displayMessage(data.answer, 'bot-message');
+
+        // Scroll to the bottom
+        chatBox.scrollTop = chatBox.scrollHeight;
+        
+        // Clear the input field
+        document.getElementById('query').value = '';
+
+    } catch (error) {
+        console.error('An error occurred:', error);
+    } finally {
+        // Re-enable the "Ask" button
+        document.getElementById('send-button').disabled = false;
+    }
+}
+
+function displayMessage(message, className) {
+    const chatBox = document.getElementById('chat-box');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${className}`;
+    messageDiv.innerHTML = message;
+    chatBox.appendChild(messageDiv);
+}
+</script>
+  
+</body>
+</html>
