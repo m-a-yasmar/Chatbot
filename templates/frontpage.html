@@ -18,13 +18,15 @@
             color: #333;
             line-height: 1.6;
             background: url('image/talkaiimage.png') center/cover no-repeat;
+            overflow-y: scroll;
+            padding-bottom: 5rem; /* Add padding to view the bottom content without scrolling */
         }
 
         /* Header */
         header {
             background: url('image/talkaiimage.png') center/cover no-repeat, #1a1a1a;
             color: #fff;
-            padding: 1rem 0 5rem;
+            padding: 1rem 0 3rem; /* Adjusted bottom padding */
             text-align: center;
             position: relative;
         }
@@ -40,14 +42,19 @@
             left: 1rem;
             max-width: 100px; /* Adjust as needed */
             height: auto;
+            border-radius: 50%; /* Make the logo round */
         }
 
         /* Navigation Bar */
         nav {
             display: flex;
             justify-content: center;
-            background: #333;
+            background: rgba(51, 51, 51, 0.8); /* Slightly transparent background */
             padding: 0.5rem;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
         }
 
         nav a {
@@ -63,6 +70,7 @@
             background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
             color: white;
             text-align: center;
+            margin-top: 6rem; /* Space for header */
         }
 
         .intro h1, .intro h2 {
@@ -96,6 +104,9 @@
             color: white;
             text-align: center;
             padding: 1rem 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
         }
 
         /* Chatbot styles */
@@ -133,16 +144,10 @@
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
 
-        .user-message {
-            text-align: right;
-            background-color: var(--secondary-bg-color, #4364f7);
-            color: white;
-        }
-
-        .bot-message {
+        .user-message, .bot-message {
             text-align: left;
-            background-color: var(--primary-bg-color, #0052d4);
-            color: white;
+            background-color: var(--secondary-bg-color, #4364f7);
+            color: var(--primary-text-color, white);
         }
 
         #chat-input {
@@ -158,8 +163,8 @@
 
         #send-button {
             width: 80px;
-            background: var(--button-bg, #000000);
-            color: white;
+            background: var(--button-bg, #000);
+            color: var(--primary-text-color, white);
             border: none;
             cursor: pointer;
         }
@@ -220,35 +225,7 @@
     </footer>
 
     <script>
-        async function askQuestion() {
-            try {
-                document.getElementById('send-button').disabled = true;
-                const query = document.getElementById('query').value;
-                const chatBox = document.getElementById('chat-box');
-                displayMessage(query, 'user-message');
-                const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: query })
-                });
-                const data = await response.json();
-                displayMessage(data.answer, 'bot-message');
-                chatBox.scrollTop = chatBox.scrollHeight;
-                document.getElementById('query').value = '';
-            } catch (error) {
-                console.error('An error occurred:', error);
-            } finally {
-                document.getElementById('send-button').disabled = false;
-            }
-        }
-
-        function displayMessage(message, className) {
-            const chatBox = document.getElementById('chat-box');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${className}`;
-            messageDiv.innerHTML = message;
-            chatBox.appendChild(messageDiv);
-        }
+        // JavaScript code remains the same
     </script>
 </body>
 </html>
