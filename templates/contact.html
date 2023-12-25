@@ -196,6 +196,42 @@
             margin-left: 5px
         }
 
+	#contact-form {
+    	    display: flex;
+            flex-direction: column;
+            gap: 10px; /* Adjust the space between fields */
+            max-width: 500px; /* Maximum width of the form */
+            margin: auto; /* Center the form */
+        }
+
+	#contact-form label {
+            margin-bottom: 5px; /* Space between label and input */
+            font-weight: bold;
+        }
+	#contact-form input[type="text"],
+        #contact-form input[type="email"],
+        #contact-form textarea {
+    	    width: calc(100% - 20px); /* Adjust for padding */
+            padding: 10px; /* Padding for better text visibility */
+            border-radius: 5px; /* Rounded corners */
+            border: 1px solid #ccc; /* Subtle border */
+        }
+
+	#contact-form input[type="submit"] {
+    	    background-color: #0052d4; /* Primary color */
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s; /* Smooth transition for hover effect */
+         }
+
+        #contact-form input[type="submit"]:hover {
+            background-color: #003d99; /* Darker shade on hover */
+         }
+
+
 	/* Responsive Design Adjustments */
         @media screen and (max-width: 768px) {
             .logo {
@@ -237,6 +273,13 @@
                 height: auto; /* Adjust height automatically */
             }
         }        
+
+	@media screen and (max-width: 768px) {
+            #contact-form {
+                max-width: 100%; /* Full width on smaller screens */
+                padding: 10px; /* Adjust padding */
+            }
+        }
 
     </style>
 	
