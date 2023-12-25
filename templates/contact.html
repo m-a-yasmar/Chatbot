@@ -106,6 +106,12 @@
             color: white; /* Makes form labels and submit button text white */
         }
 
+	body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Minimum height of the body is 100% of the viewport height */
+        }
+
         /* Footer */
         footer {
             background-color: #333;
@@ -113,17 +119,19 @@
             text-align: center;
             padding: 1rem 0;
             position: relative;
+	    margin-top: auto;
         }
 
         /* Chatbot styles */
         #chat-container {
-            width: 100%;
-            max-height: 600px;
+            width: 80%;
+            max-height: 60vh;
             background: white;
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
             overflow-y: auto;
-            margin: 40px auto;
+            margin: 20px auto;
+	    padding: 10px;
             display: flex;
             flex-direction: column;
         }
@@ -138,9 +146,9 @@
         }
 
         #chat-box {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: scroll;
+            flex-grow: 1;
+            padding: 100px;
+            overflow-y: auto;
         }
 
         .message {
@@ -148,6 +156,9 @@
             padding: 25px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
+	    background-color: #4364f7; /* Secondary color for messages */
+            color: white;
+	    
         }
 
         .user-message, .bot-message {
@@ -159,20 +170,29 @@
         #chat-input {
             display: flex;
             border-top: 3px solid #ccc;
+	    background: #f4f4f4; 
         }
 
         #query {
-            flex: 1;
+            flex-grow: 1;
             padding: 1rem;
             border: none;
         }
 
+	#query {
+    	    flex-grow: 1; /* Allow input to take available space */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+	
         #send-button {
             width: 80px;
             background: var(--button-bg, #000);
             color: var(--primary-text-color, white);
             border: none;
             cursor: pointer;
+            margin-left: 5px
         }
 
 	/* Responsive Design Adjustments */
@@ -208,7 +228,7 @@
         @media screen and (max-width: 600px) {
             #chat-container {
                 width: 90%; /* Adjusted width for smaller screens */
-                max-height: 400px; /* Adjusted max height for smaller screens */
+                max-height: 50vh; /* Adjusted max height for smaller screens */
                 margin: 20px auto; /* Reduced margin */
             }
 
