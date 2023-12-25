@@ -26,14 +26,8 @@
         header {
             background-color: #1a1a1a;
             color: #fff;
-            padding-top: 10px; /* Reduced padding */
-            padding-bottom: 20px;
-            background: url('image/talkaiimage.png') ;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            color: #fff;
-            padding: 1rem 0 3rem; /* Adjusted bottom padding */
+            padding-top: 1rem 0;
+            background: url('image/talkaiimage.png')center/cover no-repeat;
             text-align: center;
             position: relative;
         }
@@ -58,13 +52,12 @@
             justify-content: center;
             background: rgba(51, 51, 51, 0.8); /* Slightly transparent background */
             padding: 0.5rem;
-            margin-top: 60px;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            padding: 0 15px;
+            padding: 0.5rem;
             font-weight: bold;
         }
 
@@ -173,15 +166,36 @@
             cursor: pointer;
         }
 
-         @media screen and (max-width: 600px) {
-            header, .intro, .services, footer {
-                padding: 10px; /* Reduced padding for smaller screens */
+	/* Responsive Design Adjustments */
+        @media screen and (max-width: 768px) {
+            .logo {
+                max-width: 80px; /* Smaller logo for smaller screens */
             }
+
+            nav a {
+                padding: 0.3rem; /* Adjusted padding */
+            }
+
+            .intro h2 {
+                font-size: 1.2rem; /* Smaller text for smaller screens */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
             nav {
-                margin-top: 30px; /*
+                flex-direction: column; /* Stack nav items for very small screens */
+            }
+
+            nav a {
+                padding: 0.5rem; /* Increased padding for better touch targets */
+            }
+
+            .services, .intro, footer {
+                padding: 1rem; /* Reduced padding for smaller screens */
             }
         }
     </style>
+	
 </head>
 <body>
     <header>
