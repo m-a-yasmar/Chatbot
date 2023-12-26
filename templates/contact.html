@@ -1,4 +1,4 @@
-contact page:<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -41,7 +41,7 @@ contact page:<!DOCTYPE html>
 
         /* Logo Image */
         .logo {
-            flex-shrink: 0;
+            flex-shrik: 0;
             max-width: 100px; /* Adjust as needed */
             height: auto;
             border-radius: 50%; /* Make the logo round */
@@ -125,7 +125,7 @@ contact page:<!DOCTYPE html>
 
         /* Chatbot styles */
         #chat-container {
-            width: 80%;
+            width: 100%;
             max-height: 60vh;
             background: white;
             border-radius: 15px;
@@ -148,17 +148,20 @@ contact page:<!DOCTYPE html>
 
         #chat-box {
             flex-grow: 1;
-            padding: 100px;
+            padding: 80px;
             overflow-y: auto;
+	    width: 100%;
         }
 
         .message {
             margin-bottom: 20px;
-            padding: 25px;
+            padding: 5px;
             border-radius: 5px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
 	    background-color: #4364f7; /* Secondary color for messages */
             color: white;
+	    max-width: calc(100% - 40px); 
+	    word-break: break-word; 
 	    
         }
 
@@ -166,11 +169,12 @@ contact page:<!DOCTYPE html>
             text-align: left;
             background-color: var(--secondary-bg-color, #4364f7);
             color: var(--primary-text-color, white);
+	    width: 100%;
         }
 
         #chat-input {
             display: flex;
-            border-top: 3px solid #ccc;
+            border-top: 1px solid #ccc;
 	    background: #f4f4f4; 
         }
 
@@ -361,4 +365,3 @@ contact page:<!DOCTYPE html>
     </script>
 </body>
 </html>
-
