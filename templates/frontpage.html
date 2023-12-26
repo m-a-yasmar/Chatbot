@@ -22,11 +22,8 @@
             padding-bottom: 5rem; /* Add padding to view the bottom content without scrolling */
         }
 
-        /* Header */
-	header {
-	    display: flex;
-	    align-items: center;
-            justify-content: space-between;
+	 /* Header */
+        header {
             background-color: #1a1a1a;
             color: #fff;
             padding-top: 1rem 0;
@@ -34,17 +31,20 @@
             text-align: center;
             position: relative;
         }
-	    
+
         header h1, header p {
             color: white;
         }
-	    
-	 /* Logo Image */
+
+        /* Logo Image */
         .logo {
-            flex-shrink: 0;
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
             max-width: 100px; /* Adjust as needed */
             height: auto;
             border-radius: 50%; /* Make the logo round */
+        }
 		
         /* Navigation Bar */
         nav {
