@@ -23,14 +23,14 @@
         }
 
         /* Header */
-        header {
-	    display: flex;
-	    align-items: center;
-            justify-content: space-between;
+        
+
+	header {
+    	    display: flex;
+            align-items: center;
+    	    justify-content: space-between;
             background-color: #1a1a1a;
-            color: #fff;
-            padding-top: 1rem 0;
-            background: url('image/talkaiimage.png')center/cover no-repeat;
+            padding: 1rem 0;
             text-align: center;
             position: relative;
         }
@@ -41,7 +41,7 @@
 
         /* Logo Image */
         .logo {
-            flex-shrink: 0;
+            flex-shrik: 0;
             max-width: 100px; /* Adjust as needed */
             height: auto;
             border-radius: 50%; /* Make the logo round */
@@ -80,39 +80,34 @@
             font-size: 1.5rem;
         }
 
+
         /* Services Section */
+        
         .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             padding: 2rem;
             background: #f4f4f4;
-            color: blue;
-        }
+         }
+         .service-item {
+             background: white;
+             padding: 1rem;
+             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+             border-radius: 8px;
+         }
 
-        .services h2, .services p {
-            color: blue;
-        }
+	
+	 .service-item:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+         }
 
-        .service-item {
-            background: white;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+         .services h2, .services p {
+             color: blue;
+         }
 
-	/* Additions/Changes for specific sections in white */
-	.contact-section h2, .contact-section p {
-    	    color: white; /* Makes text in contact section white */
-	}
-
-         #contact-form label, #contact-form input[type="submit"] {
-            color: white; /* Makes form labels and submit button text white */
-        }
-
-	body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* Minimum height of the body is 100% of the viewport height */
-        }
-
+     
         /* Footer */
         footer {
             background-color: #333;
@@ -120,10 +115,10 @@
             text-align: center;
             padding: 1rem 0;
             position: relative;
-	    margin-top: auto;
         }
 
-        /* Chatbot styles */
+       
+	 /* Chatbot styles */
         #chat-container {
             width: 80%;
             max-height: 60vh;
@@ -146,7 +141,8 @@
             border-top-right-radius: 15px;
         }
 
-        #chat-box {
+
+	      #chat-box {
             flex-grow: 1;
             padding: 100px;
             overflow-y: auto;
@@ -194,121 +190,73 @@
             border: none;
             cursor: pointer;
             margin-left: 5px
-        }
-
-	#contact-form {
-    	    display: flex;
-            flex-direction: column;
-            gap: 10px; /* Adjust the space between fields */
-            max-width: 500px; /* Maximum width of the form */
-            margin: auto; /* Center the form */
-        }
-
-	#contact-form label {
-            margin-bottom: 5px; /* Space between label and input */
-            font-weight: bold;
-        }
-	#contact-form input[type="text"],
-        #contact-form input[type="email"],
-        #contact-form textarea {
-    	    width: calc(100% - 20px); /* Adjust for padding */
-            padding: 10px; /* Padding for better text visibility */
-            border-radius: 5px; /* Rounded corners */
-            border: 1px solid #ccc; /* Subtle border */
-        }
-
-	#contact-form input[type="submit"] {
-    	    background-color: #0052d4; /* Primary color */
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s; /* Smooth transition for hover effect */
-         }
-
-        #contact-form input[type="submit"]:hover {
-            background-color: #003d99; /* Darker shade on hover */
-         }
+        }	
 
 
 	/* Responsive Design Adjustments */
-        @media screen and (max-width: 768px) {
-            .logo {
-                max-width: 80px; /* Smaller logo for smaller screens */
-            }
 
-            nav a {
-                padding: 0.3rem; /* Adjusted padding */
+
+	@media screen and (max-width: 768px) {
+    	    nav a {
+                padding: 0.3rem;
             }
 
             .intro h2 {
-                font-size: 1.2rem; /* Smaller text for smaller screens */
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            nav {
-                flex-direction: column; /* Stack nav items for very small screens */
+                font-size: 1.2rem;
             }
 
-            nav a {
-                padding: 0.5rem; /* Increased padding for better touch targets */
+            .services {
+                padding: 1rem;
             }
 
-            .services, .intro, footer {
-                padding: 1rem; /* Reduced padding for smaller screens */
-            }
-        }
+	    .services {
+		grid-template-column: 1fr;
+	    }
 
-         /* Additional Media Query for Chatbot */
-        @media screen and (max-width: 600px) {
-            #chat-container {
-                width: 90%; /* Adjusted width for smaller screens */
-                max-height: 50vh; /* Adjusted max height for smaller screens */
-                margin: 20px auto; /* Reduced margin */
+            .service-item {
+                padding: 0.5rem;
+	    
             }
+         }
 
-            #chat-box {
-                height: auto; /* Adjust height automatically */
-            }
-        }        
+         @media screen and (max-width: 480px) {
+             nav {
+                 flex-direction: column;
+             }
 
-	@media screen and (max-width: 768px) {
-            #contact-form {
-                max-width: 100%; /* Full width on smaller screens */
-                padding: 10px; /* Adjust padding */
-            }
-        }
+             nav a {
+                 padding: 0.5rem;
+             }
+         }
 
     </style>
 	
 </head>
 <body>
-<header>
+    <header>
         <img src="image/talkailogo.png" alt="TalkAI Logo" class="logo">
         <nav>
-             <a href="/frontpage">Home</a>
-            <a href="/services">Services</a>
-            <a href="/contact">Contact</a>
+        <a href="/frontpage">Home</a>
+        <a href="/services">Services</a>
+        <a href="/contact">Contact</a>
         </nav>
     </header>
 
-    <section class="contact-section">
-        <h2>Get in Touch</h2>
-        <p>We'd love to hear from you. Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.</p>
-        <form id="contact-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="user_name" required>
-            
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="user_email" required>
-            
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-            
-            <input type="submit" value="Send Message">
-        </form>
+    <section class="services">
+        <h2>Our Services</h2>
+        <div class="service-item">
+            <h3>Autonomous Systems</h3>
+            <p>Our Autonomous Systems service focuses on creating self-learning and adaptive AI systems that can transform your operational efficiency. We    specialize in developing solutions that can autonomously analyze data, make decisions, and execute tasks, thereby optimizing your workflows and reducing manual intervention.</p>
+        </div>
+        <div class="service-item">
+            <h3>Strategic AI Consulting</h3>
+            <p>At TalkAI Global, we provide comprehensive AI consulting services to help businesses identify the most beneficial AI applications. Our Strategic AI Consulting includes in-depth analysis, strategic planning, and implementation guidance to ensure that your business harnesses the full potential of AI technologies effectively and ethically.</p>
+        </div>
+        <div class="service-item">
+            <h3>Custom AI Solutions</h3>
+            <p>We understand that every business has unique challenges and opportunities. Our Custom AI Solutions are tailored to meet the specific needs of your enterprise. We work closely with you to develop bespoke AI applications that not only solve your current challenges but also scale with your business's growth.</p>
+        </div>
+   
     </section>
 
     <section id="chat-container">
