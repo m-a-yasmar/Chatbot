@@ -41,7 +41,7 @@
 
         /* Logo Image */
         .logo {
-            flex-shrink: 0;
+            flex-shrik: 0;
             max-width: 100px; /* Adjust as needed */
             height: auto;
             border-radius: 50%; /* Make the logo round */
@@ -83,27 +83,31 @@
 
         /* Services Section */
         
-	.services {
-    	    display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px; /* Space between service items */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
             padding: 2rem;
             background: #f4f4f4;
-            color: blue;
-	 }
+         }
+         .service-item {
+             background: white;
+             padding: 1rem;
+             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+             border-radius: 8px;
+         }
 
-        .services h2, .services p {
-            color: blue;
-        }
+	
+	 .service-item:hover {
+             transform: translateY(-5px);
+             box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+         }
 
-        .service-item {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 1rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+         .services h2, .services p {
+             color: blue;
+         }
 
+     
         /* Footer */
         footer {
             background-color: #333;
@@ -205,8 +209,13 @@
                 padding: 1rem;
             }
 
+	    .services {
+		grid-template-column: 1fr;
+	    }
+
             .service-item {
                 padding: 0.5rem;
+	    
             }
          }
 
