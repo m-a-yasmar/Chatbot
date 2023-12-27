@@ -10,16 +10,42 @@ from flask import session #for keeping history
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
+import psycopg2
 
-chatbot = Flask(__name__)
-chatbot.secret_key = 'michaelramsay_secret' #for sessions
 
 from flask_cors import CORS # for CORS
 
+
+def init_db():
+    """Initialize the database and create tables if they don't exist."""
+    conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
+    cur = conn.cursor()
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS conversations (
+            id SERIAL PRIMARY KEY,
+            session_id INTEGER,
+            user_message TEXT,
+            bot_response TEXT,
+            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS sessions (
+            session_id SERIAL PRIMARY KEY,
+            start_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            end_timestamp TIMESTAMP
+        )
+    """)
+
+    conn.commit()
+    cur.close()
+    conn.close()
+
+chatbot = Flask(__name__)
+chatbot.secret_key = 'michaelramsay_secret'
 CORS(chatbot)
-
-
-
+init_db()  # Initialize the database
 
 
 
