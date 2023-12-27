@@ -125,6 +125,8 @@ def services():
     return render_template('services.html')
 
 
+
+
 @chatbot.route('/ask', methods=['POST'])
 def ask():
     system_message = {}
@@ -203,7 +205,28 @@ def ask():
     session['conversation'].append({"role": "assistant", "content": answer})
     session.modified = True
     print("After appending assistant answer:", session['conversation'])
+ # Database interaction to save the conversation
+    try:
+        conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
+        cur = conn.cursor()
+        
+        # Insert the conversation into the database
+        # Assuming session_id is being tracked, replace with actual session_id or NULL
+        cur.execute(
+            "INSERT INTO conversations (session_id, user_message, bot_response) VALUES (%s, %s, %s)",
+            (session.get('session_id'), query, answer)  # Replace with actual session logic
+        )
+        conn.commit()
+        
+    except Exception as e:
+        print(f"Database error: {e}")
+    finally:
+        cur.close()
+        conn.close()
+
+    # Return the bot response
     return jsonify({"answer": answer})
+   
 
 from datetime import timedelta
 
