@@ -299,7 +299,7 @@
     </style>
 
     <!-- Include EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.emailjs.com/sdk/3.11.0/email.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function(){
             emailjs.init("ajci8FDK0qRcFjxTD"); // Replace with your EmailJS user ID
@@ -357,7 +357,7 @@
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
 
-            emailjs.sendForm('service_p12xn48', '__ejs-test-mail-service__', this)
+            emailjs.sendForm('service_p12xn48', 'TalkAI Global', this)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
                     // Handle success (e.g., display a success message)
