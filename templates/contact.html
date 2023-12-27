@@ -297,6 +297,14 @@
         }
 
     </style>
+
+    <!-- Include EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("ajci8FDK0qRcFjxTD"); // Replace with your EmailJS user ID
+        })();
+    </script>
 	
 </head>
 <body>
@@ -312,6 +320,8 @@
     <section class="contact-section">
         <h2>Get in Touch</h2>
         <p>We'd love to hear from you. Whether you have a question about our services, pricing, or anything else, our team is ready to answer all your questions.</p>
+	    
+	<!-- Contact Form for EmailJS --> 
         <form id="contact-form">
             <label for="name">Name:</label>
             <input type="text" id="name" name="user_name" required>
@@ -342,6 +352,22 @@
         <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
     </footer>
 
+    <!-- Script to handle form submission using EmailJS -->
+    <script type="text/javascript">
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            emailjs.sendForm('service_p12xn48', 'template_3m61oz8', this)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    // Handle success (e.g., display a success message)
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    // Handle errors (e.g., display an error message)
+                });
+        });
+    </script>
+   
     <script>
         async function askQuestion() {
             try {
