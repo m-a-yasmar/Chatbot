@@ -300,30 +300,32 @@
 
     <!-- Include EmailJS SDK -->
 
-    <script type="text/javascript">
-    	document.getElementById('contact-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            emailjs.sendForm('service_p12xn48', 'template_bgos58m', this)
-                .then(function(response) {
-                     console.log('SUCCESS!', response.status, response.text);
-                // Clear the form fields
-                     document.getElementById('contact-form').reset();
-                // Display a success message
-                     alert('Your message has been sent successfully!');
-                }, function(error) {
-                     console.log('FAILED...', error);
-                // Optionally, display an error message
-                     alert('Failed to send message. Please try again later.');
-                });
-       });
-   </script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
         (function(){
             emailjs.init("ajci8FDK0qRcFjxTD"); // Replace with your EmailJS user ID
         })();
     </script>
+
+    <script type="text/javascript">
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            emailjs.sendForm('service_p12xn48', 'template_bgos58m', this)
+                 .then(function(response) {
+                     console.log('SUCCESS!', response.status, response.text);
+                // Clear the form fields
+                     document.getElementById('contact-form').reset();
+                // Display a success message
+                     alert('Your message has been sent successfully!');
+                 }, function(error) {
+                     console.log('FAILED...', error);
+                // Optionally, display an error message
+                     alert('Failed to send message. Please try again later.');
+                 });
+         });
+      </script>
+
 	
 </head>
 <body>
