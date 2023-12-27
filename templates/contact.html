@@ -357,7 +357,7 @@
         document.getElementById('contact-form').addEventListener('submit', function(event) {
             event.preventDefault(); // Prevent the default form submission
 
-            emailjs.sendForm('service_p12xn48', 'template_3m61oz8', this)
+            emailjs.sendForm('service_p12xn48', '__ejs-test-mail-service__', this)
                 .then(function(response) {
                     console.log('SUCCESS!', response.status, response.text);
                     // Handle success (e.g., display a success message)
