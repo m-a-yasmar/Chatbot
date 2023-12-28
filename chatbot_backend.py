@@ -24,7 +24,7 @@ def init_db():
     cur.execute("""
         CREATE TABLE IF NOT EXISTS conversations (
             id SERIAL PRIMARY KEY,
-            session_id INTEGER,
+            session_id VARCHAR(36),
             user_message TEXT,
             bot_response TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
