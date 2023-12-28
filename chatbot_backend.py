@@ -94,13 +94,15 @@ def serve_image(filename):
 @chatbot.before_request
 def setup_conversation():
     if 'conversation' not in session:
-        session['conversation'] = [{"role": "system", "content": "You are an AI agent representing TalkAI Global, specializing in AI automation. Your primary role is to engage in a two-way conversation with users, focusing on understanding their needs and responding with insightful information about our AI services. Be concise yet informative, responding in a way that is not overwhelming. Ask relevant questions to gather user requirements and listen attentively to their queries. Provide brief, clear answers and encourage further questions or direct contact for detailed discussions, especially regarding pricing and service customization. Your aim is to create a connection by being an attentive listener and a knowledgeable guide in the world of AI solutions."} ]
+        
+	session['conversation'] = [{"role": "system", "content": "You are an AI agent representing TalkAI Global, specializing in AI automation. Your primary role is to engage in a two-way conversation with users, focusing on understanding their needs and responding with insightful information about our AI services. Be concise yet informative, responding in a way that is not overwhelming. Ask relevant questions to gather user requirements and listen attentively to their queries. Provide brief, clear answers and encourage further questions or direct contact for detailed discussions, especially regarding pricing and service customization. Your aim is to create a connection by being an attentive listener and a knowledgeable guide in the world of AI solutions."} ]
 	
-        session['session_id'] = str(uuid4())  # Generate a unique session ID
+        session['session_id'] = str(uuid4())
         print("New session being initialized with ID:", session['session_id'])
     else:
-	print("Existing session found with ID:", session.get('session_id'))
+        print("Existing session found with ID:", session.get('session_id'))
     print("Initial session:", session.get('conversation'))
+
 	
 limiter = Limiter(
     app=chatbot,
@@ -133,14 +135,14 @@ def services():
 @chatbot.route('/ask', methods=['POST'])
 def ask():
     system_message = {}
-    threshold = 0.9
+    threshold = 0.7
     query = request.json.get('query')
     print("User query:", query)
 
-    max_tokens = 30  # Set your desired limit
+    max_tokens = 20  # Set your desired limit
     tokens = query.split()
     if len(tokens) > max_tokens:
-        answer = "Your query is too long. Please limit it to 30 words or less."
+        answer = "Your query is too long. Please limit it to 20 words or less."
         return jsonify({"answer": answer})
 
     session['conversation'].append({"role": "user", "content": query})
