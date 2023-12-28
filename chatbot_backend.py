@@ -98,7 +98,7 @@ def setup_conversation():
         print("New session being initialized with ID:", session['session_id'])
     else:
 	    print("Existing session found with ID:", session.get('session_id'))
-print("Initial session:", session.get('conversation'))
+    print("Initial session:", session.get('conversation'))
     
 limiter = Limiter(
     app=chatbot,
