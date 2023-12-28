@@ -119,7 +119,7 @@ def exempt_users():
     return False  # return True to exempt a user from the rate limit
 
 #@limiter.limit("5 per minute")
-@limiter.limit("5 per minute; 10 per 10 minutes; 20 per hour")
+@limiter.limit("10 per minute; 30 per 10 minutes; 40 per hour")
 def custom_limit_request_error():
     return jsonify({"message": "Too many requests, please try again later"}), 429
 
