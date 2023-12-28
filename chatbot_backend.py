@@ -101,7 +101,9 @@ def setup_conversation():
         if session['conversation']:
             last_message = session['conversation'][-1]
             if last_message['role'] == 'user':
-                session['context']['last_question'] = last_message['content']
+               
+                session['context']['topic'] = determine_new_topic_based_on_message(last_message['content'])
+
                 # Update topic based on some logic, e.g., analyzing the last user message
                 session['context']['topic'] = 'determine_new_topic_based_on_message(last_message['content'])'
 
