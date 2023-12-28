@@ -11,6 +11,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from uuid import uuid4
 import psycopg2
+import re
 
 
 from flask_cors import CORS # for CORS
@@ -94,10 +95,18 @@ def setup_conversation():
         session['conversation'] = [
             {"role": "system", "content": "You are an AI agent representing TalkAI Global, specializing in AI automation. Your primary role is to engage in a two-way conversation with users, focusing on understanding their needs and responding with insightful information about our AI services. Be concise yet informative, responding in a way that is not overwhelming. Ask relevant questions to gather user requirements and listen attentively to their queries. Provide brief, clear answers and encourage further questions or direct contact for detailed discussions, especially regarding pricing and service customization. Your aim is to create a connection by being an attentive listener and a knowledgeable guide in the world of AI solutions."}
         ]
-        session['session_id'] = str(uuid4())  # Generate a unique session ID
-        print("New session being initialized with ID:", session['session_id'])
+        session['returning_user'] = False  # Now the user is a returning user ###
+        session['awaiting_decision'] = False  # The user needs to decide whether to continue or start anew###
+        #session['session_id'] = str(uuid4())  # Generate a unique session ID
+        #print("New session being initialized with ID:", session['session_id'])
     else:
-        print("Existing session found with ID:", session.get('session_id'))
+        #print("Existing session found with ID:", session.get('session_id')
+        print("Existing session found") ###
+        if not session.get('returning_user', False):
+            
+            session['returning_user'] = True 
+            session['awaiting_decision'] = True 
+        
     print("Initial session:", session.get('conversation'))
     
 limiter = Limiter(
@@ -127,14 +136,31 @@ def services():
     return render_template('services.html')
 
 
-
-
 @chatbot.route('/ask', methods=['POST'])
 def ask():
     system_message = {}
     threshold = 0.7
     query = request.json.get('query')
     print("User query:", query)
+
+        # Check if it's a returning user and they haven't yet decided to continue or start anew
+    if session.get('returning_user', False) and session.get('awaiting_decision', True):
+        if query.lower() == 'continue':
+            session['awaiting_decision'] = False
+            # Continue with the previous conversation
+            # ...
+            return_message = "Great, let's continue from where we left off."
+        elif query.lower() == 'new':
+            session['awaiting_decision'] = False
+            # Reset the conversation
+            session['conversation'] = []
+            # ...
+            return_message = "Alright, let's start a new conversation."
+        else:
+            return_message = "Would you like to continue from where you left off or start a new conversation? Type 'continue' to proceed or 'new' to start afresh."
+        
+        session['conversation'].append({"role": "assistant", "content": return_message})
+        return jsonify({"answer": return_message})
 
     max_tokens = 20  # Set your desired limit
     tokens = query.split()
