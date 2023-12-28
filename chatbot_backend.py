@@ -87,30 +87,28 @@ def home():
 @chatbot.route('/image/<path:filename>')
 def serve_image(filename):
     return send_from_directory('image', filename)
-    
+
 @chatbot.before_request
 def setup_conversation():
     if 'session_id' not in session:
-        session_id = str(uuid4())
-        session['session_id'] = session_id
-        print("New session being initialized")
+        session['session_id'] = str(uuid4())
+        session['conversation'] = []
         session['conversation'] = [
             {"role": "system", "content": "You are an AI agent representing TalkAI Global, specializing in AI automation. Your primary role is to engage in a two-way conversation with users, focusing on understanding their needs and responding with insightful information about our AI services. Be concise yet informative, responding in a way that is not overwhelming. Ask relevant questions to gather user requirements and listen attentively to their queries. Provide brief, clear answers and encourage further questions or direct contact for detailed discussions, especially regarding pricing and service customization. Your aim is to create a connection by being an attentive listener and a knowledgeable guide in the world of AI solutions."}
         ]
-        session['returning_user'] = False  # Now the user is a returning user ###
-        session['awaiting_decision'] = False  # The user needs to decide whether to continue or start anew###
-        #print("New session being initialized with ID:", session['session_id'])
+        session['context'] = {'topic': None, 'last_question': None}
     else:
-        #print("Existing session found with ID:", session.get('session_id')
-        session_id = session['session_id']
-        print("Existing session found") ###
-        if not session.get('returning_user', False):
-            
-            session['returning_user'] = True 
-            session['awaiting_decision'] = True 
-        
-    print("Initial session:", session.get('conversation'))
-    
+        if session['conversation']:
+            last_message = session['conversation'][-1]
+            if last_message['role'] == 'user':
+                session['context']['last_question'] = last_message['content']
+                # Update topic based on some logic, e.g., analyzing the last user message
+                session['context']['topic'] = 'determine_new_topic_based_on_message(last_message['content'])'
+
+    print("Session ID:", session['session_id'])
+    print("Conversation:", session['conversation'])
+    print("Context:", session['context'])
+
 limiter = Limiter(
     app=chatbot,
     key_func=get_remote_address
