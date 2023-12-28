@@ -9,6 +9,8 @@ from flask import send_from_directory # To help insert image
 from flask import session #for keeping history
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from uuid import uuid4
+
 
 import psycopg2
 
