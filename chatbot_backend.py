@@ -99,7 +99,7 @@ def setup_conversation():
         session['session_id'] = str(uuid4())  # Generate a unique session ID
         print("New session being initialized with ID:", session['session_id'])
     else:
-	 print("Existing session found with ID:", session.get('session_id'))
+	print("Existing session found with ID:", session.get('session_id'))
     print("Initial session:", session.get('conversation'))
 	
 limiter = Limiter(
