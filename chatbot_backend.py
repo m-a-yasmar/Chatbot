@@ -97,7 +97,7 @@ def setup_conversation():
         ]
         session['returning_user'] = False  # Now the user is a returning user ###
         session['awaiting_decision'] = False  # The user needs to decide whether to continue or start anew###
-        #session['session_id'] = str(uuid4())  # Generate a unique session ID
+        session['session_id'] = str(uuid4())  # Generate a unique session ID
         #print("New session being initialized with ID:", session['session_id'])
     else:
         #print("Existing session found with ID:", session.get('session_id')
