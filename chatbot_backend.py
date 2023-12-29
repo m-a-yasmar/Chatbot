@@ -9,16 +9,17 @@ from flask import send_from_directory # To help insert image
 from flask import session #for keeping history
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from uuid import uuid4
+#from uuid import uuid4
+
 import psycopg2
 import re
 import logging
 import tempfile
 from flask import send_file
 from flask_cors import CORS # for CORS
+import uuid
 
-def generate_unique_id():
-    return str(uuid.uuid4())
+
     
 def init_db():
     """Initialize the database and create tables if they don't exist."""
@@ -51,6 +52,8 @@ chatbot.secret_key = 'michaelramsay_secret'
 CORS(chatbot)
 init_db()  # Initialize the database
 
+def generate_unique_id():
+    return str(uuid.uuid4())
 
 # Add this part for affiliate keywords
 
