@@ -220,7 +220,7 @@ def ask():
 
         session['conversation'].append({"role": "assistant", "content": answer})
         session.modified = True #
-         print("After appending assistant answer:", session['conversation'])
+        print("After appending assistant answer:", session['conversation'])
  # Database interaction to save the conversation
     try:
         conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
