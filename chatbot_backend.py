@@ -3,7 +3,7 @@ import json  # for JSON handling
 import numpy as np  # for numerical operations
 from sklearn.feature_extraction.text import TfidfVectorizer  # for TF-IDF
 from sklearn.metrics.pairwise import cosine_similarity  # for cosine similarity
-from flask import Flask, request, jsonify, render_template  # for Flask
+from flask import Flask, request, jsonify, render_template, make_response  # for Flask
 import requests  # for HTTP requests
 from flask import send_from_directory # To help insert image
 from flask import session #for keeping history
