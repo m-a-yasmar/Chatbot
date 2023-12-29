@@ -48,6 +48,16 @@ chatbot.secret_key = 'michaelramsay_secret'
 CORS(chatbot)
 init_db()  # Initialize the database
 
+def determine_new_topic_based_on_message(message):
+    # Analyze the message and determine the topic
+    # This is a placeholder logic; you should replace it with your own
+    if 'booking' in message.lower():
+        return 'booking'
+    elif 'support' in message.lower():
+        return 'customer_support'
+    else:
+        return 'general'
+
 
 
 # Add this part for affiliate keywords
@@ -103,6 +113,7 @@ def setup_conversation():
             if last_message['role'] == 'user':
                
                 session['context']['topic'] = determine_new_topic_based_on_message(last_message['content'])
+
 
                 # Update topic based on some logic, e.g., analyzing the last user message
                 session['context']['topic'] = 'determine_new_topic_based_on_message(last_message['content'])'
