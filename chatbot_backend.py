@@ -148,6 +148,7 @@ def services():
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
+    user_id = request.cookies.get('user_id')
     threshold = 0.9
     query = request.json.get('query')
     max_tokens = 50
