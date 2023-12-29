@@ -26,7 +26,7 @@ def init_db():
     conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
     cur = conn.cursor()
 
-    cur.execute("DROP TABLE IF EXISTS conversations")
+    #cur.execute("DROP TABLE IF EXISTS conversations")
 
     cur.execute("""
         CREATE TABLE IF NOT EXISTS conversations (
