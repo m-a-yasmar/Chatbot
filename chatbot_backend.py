@@ -231,7 +231,7 @@ def ask():
         # Insert the conversation into the database
         # Assuming session_id is being tracked, replace with actual session_id or NULL
         cur.execute(
-            "INSERT INTO conversations (user_id, session_id, user_message, bot_response) VALUES (%s, %s, %s)",
+            "INSERT INTO conversations (user_id, session_id, user_message, bot_response) VALUES (%s, %s, %s, %s)",
             (session.get('session_id'), query, answer)  # Replace with actual session logic
         )
         conn.commit()
