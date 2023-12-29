@@ -104,7 +104,8 @@ def setup_conversation():
         print("No user ID cookie found, setting new one")
         user_id = generate_unique_id()
         session['returning_user'] = False
-        response = make_response(render_template('frontpage.html'))
+        #response = make_response(render_template('frontpage.html'))
+        response = make_response(render_template('https://www.talkaiglobal.com/'))
         response.set_cookie('user_id', user_id, max_age=60*60*24*365*2)  # Expires in 2 years
         return response
     else:
