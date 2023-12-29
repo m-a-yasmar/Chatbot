@@ -51,7 +51,7 @@ def init_db():
     conn.close()
 
 chatbot = Flask(__name__)
-chatbot.secret_key = 'michaelramsay_secret'
+chatbot.secret_key = 'michaelramsay_secret2'
 CORS(chatbot)
 init_db()  # Initialize the database
 
