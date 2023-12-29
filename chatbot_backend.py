@@ -114,10 +114,6 @@ def setup_conversation():
                
                 session['context']['topic'] = determine_new_topic_based_on_message(last_message['content'])
 
-
-                # Update topic based on some logic, e.g., analyzing the last user message
-                session['context']['topic'] = 'determine_new_topic_based_on_message(last_message['content'])'
-
     print("Session ID:", session['session_id'])
     print("Conversation:", session['conversation'])
     print("Context:", session['context'])
