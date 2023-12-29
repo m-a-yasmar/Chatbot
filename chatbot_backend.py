@@ -30,6 +30,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS conversations (
             id SERIAL PRIMARY KEY,
             session_id VARCHAR(50),
+            user_id VARCHAR(50),
             user_message TEXT,
             bot_response TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -95,32 +96,28 @@ def serve_image(filename):
 
 @chatbot.before_request
 def setup_conversation():
-    if 'conversation' not in session or session.get('cleared', False):
-        print("New session being initialised")
-        session['conversation'] = []
-        session['awaiting_decision'] = False
-        session['conversation_status'] = 'new'
-        session['cleared'] = False
-
-        # Check for the unique ID cookie to identify returning users
-        user_id = request.cookies.get('user_id')
-        if user_id:
-            print("Returning user with ID:", user_id)
+    # Check for the unique ID cookie to identify returning users
+    user_id = request.cookies.get('user_id')
+    if not user_id:
+        print("No user ID cookie found, setting new one")
+        user_id = generate_unique_id()
+        session['returning_user'] = False
+        response = make_response(render_template('frontpage.html'))
+        response.set_cookie('user_id', user_id, max_age=60*60*24*365*2)  # Expires in 2 years
+        return response
+    else:
+        print("Existing user with ID:", user_id)
+        # If there's an existing session, just continue with it
+        if 'conversation' not in session or session.get('cleared', False):
+            print("New session being initialised for existing user")
+            session['conversation'] = []
+            session['awaiting_decision'] = False
+            session['conversation_status'] = 'new'
+            session['cleared'] = False
             session['returning_user'] = True
         else:
-            print("No user ID cookie found, setting new one")
-            user_id = generate_unique_id()
-            session['returning_user'] = False
-            # Set the cookie in the response after the request is processed
-            response = make_response(render_template('frontpage.html'))
-            response.set_cookie('user_id', user_id, max_age=60*60*24*365*2)  # Expires in 2 years
-            return response
-
-    else:
-        print("Existing session found")
-        session['returning_user'] = True  # This will now be true for all requests with an existing session
-    print("Initial session:", session.get('conversation'))
-
+            print("Continuing existing session for user")
+            session['returning_user'] = True
 
 limiter = Limiter(
     app=chatbot, 
@@ -232,7 +229,7 @@ def ask():
         # Insert the conversation into the database
         # Assuming session_id is being tracked, replace with actual session_id or NULL
         cur.execute(
-            "INSERT INTO conversations (session_id, user_message, bot_response) VALUES (%s, %s, %s)",
+            "INSERT INTO conversations (user_id, session_id, user_message, bot_response) VALUES (%s, %s, %s)",
             (session.get('session_id'), query, answer)  # Replace with actual session logic
         )
         conn.commit()
