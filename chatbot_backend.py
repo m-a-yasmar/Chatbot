@@ -86,16 +86,17 @@ def home():
 @chatbot.route('/image/<path:filename>')
 def serve_image(filename):
     return send_from_directory('image', filename)
-    
+
 @chatbot.before_request
 def setup_conversation():
-    if 'conversation' not in session:
-        print("New session being initialized")
+    # Check if a session ID already exists, create one if not
+    if 'session_id' not in session:
+        session['session_id'] = str(uuid4())
+        print("New session being initialized with ID:", session['session_id'])
         session['conversation'] = []
-    else:
-        print("Existing session found")
-    print("Initial session:", session.get('conversation'))
+    print("Current session ID:", session['session_id'])
     
+   
 limiter = Limiter(
     app=chatbot,
     key_func=get_remote_address
