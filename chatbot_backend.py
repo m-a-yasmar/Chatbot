@@ -104,8 +104,7 @@ def setup_conversation():
         session['session_id'] = generate_unique_id()
 	session['conversation'] = [{
             "role": "system",
-            "content": "You are an AI agent of TalkAI Global, focusing on AI-driven solutions. Your role is to engage users, understand their needs, and provide insightful responses about our services."
-        }]
+            "content": "You are an AI agent of TalkAI Global, focusing on AI-driven solutions. Your role is to engage users, understand their needs, and provide insightful responses about our services."}]
     else:
         print("Existing session found with ID:", session['session_id'])
         session['returning_user'] = True
