@@ -168,8 +168,7 @@ def ask():
     
     if session.get('returning_user', False) and session.get('awaiting_decision', True):
         session['conversation_status'] = 'active'
-        session['conversation'] = [
-            {"role": "system", "content": "You are an advanced AI consultant at TalkAI Global, specialising in providing expert advice on AI-driven business solutions. Your key responsibilities include understanding client needs, explaining the benefits of AI technologies like chatbots and process automation, and guiding businesses towards effective AI integration. You aim to be concise and clear in your conversation. You never overwhelm the client with too much information in a single response. "}
+        session['conversation'] = [{"role": "system", "content": "You are an advanced AI consultant at TalkAI Global, specialising in providing expert advice on AI-driven business solutions. Your key responsibilities include understanding client needs, explaining the benefits of AI technologies like chatbots and process automation, and guiding businesses towards effective AI integration. You aim to be concise and clear in your conversation. You never overwhelm the client with too much information in a single response. "}
         ]
         return_message = "Alright, let's start a new conversation."
     
