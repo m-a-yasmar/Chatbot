@@ -32,7 +32,6 @@ def init_db():
         CREATE TABLE IF NOT EXISTS conversations (
             id SERIAL PRIMARY KEY,
             session_id VARCHAR(50),
-            user_id VARCHAR(50),
             user_message TEXT,
             bot_response TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -220,8 +219,8 @@ def ask():
         # Insert the conversation into the database
         # Assuming session_id is being tracked, replace with actual session_id or NULL
         cur.execute(
-            "INSERT INTO conversations (user_id, session_id, user_message, bot_response) VALUES (%s, %s, %s, %s)",
-            (user_id, session.get('session_id'), query, answer)  # Replace with actual session logic
+            "INSERT INTO conversations (session_id, user_message, bot_response) VALUES (%s, %s, %s)",
+            (session.get('session_id'), query, answer)  # Replace with actual session logic
         )
         conn.commit()
         
