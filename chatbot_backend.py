@@ -25,7 +25,8 @@ from flask import Response
 
 chatbot = Flask(__name__)
 chatbot.secret_key = 'michaelramsay_secret_redis'
-CORS(chatbot)
+#CORS(chatbot)
+CORS(chatbot, supports_credentials=True)
 
 # Configure Redis for session storage
 chatbot.config['SESSION_TYPE'] = 'redis'
