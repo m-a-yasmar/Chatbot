@@ -26,8 +26,14 @@ from flask import Response
 chatbot = Flask(__name__)
 chatbot.secret_key = 'michaelramsay_secret_redis'
 #CORS(chatbot)
-CORS(chatbot, supports_credentials=True)
 #CORS(chatbot, origins=["https://www.talkaiglobal.com/frontpage"], supports_credentials=True)
+CORS(chatbot, supports_credentials=True)
+
+chatbot.config.update(
+    SESSION_COOKIE_SECURE=True,  # Ensure cookies are sent over HTTPS
+    SESSION_COOKIE_HTTPONLY=True,  # Prevent JS access to session cookie
+    # Other configurations...
+)
 
 
 # Configure Redis for session storage
