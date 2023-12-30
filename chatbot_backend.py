@@ -29,7 +29,7 @@ CORS(chatbot)
 
 # Configure Redis for session storage
 chatbot.config['SESSION_TYPE'] = 'redis'
-chatbot.config['SESSION_PERMANENT'] = False
+chatbot.config['SESSION_PERMANENT'] = True
 chatbot.config['SESSION_USE_SIGNER'] = True
 chatbot.config['SESSION_REDIS'] = redis.from_url(os.environ.get("REDISCLOUD_URL"))
 Session(chatbot)
