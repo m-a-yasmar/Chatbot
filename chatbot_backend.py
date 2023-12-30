@@ -32,6 +32,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS conversations (
             id SERIAL PRIMARY KEY,
             session_id VARCHAR(50),
+            user_id VARCHAR(50),
             user_message TEXT,
             bot_response TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -101,9 +102,10 @@ def setup_conversation():
     # Generate a unique session ID if it doesn't exist
     if 'session_id' not in session:
         session['session_id'] = generate_unique_id()
-        session['conversation'] = []
-        session['returning_user'] = False
-        print("New session being initialized")
+	session['conversation'] = [{
+            "role": "system",
+            "content": "You are an AI agent of TalkAI Global, focusing on AI-driven solutions. Your role is to engage users, understand their needs, and provide insightful responses about our services."
+        }]
     else:
         print("Existing session found with ID:", session['session_id'])
         session['returning_user'] = True
@@ -219,8 +221,8 @@ def ask():
         # Insert the conversation into the database
         # Assuming session_id is being tracked, replace with actual session_id or NULL
         cur.execute(
-            "INSERT INTO conversations (session_id, user_message, bot_response) VALUES (%s, %s, %s)",
-            (session.get('session_id'), query, answer)  # Replace with actual session logic
+            "INSERT INTO conversations (user_id, session_id, user_message, bot_response) VALUES (%s, %s, %s, %s)",
+            (user_id, session.get('session_id'), query, answer)  # Replace with actual session logic
         )
         conn.commit()
         
