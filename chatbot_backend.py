@@ -4,6 +4,8 @@ import numpy as np  # for numerical operations
 from sklearn.feature_extraction.text import TfidfVectorizer  # for TF-IDF
 from sklearn.metrics.pairwise import cosine_similarity  # for cosine similarity
 from flask import Flask, request, jsonify, render_template, make_response  # for Flask
+from flask_session import Session  # Import for Flask-Session
+import redis  # Import for Redis
 import requests  # for HTTP requests
 from flask import send_from_directory # To help insert image
 from flask import session #for keeping history
@@ -20,7 +22,17 @@ from flask_cors import CORS # for CORS
 import uuid
 from flask import Response
 
-    
+
+chatbot = Flask(__name__)
+CORS(chatbot)
+
+# Configure Redis for session storage
+chatbot.config['SESSION_TYPE'] = 'redis'
+chatbot.config['SESSION_PERMANENT'] = False
+chatbot.config['SESSION_USE_SIGNER'] = True
+chatbot.config['SESSION_REDIS'] = redis.from_url(os.environ.get("REDISCLOUD_URL"))
+Session(chatbot)
+
 def init_db():
     """Initialize the database and create tables if they don't exist."""
     conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
@@ -50,43 +62,12 @@ def init_db():
     cur.close()
     conn.close()
 
-chatbot = Flask(__name__)
-chatbot.secret_key = 'michaelramsay_secret2'
-CORS(chatbot)
+
 init_db()  # Initialize the database
 
 def generate_unique_id():
     return str(uuid.uuid4())
 
-# Add this part for affiliate keywords
-
-affiliate_keywords = {
-    "Booking.com": "You can book here with <a href='https://www.booking.com/'>Booking.com</a>",
-    "Airbnb": "Check out options on <a href='https://www.airbnb.com/'>Airbnb</a>",
-    "Expedia": "Find deals on <a href='https://www.expedia.com/'>Expedia</a>",
-    "TripAdvisor": "Read reviews on <a href='https://www.tripadvisor.com/'>TripAdvisor</a>",
-    "Kayak": "Compare prices on <a href='https://www.kayak.com/'>Kayak</a>",
-    "Skyscanner": "Search for flights on <a href='https://www.skyscanner.net/'>Skyscanner</a>",
-    "Hotels.com": "Find hotels at <a href='https://www.hotels.com/'>Hotels.com</a>",
-    "Trivago": "Compare hotel prices on <a href='https://www.trivago.com/'>Trivago</a>",
-    "Orbitz": "Find various travel deals on <a href='https://www.orbitz.com/'>Orbitz</a>",
-    "Priceline": "Get discounted rates on <a href='https://www.priceline.com/'>Priceline</a>"
-}
-
-# Predefined answers in a dictionary
-
-predefined_answers = {
-    
-    "Fuck ": "Inappropriate content detected.",
-    "Shit": "Inappropriate content detected."
-       }
-
-# Create a TF-IDF Vectorizer
-vectorizer = TfidfVectorizer()
-vectorizer.fit(predefined_answers.keys())
-
-#chatbot = Flask(__name__)
-#chatbot.secret_key = 'your_secret_key_here'  # Replace with your actual secret key
 
 @chatbot.route('/', methods=['GET'])
 def home():
@@ -96,12 +77,9 @@ def home():
 def serve_image(filename):
     return send_from_directory('image', filename)
 
-
 @chatbot.before_request
 def setup_conversation():
-    # Generate a unique session ID if it doesn't exist
-    if 'session_id' not in session:
-        session['session_id'] = generate_unique_id()
+    if 'conversation' not in session:
         session['conversation'] = [{
             "role": "system",
             "content": """"You are a sophisticated AI consultant at TalkAI Global, a leader in AI-driven business solutions. Your expertise encompasses a wide range of AI technologies, including chatbots, robotic process automation, and custom AI applications. Your primary responsibility is to interact with clients seeking AI solutions, providing them with in-depth, tailored advice and insights. You give short conversation length reponse at a time, then use the customer reponse to add further information to the dialogue without being excessive.
@@ -115,7 +93,7 @@ def setup_conversation():
                             Remember, your role is to facilitate a seamless and informative experience, guiding potential clients towards realizing the value and transformative potential of AI in their business with TalkAI Global.
                             """}]
     else:
-        print("Existing session found with ID:", session['session_id'])
+        print("Existing session found with ID:", session.sid)
         session['returning_user'] = True
         # Add logic here if needed to handle returning users
     
