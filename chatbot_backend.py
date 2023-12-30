@@ -3,36 +3,28 @@ import json  # for JSON handling
 import numpy as np  # for numerical operations
 from sklearn.feature_extraction.text import TfidfVectorizer  # for TF-IDF
 from sklearn.metrics.pairwise import cosine_similarity  # for cosine similarity
-from flask import Flask, request, jsonify, render_template, make_response  # for Flask
+from flask import Flask, request, jsonify, render_template  # for Flask
 import requests  # for HTTP requests
 from flask import send_from_directory # To help insert image
 from flask import session #for keeping history
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-#from uuid import uuid4
 
 import psycopg2
-import re
-import logging
-import tempfile
-from flask import send_file
-from flask_cors import CORS # for CORS
-import uuid
-from flask import Response
 
-    
+
+from flask_cors import CORS # for CORS
+
+
 def init_db():
     """Initialize the database and create tables if they don't exist."""
     conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
     cur = conn.cursor()
 
-    #cur.execute("DROP TABLE IF EXISTS conversations")
-
     cur.execute("""
         CREATE TABLE IF NOT EXISTS conversations (
             id SERIAL PRIMARY KEY,
-            session_id VARCHAR(50),
-            user_id VARCHAR(50),
+            session_id INTEGER,
             user_message TEXT,
             bot_response TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -51,12 +43,11 @@ def init_db():
     conn.close()
 
 chatbot = Flask(__name__)
-chatbot.secret_key = 'michaelramsay_secret2'
+chatbot.secret_key = 'michaelramsay_secret'
 CORS(chatbot)
 init_db()  # Initialize the database
 
-def generate_unique_id():
-    return str(uuid.uuid4())
+
 
 # Add this part for affiliate keywords
 
@@ -95,35 +86,20 @@ def home():
 @chatbot.route('/image/<path:filename>')
 def serve_image(filename):
     return send_from_directory('image', filename)
-
+    
 @chatbot.before_request
 def setup_conversation():
-    # Check for the unique ID cookie to identify returning users
-    user_id = request.cookies.get('user_id')
-    if not user_id:
-        print("No user ID cookie found, setting new one")
-        user_id = generate_unique_id()
-        session['returning_user'] = False
-        #response = make_response(render_template('frontpage.html'))
-        response = make_response(render_template('https://www.talkaiglobal.com/'))
-        response.set_cookie('user_id', user_id, max_age=60*60*24*365*2)  # Expires in 2 years
-        return response
+    if 'conversation' not in session:
+        print("New session being initialized")
+        session['conversation'] = [
+            {"role": "system", "content": "You are an AI agent representing TalkAI Global, specializing in AI automation. Your primary role is to engage in a two-way conversation with users, focusing on understanding their needs and responding with insightful information about our AI services. Be concise yet informative, responding in a way that is not overwhelming. Ask relevant questions to gather user requirements and listen attentively to their queries. Provide brief, clear answers and encourage further questions or direct contact for detailed discussions, especially regarding pricing and service customization. Your aim is to create a connection by being an attentive listener and a knowledgeable guide in the world of AI solutions."}
+        ]
     else:
-        print("Existing user with ID:", user_id)
-        # If there's an existing session, just continue with it
-        if 'conversation' not in session or session.get('cleared', False):
-            print("New session being initialised for existing user")
-            session['conversation'] = []
-            session['awaiting_decision'] = False
-            session['conversation_status'] = 'new'
-            session['cleared'] = False
-            session['returning_user'] = True
-        else:
-            print("Continuing existing session for user")
-            session['returning_user'] = True
-
+        print("Existing session found")
+    print("Initial session:", session.get('conversation'))
+    
 limiter = Limiter(
-    app=chatbot, 
+    app=chatbot,
     key_func=get_remote_address
 )
 
@@ -131,9 +107,10 @@ limiter = Limiter(
 def exempt_users():
     return False  # return True to exempt a user from the rate limit
 
-@limiter.limit("20 per minute; 50 per 10 minutes; 100 per hour")
+#@limiter.limit("5 per minute")
+@limiter.limit("5 per minute; 10 per 10 minutes; 20 per hour")
 def custom_limit_request_error():
-    return jsonify({"answer": "Too many requests, please try again later"}), 429
+    return jsonify({"message": "Too many requests, please try again later"}), 429
 
 @chatbot.route('/frontpage')
 def frontpage():
@@ -147,84 +124,87 @@ def contact():
 def services():
     return render_template('services.html')
 
+
+
+
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    user_id = request.cookies.get('user_id')
-    threshold = 0.9
+    system_message = {}
+    threshold = 0.7
     query = request.json.get('query')
-    max_tokens = 50
-    tokens = query.split()
-    exit_words = ["exit", "quit", "bye", "goodbye"] ##why is this repeated? which set is being used?
-    session['conversation'].append({"role": "user", "content": query})
+    print("User query:", query)
 
-    if any(word.lower() in query.lower() for word in exit_words):
-        goodbye_message = "Thank you for your visit. Have a wonderful day. Goodbye!"
-        # Reset the session keys instead of clearing everything.
-        session['returning_user'] = False
-        session['awaiting_decision'] = False
-        session['conversation_status'] = 'new'
-        session['cleared'] = True
-        session['conversation'] = []
-        
-        return jsonify({"answer": goodbye_message, "status": "end_session"})
-            
+    max_tokens = 20  # Set your desired limit
+    tokens = query.split()
     if len(tokens) > max_tokens:
-        answer = "Your query is too long. Please limit it to 50 words or less."
+        answer = "Your query is too long. Please limit it to 20 words or less."
         return jsonify({"answer": answer})
 
-    transcribed_text = session.get('transcribed_text', None)
-    if transcribed_text:
-        query = transcribed_text
-        #del session['transcribed_text']
+    session['conversation'].append({"role": "user", "content": query})
+    
+    print("After appending user query:", session['conversation'])
+    
+    if len(query.split()) < 3:
+        last_assistant_message = next((message['content'] for message in reversed(session['conversation']) if message['role'] == 'assistant'), None)
+        print("Last assistant message:", last_assistant_message)
+        
+        if last_assistant_message:
+            system_message = {
+                "role": "system",
+                "content": f"The user's query seems incomplete. Refer back to your last message: '{last_assistant_message}' to better interpret what they might be asking."
+            }
+            if system_message:
+                session['conversation'].append(system_message)
+
+            
 
     query_vector = vectorizer.transform([query])
-    
-    if session.get('returning_user', False) and session.get('awaiting_decision', True):
-        session['conversation_status'] = 'active'
-        session['conversation'] = [
-            {"role": "system", "content": "You are an advanced AI consultant at TalkAI Global, specialising in providing expert advice on AI-driven business solutions. Your key responsibilities include understanding client needs, explaining the benefits of AI technologies like chatbots and process automation, and guiding businesses towards effective AI integration. You aim to be concise and clear in your conversation. You never overwhelm the client with too much information in a single response. "}
-        ]
-        return_message = "Alright, let's start a new conversation."
-    
-   
-    #else session.get('conversation_status', 'active') == 'active':
-    else:
-        custom_prompt = {
-            "role": "system",
-            "content": """"You are a sophisticated AI consultant at TalkAI Global, a leader in AI-driven business solutions. Your expertise encompasses a wide range of AI technologies, including chatbots, robotic process automation, and custom AI applications. Your primary responsibility is to interact with clients seeking AI solutions, providing them with in-depth, tailored advice and insights. You give short conversation length reponse at a time, then use the customer reponse to add further information to the dialogue without being excessive.
-                            When a client approaches, you should start by understanding their business needs. Ask questions like, 'Could you please describe your business operations and the challenges you're facing?' and 'What specific AI solutions are you interested in exploring with us?' Based on their responses, offer a comprehensive overview of how TalkAI Global's services can address their specific challenges, highlighting the benefits and potential ROI.
-                            In your conversation, focus on elucidating the features of our unique products like Chatti and FarmTalkAI, and explain how these can be integrated into their business for enhanced efficiency and better decision-making. For instance, 'Chatti is designed to connect users to a vast knowledge base about Jamaica, while FarmTalkAI acts as an advisory tool for farmers, providing valuable insights. How do these align with your business objectives?'
-                            If the client is new to AI, educate them about the basics and benefits of AI in business. Questions like, 'Do you have any prior experience with AI solutions?' or 'Would you like a brief overview of how AI can transform your business operations?' can be helpful.
-                            For clients with specific technical queries, delve into more detailed explanations. Ask, 'Are there particular technical aspects or functionalities you would like to know more about?'
-                            Always ensure to gather essential information for a tailored solution. Questions like, 'What is your industry sector, and what are the key areas you're looking to improve with AI?' and 'Do you have any specific requirements or constraints we should consider while designing your AI solution?' are vital.
-                            Regarding pricing and packages, if asked, respond with, 'Our pricing varies based on the complexity and scale of the solution. For a basic AI integration, prices start from US$3000-10,000, while more advanced solutions are priced accordingly. Would you like a detailed quote based on your specific requirements?'
-                            Finally, always conclude the conversation by inviting further questions or a follow-up discussion, such as, 'Is there anything else you would like to know about our services, or shall we schedule a more detailed discussion to explore a potential collaboration?'
-                            Remember, your role is to facilitate a seamless and informative experience, guiding potential clients towards realizing the value and transformative potential of AI in their business with TalkAI Global.
-                            """}
-        
-        conversation_with_prompt = [custom_prompt] + session['conversation']
+    predefined_vectors = vectorizer.transform(predefined_answers.keys())
+    similarity_scores = cosine_similarity(query_vector, predefined_vectors).flatten()
+    max_index = similarity_scores.argmax()
+    max_score = similarity_scores[max_index]
 
+    if max_score >= threshold:
+        most_similar_question = list(predefined_answers.keys())[max_index]
+        answer = predefined_answers[most_similar_question]
+    else:
+        # If no predefined answer is found, call OpenAI API
         api_endpoint = "https://api.openai.com/v1/chat/completions"
-        headers = {"Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}", "Content-Type": "application/json"}
+        headers = {
+            "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
+            "Content-Type": "application/json"
+        }
+        custom_prompt = {"role": "system", "content":"You are an advanced AI agent for TalkAI Global, a pioneering company in AI automation. Your primary role is to assist users with comprehensive and accurate information about our AI services and products. Provide detailed explanations, tailored advice, and innovative solutions to inquiries related to autonomous systems, strategic AI consulting, and custom AI solutions. Your responses should be professional, informative, and reflect the cutting-edge nature of our services. Handle all queries with a focus on showcasing how TalkAI Global can empower businesses with AI technology. Support, educate, and inspire potential clients about the transformative potential of AI in their operations."} 
+        # Add custom prompt to the beginning of the conversation history
+        conversation_with_prompt = [custom_prompt] + session['conversation']
+      
+        # Use the conversation history for context-aware API call
         payload = {
             "model": "gpt-4-1106-preview",
-            "messages": conversation_with_prompt, ######
-            "frequency_penalty": 1.0,
-            "presence_penalty": -0.5
+            "messages": conversation_with_prompt,
+            "frequency_penalty": 1.5,  
+            "presence_penalty": -1
         }
-        response = requests.post(api_endpoint, headers=headers, json=payload, timeout=60)
+        #             "max_tokens": 80
+        # frequency -2 to 2. higher increase repetition of answer  presence -2 to 2. higher likely to switch topic
+        #response = requests.post(api_endpoint, headers=headers, json=payload)
+        response = requests.post(api_endpoint, headers=headers, json=payload, timeout=60)  # 15-second timeout
 
         if response.status_code == 200:
-            answer = response.json()['choices'][0]['message']['content']
-            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes", "ChatGPT","OpenAI"]
+            answer = response.json()['choices'][0]['message']['content'].strip()
+            # Remove any forbidden phrases
+            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes","As an artificial intelligence","ChatGPT","OpenAI"]
             for phrase in forbidden_phrases:
                 answer = answer.replace(phrase, "")
         else:
+            
             answer = "I'm sorry, I couldn't understand the question."
-
-        session['conversation'].append({"role": "assistant", "content": answer})
-        session.modified = True #
-        print("After appending assistant answer:", session['conversation'])
+    for keyword, replacement in affiliate_keywords.items():
+        if keyword.lower() in answer.lower():
+            answer = answer.replace(keyword, replacement)
+    session['conversation'].append({"role": "assistant", "content": answer})
+    session.modified = True
+    print("After appending assistant answer:", session['conversation'])
  # Database interaction to save the conversation
     try:
         conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
@@ -233,8 +213,8 @@ def ask():
         # Insert the conversation into the database
         # Assuming session_id is being tracked, replace with actual session_id or NULL
         cur.execute(
-            "INSERT INTO conversations (user_id, session_id, user_message, bot_response) VALUES (%s, %s, %s, %s)",
-            (user_id, session.get('session_id'), query, answer)  # Replace with actual session logic
+            "INSERT INTO conversations (session_id, user_message, bot_response) VALUES (%s, %s, %s)",
+            (session.get('session_id'), query, answer)  # Replace with actual session logic
         )
         conn.commit()
         
@@ -245,13 +225,15 @@ def ask():
         conn.close()
 
     # Return the bot response
-    return jsonify({"answer": answer})         
+    return jsonify({"answer": answer})
+   
 
 from datetime import timedelta
 
 # set session timeout
 chatbot.permanent_session_lifetime = timedelta(minutes=5)
 
+    
             
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
