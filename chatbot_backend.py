@@ -101,7 +101,7 @@ def setup_conversation():
         session['returning_user'] = True
         # Add logic here if needed to handle returning users
     
-limiter = Limiter(
+#limiter = Limiter(
     app=chatbot, 
     key_func=get_remote_address
 )
