@@ -40,7 +40,7 @@ def init_db():
     cur.execute("""
         CREATE TABLE IF NOT EXISTS chatbot_schema.conversations (
             id SERIAL PRIMARY KEY,
-            user_id VARCHAR(50) NOT NULL,
+            user_id VARCHAR(50) NOT NULL UNIQUE,
             conversation_history TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
