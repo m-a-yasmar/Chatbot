@@ -83,6 +83,7 @@ def ask():
     data = request.json
     user_id = data.get('user_id')
     query = data.get('query')
+    tokens = query.split()
     max_tokens = 50
 
     if not user_id or not query:
