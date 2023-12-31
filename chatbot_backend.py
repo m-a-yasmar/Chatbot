@@ -95,7 +95,6 @@ def ask():
     # Reference the table using the new schema
     cur.execute("SELECT conversation_history FROM chatbot_schema.conversations WHERE user_id = %s", (user_id,))
     row = cur.fetchone()
-
     
     custom_prompt = {
         "role": "system",
@@ -111,8 +110,9 @@ def ask():
                             """}
     if row:
         conversation_history = json.loads(row[0])
+        cur.execute("UPDATE chatbot_schema.conversations SET conversation_history = %s WHERE user_id = %s", (json.dumps(conversation_history), user_id))
     else:
-        conversation_history = [custom_prompt]
+        cur.execute("INSERT INTO chatbot_schema.conversations (user_id, conversation_history) VALUES (%s, %s)", (user_id, json.dumps(conversation_history)))
 
     conversation_history.append({"role": "user", "content": query})
 
@@ -142,10 +142,6 @@ def ask():
     conn.close()
 
     return jsonify({"answer": answer})
-
-
-
-
 
 
 if __name__ == '__main__':
