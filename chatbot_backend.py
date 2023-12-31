@@ -135,14 +135,20 @@ def ask():
     else:
         answer = "I'm sorry, I couldn't understand the question."
 
-    # Update or insert the conversation history
-    cur.execute("INSERT INTO chatbot_schema.conversations (user_id, conversation_history) VALUES (%s, %s) ON CONFLICT (user_id) DO UPDATE SET conversation_history = %s", (user_id, json.dumps(conversation_history), json.dumps(conversation_history)))
-    conn.commit()
-    cur.close()
-    conn.close()
+     # Update or insert the conversation history
+        cur.execute("INSERT INTO chatbot_schema.conversations (user_id, conversation_history) VALUES (%s, %s) ON CONFLICT (user_id) DO UPDATE SET conversation_history = %s", (user_id, json.dumps(conversation_history), json.dumps(conversation_history)))
+        conn.commit()
+        return jsonify({"answer": answer})
 
-    return jsonify({"answer": answer})
-    
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({"answer": "An error occurred. Please try again."}), 500
+
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()   
    
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
