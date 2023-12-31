@@ -4,6 +4,8 @@ import numpy as np  # for numerical operations
 from sklearn.feature_extraction.text import TfidfVectorizer  # for TF-IDF
 from sklearn.metrics.pairwise import cosine_similarity  # for cosine similarity
 from flask import Flask, request, jsonify, render_template, make_response  # for Flask
+from flask_session import Session  # Import for Flask-Session
+import redis  # Import for Redis
 import requests  # for HTTP requests
 from flask import send_from_directory # To help insert image
 from flask import session #for keeping history
