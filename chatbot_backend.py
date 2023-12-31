@@ -106,18 +106,18 @@ def setup_conversation():
     else:
         print("Existing session found with ID:", session.sid)
     
-limiter = Limiter(
-    app=chatbot, 
-    key_func=get_remote_address
-)
+#limiter = Limiter(
+ #   app=chatbot, 
+  #  key_func=get_remote_address
+#)
 
-@limiter.request_filter
-def exempt_users():
-    return False  # return True to exempt a user from the rate limit
+#@limiter.request_filter
+#def exempt_users():
+ #   return False  # return True to exempt a user from the rate limit
 
-@limiter.limit("20 per minute; 50 per 10 minutes; 100 per hour")
-def custom_limit_request_error():
-    return jsonify({"answer": "Too many requests, please try again later"}), 429
+#@limiter.limit("20 per minute; 50 per 10 minutes; 100 per hour")
+#def custom_limit_request_error():
+ #   return jsonify({"answer": "Too many requests, please try again later"}), 429
 
 @chatbot.route('/frontpage')
 def frontpage():
