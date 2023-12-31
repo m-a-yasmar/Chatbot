@@ -29,29 +29,29 @@ chatbot = Flask(__name__)
 chatbot.secret_key = 'michaelramsay_secret_redis'
 CORS(chatbot, supports_credentials=True)
 
-
-
 def init_db():
     conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
     cur = conn.cursor()
 
-    # Create new schema
+    # Drop the existing table if it exists
+    cur.execute("DROP TABLE IF EXISTS chatbot_schema.conversations;")
+
+    # Create new schema if it doesn't exist
     cur.execute("CREATE SCHEMA IF NOT EXISTS chatbot_schema;")
 
     # Create table in the new schema with a unique constraint on user_id
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS chatbot_schema.conversations (
+        CREATE TABLE chatbot_schema.conversations (
             id SERIAL PRIMARY KEY,
-            user_id VARCHAR(50) NOT NULL UNIQUE,
+            user_id VARCHAR(50) NOT NULL,
             conversation_history TEXT,
             timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE (user_id) 
+            UNIQUE (user_id)
         );
     """)
     conn.commit()
     cur.close()
     conn.close()
-
     
 init_db()
 
