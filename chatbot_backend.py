@@ -20,6 +20,26 @@ from flask_cors import CORS # for CORS
 import uuid
 from flask import Response
 
+chatbot = Flask(__name__)
+chatbot.secret_key = 'michaelramsay_secret_redis'
+#CORS(chatbot)
+#CORS(chatbot, origins=["https://www.talkaiglobal.com/frontpage"], supports_credentials=True)
+CORS(chatbot, supports_credentials=True)
+
+chatbot.config.update(
+    SESSION_COOKIE_SECURE=True,  # Ensure cookies are sent over HTTPS
+    SESSION_COOKIE_HTTPONLY=True,  # Prevent JS access to session cookie
+    # Other configurations...
+)
+
+
+# Configure Redis for session storage
+chatbot.config['SESSION_TYPE'] = 'redis'
+chatbot.config['SESSION_PERMANENT'] = True
+chatbot.config['SESSION_USE_SIGNER'] = True
+chatbot.config['SESSION_REDIS'] = redis.from_url(os.environ.get("REDISCLOUD_URL"))
+Session(chatbot)
+
     
 def init_db():
     """Initialize the database and create tables if they don't exist."""
