@@ -78,7 +78,6 @@ def contact():
 def services():
     return render_template('services.html')
 
-
 @chatbot.route('/ask', methods=['POST'])
 def ask():
     user_id = request.json.get('user_id')
@@ -88,14 +87,6 @@ def ask():
 
     if len(tokens) > max_tokens:
         return jsonify({"answer": "Your query is too long. Please limit it to 50 words or less."})
-
-    conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
-    cur = conn.cursor()
-
-    # Reference the table using the new schema
-    cur.execute("SELECT conversation_history FROM chatbot_schema.conversations WHERE user_id = %s", (user_id,))
-    row = cur.fetchone()
-    
     custom_prompt = {
         "role": "system",
         "content": """"You are a sophisticated AI consultant at TalkAI Global, a leader in AI-driven business solutions. Your expertise encompasses a wide range of AI technologies, including chatbots, robotic process automation, and custom AI applications. Your primary responsibility is to interact with clients seeking AI solutions, providing them with in-depth, tailored advice and insights. You give short conversation length reponse at a time, then use the customer reponse to add further information to the dialogue without being excessive.
@@ -108,11 +99,20 @@ def ask():
                             Finally, always conclude the conversation by inviting further questions or a follow-up discussion, such as, 'Is there anything else you would like to know about our services, or shall we schedule a more detailed discussion to explore a potential collaboration?'
                             Remember, your role is to facilitate a seamless and informative experience, guiding potential clients towards realizing the value and transformative potential of AI in their business with TalkAI Global.
                             """}
+
+    conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
+    cur = conn.cursor()
+
+    # Check if there's an existing conversation
+    cur.execute("SELECT conversation_history FROM chatbot_schema.conversations WHERE user_id = %s", (user_id,))
+    row = cur.fetchone()
+
     if row:
+        # If conversation exists, load the history
         conversation_history = json.loads(row[0])
-        cur.execute("UPDATE chatbot_schema.conversations SET conversation_history = %s WHERE user_id = %s", (json.dumps(conversation_history), user_id))
     else:
-        cur.execute("INSERT INTO chatbot_schema.conversations (user_id, conversation_history) VALUES (%s, %s)", (user_id, json.dumps(conversation_history)))
+        # If no conversation, start with custom prompt
+        conversation_history = [custom_prompt]
 
     conversation_history.append({"role": "user", "content": query})
 
@@ -135,15 +135,15 @@ def ask():
     else:
         answer = "I'm sorry, I couldn't understand the question."
 
-    # Insert or update the conversation history in the new schema
+    # Update or insert the conversation history
     cur.execute("INSERT INTO chatbot_schema.conversations (user_id, conversation_history) VALUES (%s, %s) ON CONFLICT (user_id) DO UPDATE SET conversation_history = %s", (user_id, json.dumps(conversation_history), json.dumps(conversation_history)))
     conn.commit()
     cur.close()
     conn.close()
 
     return jsonify({"answer": answer})
-
-
+    
+   
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     chatbot.run(host='0.0.0.0', port=port)
