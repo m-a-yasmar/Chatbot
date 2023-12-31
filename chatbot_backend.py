@@ -38,6 +38,7 @@ chatbot.config.update(
 
 # Configure Redis for session storage
 chatbot.config['SESSION_TYPE'] = 'redis'
+chatbot.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7) 
 chatbot.config['SESSION_PERMANENT'] = True
 chatbot.config['SESSION_USE_SIGNER'] = True
 chatbot.config['SESSION_REDIS'] = redis.from_url(os.environ.get("REDISCLOUD_URL"))
