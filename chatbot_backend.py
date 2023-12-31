@@ -21,7 +21,7 @@ from flask import send_file
 from flask_cors import CORS # for CORS
 import uuid
 from flask import Response
-
+from datetime import timedelta
 
 chatbot = Flask(__name__)
 chatbot.secret_key = 'michaelramsay_secret_redis'
@@ -182,7 +182,7 @@ def ask():
 
     return jsonify({"answer": answer})
 
-from datetime import timedelta
+
 
 # set session timeout
 chatbot.permanent_session_lifetime = timedelta(minutes=5)
