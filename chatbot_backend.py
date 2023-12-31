@@ -80,10 +80,13 @@ def services():
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    user_id = request.json.get('user_id')
-    query = request.json.get('query')
-    tokens = query.split()
+    data = request.json
+    user_id = data.get('user_id')
+    query = data.get('query')
     max_tokens = 50
+
+    if not user_id or not query:
+        return jsonify({"answer": "Missing user_id or query in the request"}), 400
 
     if len(tokens) > max_tokens:
         return jsonify({"answer": "Your query is too long. Please limit it to 50 words or less."})
