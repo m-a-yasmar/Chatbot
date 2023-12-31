@@ -255,7 +255,7 @@ def ask():
         # Assuming session_id is being tracked, replace with actual session_id or NULL
         cur.execute(
             "INSERT INTO conversations (user_id, session_id, user_message, bot_response) VALUES (%s, %s, %s, %s)",
-            (user_id, query, bot_response)  # Replace with actual session logic
+            (user_id, session.get('session_id'), query, answer)  # Replace with actual session logic
         )
         conn.commit()
         
@@ -266,7 +266,7 @@ def ask():
         conn.close()
 
     # Return the bot response
-    return jsonify({"answer": bot_response})         
+    return jsonify({"answer": answer})
 
 from datetime import timedelta
 
