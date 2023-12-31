@@ -100,42 +100,44 @@ def ask():
                             Remember, your role is to facilitate a seamless and informative experience, guiding potential clients towards realizing the value and transformative potential of AI in their business with TalkAI Global.
                             """}
 
-    conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
-    cur = conn.cursor()
+    
+    try:
+        conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
+        cur = conn.cursor()
 
-    # Check if there's an existing conversation
-    cur.execute("SELECT conversation_history FROM chatbot_schema.conversations WHERE user_id = %s", (user_id,))
-    row = cur.fetchone()
+        # Check if there's an existing conversation
+        cur.execute("SELECT conversation_history FROM chatbot_schema.conversations WHERE user_id = %s", (user_id,))
+        row = cur.fetchone()
 
-    if row:
-        # If conversation exists, load the history
-        conversation_history = json.loads(row[0])
-    else:
-        # If no conversation, start with custom prompt
-        conversation_history = [custom_prompt]
+        if row:
+            # If conversation exists, load the history
+            conversation_history = json.loads(row[0])
+        else:
+            # If no conversation, start with custom prompt
+            conversation_history = [custom_prompt]
 
-    conversation_history.append({"role": "user", "content": query})
+        conversation_history.append({"role": "user", "content": query})
 
-    api_endpoint = "https://api.openai.com/v1/chat/completions"
-    headers = {"Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}", "Content-Type": "application/json"}
-    payload = {
-        "model": "gpt-4-1106-preview",
-        "messages": conversation_history,
-        "frequency_penalty": 1.0,
-        "presence_penalty": -0.5
-    }
-    response = requests.post(api_endpoint, headers=headers, json=payload, timeout=60)
+        api_endpoint = "https://api.openai.com/v1/chat/completions"
+        headers = {"Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}", "Content-Type": "application/json"}
+        payload = {
+            "model": "gpt-4-1106-preview",
+            "messages": conversation_history,
+            "frequency_penalty": 1.0,
+            "presence_penalty": -0.5
+        }
+        response = requests.post(api_endpoint, headers=headers, json=payload, timeout=60)
 
-    if response.status_code == 200:
-        answer = response.json()['choices'][0]['message']['content']
-        forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes", "ChatGPT", "OpenAI"]
-        for phrase in forbidden_phrases:
-            answer = answer.replace(phrase, "")
-        conversation_history.append({"role": "assistant", "content": answer})
-    else:
-        answer = "I'm sorry, I couldn't understand the question."
+        if response.status_code == 200:
+            answer = response.json()['choices'][0]['message']['content']
+            forbidden_phrases = ["I am a model trained", "As an AI model", "My training data includes", "ChatGPT", "OpenAI"]
+            for phrase in forbidden_phrases:
+                answer = answer.replace(phrase, "")
+            conversation_history.append({"role": "assistant", "content": answer})
+        else:
+            answer = "I'm sorry, I couldn't understand the question."
 
-     # Update or insert the conversation history
+        # Update or insert the conversation history
         cur.execute("INSERT INTO chatbot_schema.conversations (user_id, conversation_history) VALUES (%s, %s) ON CONFLICT (user_id) DO UPDATE SET conversation_history = %s", (user_id, json.dumps(conversation_history), json.dumps(conversation_history)))
         conn.commit()
         return jsonify({"answer": answer})
@@ -148,9 +150,9 @@ def ask():
         if cur:
             cur.close()
         if conn:
-            conn.close()   
-   
+            conn.close()
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     chatbot.run(host='0.0.0.0', port=port)
-
+  
