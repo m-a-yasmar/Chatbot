@@ -289,7 +289,7 @@
                 const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: query }),
+                    body: JSON.stringify({ user_id: user_id, query: query }),
 		    credentials: 'include' 
                 });
                 const data = await response.json();
