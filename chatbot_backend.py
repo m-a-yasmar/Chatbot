@@ -121,7 +121,7 @@ def serve_image(filename):
 @chatbot.before_request
 def setup_conversation():
     # Check for the unique ID cookie to identify returning users
-    user_id = request.cookies.get('user_id')
+    user_id = request.json.get('user_id', str(uuid.uuid4()))
     if not user_id:
         print("No user ID cookie found, setting new one")
         user_id = generate_unique_id()
@@ -170,7 +170,7 @@ def services():
 
 @chatbot.route('/ask', methods=['POST'])
 def ask():
-    user_id = request.cookies.get('user_id')
+    user_id = request.json.get('user_id', str(uuid.uuid4()))
     threshold = 0.9
     query = request.json.get('query')
     max_tokens = 50
@@ -255,7 +255,7 @@ def ask():
         # Assuming session_id is being tracked, replace with actual session_id or NULL
         cur.execute(
             "INSERT INTO conversations (user_id, session_id, user_message, bot_response) VALUES (%s, %s, %s, %s)",
-            (user_id, session.get('session_id'), query, answer)  # Replace with actual session logic
+            (user_id, query, bot_response)  # Replace with actual session logic
         )
         conn.commit()
         
@@ -266,7 +266,7 @@ def ask():
         conn.close()
 
     # Return the bot response
-    return jsonify({"answer": answer})         
+    return jsonify({"answer": bot_response})         
 
 from datetime import timedelta
 
