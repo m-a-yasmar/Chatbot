@@ -279,18 +279,18 @@
     </footer>
 
     <script>
-		// Function to generate a unique user ID
-	function generateUserId() {
-	    const user_id = 'user_' + new Date().getTime() + '_' + Math.random().toString(36).substr(2, 9);
-	    localStorage.setItem('user_id', user_id);
+	
+		// Function to generate or retrieve a unique user ID
+	function getUserId() {
+	    // Check if user_id already exists in local storage
+	    let user_id = localStorage.getItem('user_id');
+	    if (!user_id) {
+	        // If not, generate a new user ID
+		user_id = 'user_' + new Date().getTime() + '_' + Math.random().toString(36).substr(2, 9);
+	    	localStorage.setItem('user_id', user_id);
 	    return user_id;
 	}
-	
-	// Function to get the current user ID
-	function getUserId() {
-	    return localStorage.getItem('user_id') || generateUserId();
-	}
-	    
+		    
         async function askQuestion() {
             try {
                 document.getElementById('send-button').disabled = true;
