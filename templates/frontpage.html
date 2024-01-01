@@ -279,11 +279,23 @@
     </footer>
 
     <script>
+		// Function to generate a unique user ID
+	function generateUserId() {
+	    const user_id = 'user_' + new Date().getTime() + '_' + Math.random().toString(36).substr(2, 9);
+	    localStorage.setItem('user_id', user_id);
+	    return user_id;
+	}
+	
+	// Function to get the current user ID
+	function getUserId() {
+	    return localStorage.getItem('user_id') || generateUserId();
+	}
+	    
         async function askQuestion() {
             try {
                 document.getElementById('send-button').disabled = true;
                 const query = document.getElementById('query').value;
-		const user_id = "Michael"; 
+		const user_id = getUserId(); 
                 const chatBox = document.getElementById('chat-box');
                 displayMessage(query, 'user-message');
                 const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
