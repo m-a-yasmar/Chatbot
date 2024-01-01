@@ -288,9 +288,10 @@
 	        // If not, generate a new user ID
 		user_id = 'user_' + new Date().getTime() + '_' + Math.random().toString(36).substr(2, 9);
 	    	localStorage.setItem('user_id', user_id);
-	    return user_id;
+	    }
+		return user_id;
 	}
-		    
+	    
         async function askQuestion() {
             try {
                 document.getElementById('send-button').disabled = true;
