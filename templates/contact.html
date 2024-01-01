@@ -388,40 +388,54 @@
                 });
         });
     </script>
-   
+	
     <script>
-        async function askQuestion() {
-            try {
-                document.getElementById('send-button').disabled = true;
-                const query = document.getElementById('query').value;
-		const user_id = "Michael"; 
-                const chatBox = document.getElementById('chat-box');
-                displayMessage(query, 'user-message');
-                const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-		    body: JSON.stringify({ user_id: user_id, query: query }),
-		    credentials: 'include' 
-                });
-                const data = await response.json();
-                displayMessage(data.answer, 'bot-message');
-                chatBox.scrollTop = chatBox.scrollHeight;
-                document.getElementById('query').value = '';
-            } catch (error) {
-                console.error('An error occurred:', error);
-            } finally {
-                document.getElementById('send-button').disabled = false;
-            }
+    // Function to generate or retrieve a unique user ID
+    function getUserId() {
+        // Check if user_id already exists in local storage
+        let user_id = localStorage.getItem('user_id');
+        if (!user_id) {
+            // If not, generate a new user ID
+            user_id = 'user_' + new Date().getTime() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('user_id', user_id);
         }
-
-        function displayMessage(message, className) {
+        return user_id; // Ensure this line is outside the 'if' block
+    }
+        
+    async function askQuestion() {
+        try {
+            document.getElementById('send-button').disabled = true;
+            const query = document.getElementById('query').value;
+            const user_id = getUserId(); // Retrieve or generate user ID
             const chatBox = document.getElementById('chat-box');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${className}`;
-            messageDiv.innerHTML = message;
-            chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+            displayMessage(query, 'user-message');
+            const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user_id, query: query }),
+                credentials: 'include' 
+            });
+            const data = await response.json();
+            displayMessage(data.answer, 'bot-message');
+            chatBox.scrollTop = chatBox.scrollHeight;
+            document.getElementById('query').value = '';
+        } catch (error) {
+            console.error('An error occurred:', error);
+        } finally {
+            document.getElementById('send-button').disabled = false;
         }
-    </script>
+    }
+
+    function displayMessage(message, className) {
+        const chatBox = document.getElementById('chat-box');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${className}`;
+        messageDiv.innerHTML = message;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+    }
+</script>
 </body>
 </html>
+   
+   
