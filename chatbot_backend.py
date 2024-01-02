@@ -34,7 +34,7 @@ def init_db():
     cur = conn.cursor()
 
     # Drop the existing table if it exists
-    #cur.execute("DROP TABLE IF EXISTS chatbot_schema.conversations;")
+    cur.execute("DROP TABLE IF EXISTS chatbot_schema.conversations;")
 
     # Create new schema if it doesn't exist
     cur.execute("CREATE SCHEMA IF NOT EXISTS chatbot_schema;")
