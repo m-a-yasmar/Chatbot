@@ -272,6 +272,11 @@
             <input type="text" id="query" placeholder="Ask a question..." onkeydown="if (event.keyCode == 13) askQuestion()">
             <button id="send-button" onclick="askQuestion()">Ask</button>
         </div>
+	<!-- Add this inside your chat-container section -->
+	<div id="typing-indicator" style="display: none; text-align: left; padding: 10px;">
+	    <img src="path/to/typing-indicator.gif" alt="Typing..." /> <!-- Example with an image -->
+	    <!-- Or you can use text like: <span>Typing...</span> -->
+	</div>
     </section>
 
     <footer>
@@ -299,18 +304,23 @@
 		const user_id = getUserId(); 
                 const chatBox = document.getElementById('chat-box');
                 displayMessage(query, 'user-message');
+        	// Show typing indicator
+		document.getElementById('typing-indicator').style.display = 'block';
                 const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_id: user_id, query: query }),
 		    credentials: 'include' 
                 });
+		// Hide typing indicator
+        	document.getElementById('typing-indicator').style.display = 'none';
                 const data = await response.json();
                 displayMessage(data.answer, 'bot-message');
                 chatBox.scrollTop = chatBox.scrollHeight;
                 document.getElementById('query').value = '';
             } catch (error) {
                 console.error('An error occurred:', error);
+		document.getElementById('typing-indicator').style.display = 'none'; // Hide on error as well
             } finally {
                 document.getElementById('send-button').disabled = false;
             }
