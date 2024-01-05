@@ -285,11 +285,16 @@
 
 
      <script>
-    // Function to generate or retrieve a unique user ID
     function getUserId() {
-        // ... existing code
+        // Check if user_id already exists in local storage
+        let user_id = localStorage.getItem('user_id');
+        if (!user_id) {
+            // If not, generate a new user ID
+            user_id = 'user_' + new Date().getTime() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('user_id', user_id);
+        }
+        return user_id; // Ensure this line is outside the 'if' block
     }
-
     // Modified askQuestion function that takes a message parameter
     async function askQuestion(message) {
         try {
