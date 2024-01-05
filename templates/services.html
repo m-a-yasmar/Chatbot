@@ -289,8 +289,8 @@
         <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
     </footer>
 
-
-         <script>
+    
+     <script>
     // Function to generate or retrieve a unique user ID
     function getUserId() {
         // Check if user_id already exists in local storage
@@ -331,6 +331,20 @@
 	document.getElementById('send-button').disabled = false;
     }
 }
+function saveMessageToHistory(message, className) {
+    let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    chatHistory.push({ message, className });
+    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+}
+function loadChatHistory() {
+    let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    chatHistory.forEach(item => displayMessage(item.message, item.className));
+}
+
+window.onload = function() {
+    loadChatHistory();
+    // ... other onload functionalities
+};
 
 function displayMessage(message, className) {
     const chatBox = document.getElementById('chat-box');
@@ -339,7 +353,9 @@ function displayMessage(message, className) {
     messageDiv.innerHTML = message;
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+    saveMessageToHistory(message, className);
 }	    
 </script>
 </body>
 </html>
+    
