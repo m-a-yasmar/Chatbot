@@ -334,8 +334,30 @@ function loadChatHistory() {
     chatHistory.forEach(item => displayMessage(item.message, item.className));
 }
 
+// Add this global variable to store the timeout ID
+let chatClearTimeoutId;
+
+function clearChatHistory() {
+    // Clear chat history from local storage
+    localStorage.removeItem('chatHistory');
+
+    // Clear chat display
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML = '';
+
+    // Reset timeout
+    clearTimeout(chatClearTimeoutId);
+    setChatClearTimeout();
+}
+
+function setChatClearTimeout() {
+    // Set timeout for 1 hour (3600000 milliseconds)
+    chatClearTimeoutId = setTimeout(clearChatHistory, 3600000);
+}
+
 window.onload = function() {
     loadChatHistory();
+    setChatClearTimeout();
     // ... other onload functionalities
 };
 
