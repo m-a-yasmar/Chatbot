@@ -283,57 +283,73 @@
         <p>&copy; 2023 TalkAI Global. All Rights Reserved.</p>
     </footer>
 
-    <script>
-	
-		// Function to generate or retrieve a unique user ID
-	function getUserId() {
-	    // Check if user_id already exists in local storage
-	    let user_id = localStorage.getItem('user_id');
-	    if (!user_id) {
-	        // If not, generate a new user ID
-		user_id = 'user_' + new Date().getTime() + '_' + Math.random().toString(36).substr(2, 9);
-	    	localStorage.setItem('user_id', user_id);
-	    }
-		return user_id;
-	}
-	    
-        async function askQuestion() {
-            try {
-                document.getElementById('send-button').disabled = true;
-                const query = document.getElementById('query').value;
-		const user_id = getUserId(); 
-                const chatBox = document.getElementById('chat-box');
-                displayMessage(query, 'user-message');
-        	// Show typing indicator
-		document.getElementById('typing-indicator').style.display = 'block';
-                const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user_id: user_id, query: query }),
-		    credentials: 'include' 
-                });
-		// Hide typing indicator
-        	document.getElementById('typing-indicator').style.display = 'none';
-                const data = await response.json();
-                displayMessage(data.answer, 'bot-message');
-                chatBox.scrollTop = chatBox.scrollHeight;
-                document.getElementById('query').value = '';
-            } catch (error) {
-                console.error('An error occurred:', error);
-		document.getElementById('typing-indicator').style.display = 'none'; // Hide on error as well
-            } finally {
-                document.getElementById('send-button').disabled = false;
-            }
-        }
 
-        function displayMessage(message, className) {
+     <script>
+    // Function to generate or retrieve a unique user ID
+    function getUserId() {
+        // ... existing code
+    }
+
+    // Modified askQuestion function that takes a message parameter
+    async function askQuestion(message) {
+        try {
+            document.getElementById('send-button').disabled = true;
+            const user_id = getUserId();
             const chatBox = document.getElementById('chat-box');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${className}`;
-            messageDiv.innerHTML = message;
-            chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+            
+            if (message) {
+                // If a message is provided, use it
+                displayMessage(message, 'user-message');
+            } else {
+                // Otherwise, use the input field value
+                message = document.getElementById('query').value;
+                displayMessage(message, 'user-message');
+            }
+            
+            // Show typing indicator
+            document.getElementById('typing-indicator').style.display = 'block';
+            
+            // Send the request to the backend
+            const response = await fetch('https://get2jamaica-f5858d819214.herokuapp.com/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user_id, query: message }),
+                credentials: 'include' 
+            });
+
+            // Hide typing indicator
+            document.getElementById('typing-indicator').style.display = 'none';
+            
+            const data = await response.json();
+            displayMessage(data.answer, 'bot-message');
+            chatBox.scrollTop = chatBox.scrollHeight;
+            document.getElementById('query').value = '';
+        } catch (error) {
+            console.error('An error occurred:', error);
+            document.getElementById('typing-indicator').style.display = 'none'; // Hide on error as well
+        } finally {
+            document.getElementById('send-button').disabled = false;
         }
-    </script>
+    }
+
+    // Function to initiate the chat with a dynamic message
+    function initiateDynamicChat() {
+        const initialQuery = "Hello!";  // This can be any initial trigger phrase for your AI
+        askQuestion(initialQuery);
+    }
+
+    window.onload = function() {
+        initiateDynamicChat();
+    };
+
+    function displayMessage(message, className) {
+        const chatBox = document.getElementById('chat-box');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${className}`;
+        messageDiv.innerHTML = message;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+     }
+</script>
 </body>
 </html>
