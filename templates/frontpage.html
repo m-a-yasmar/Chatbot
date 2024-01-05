@@ -5,6 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TalkAI Global - Pioneers in AI Automation</title>
     <style>
+	        #welcome-banner {
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    background: rgba(0, 0, 0, 0.5);
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    z-index: 1000;
+	}
+	
+	#banner-content {
+	    background: white;
+	    padding: 20px;
+	    border-radius: 5px;
+	    text-align: center;
+	    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+	}
+	
+	#close-banner {
+	    float: right;
+	    border: none;
+	    background: none;
+	    font-size: 20px;
+	    cursor: pointer;
+	}
+
         /* Basic Reset */
         *, *::before, *::after {
             margin: 0;
@@ -231,6 +260,15 @@
 	
 </head>
 <body>
+
+    <div id="welcome-banner" style="display: none;">
+    <div id="banner-content">
+        <button id="close-banner" onclick="closeBanner()">X</button>
+        <h2>Welcome to TalkAI Global!</h2>
+        <p>Explore our innovative AI solutions. Don't forget to use our chatbot for quick assistance!</p>
+    </div>
+</div>
+
     <header>
         <img src="image/talkailogo.png" alt="TalkAI Logo" class="logo">
         <nav>
@@ -355,12 +393,6 @@ function setChatClearTimeout() {
     chatClearTimeoutId = setTimeout(clearChatHistory, 900000);
 }
 
-window.onload = function() {
-    loadChatHistory();
-    setChatClearTimeout();
-    // ... other onload functionalities
-};
-
 function displayMessage(message, className) {
     const chatBox = document.getElementById('chat-box');
     const messageDiv = document.createElement('div');
@@ -369,7 +401,26 @@ function displayMessage(message, className) {
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
     saveMessageToHistory(message, className);
-}	    
+}
+window.onload = function() {
+    if (!localStorage.getItem('bannerClosed')) {
+        document.getElementById('welcome-banner').style.display = 'block';
+    }
+    loadChatHistory();
+    setChatClearTimeout();
+    // ... other onload functionalities
+};
+
+function closeBanner() {
+    document.getElementById('welcome-banner').style.display = 'none';
+    localStorage.setItem('bannerClosed', 'true');
+}
+
+function setChatClearTimeout() {
+    // Set timeout for 1 hour (3600000 milliseconds)
+    chatClearTimeoutId = setTimeout(clearChatHistory, 3600000);
+}
+
 </script>
 </body>
 </html>
