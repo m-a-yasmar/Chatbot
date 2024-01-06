@@ -66,7 +66,7 @@ def home():
 def serve_image(filename):
     return send_from_directory('image', filename)
 
-@chatbot.route('/frontpage')
+@chatbot.route('/home')
 def frontpage():
     return render_template('frontpage.html')
 
