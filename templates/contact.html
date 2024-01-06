@@ -74,7 +74,11 @@
             text-align: center;
         }
 
-        .intro h1, .intro h2 {
+        .intro h1 {
+            color: white;
+        }
+
+	.intro h2 {
             color: white;
         }
 
@@ -102,11 +106,11 @@
 
 	/* Additions/Changes for specific sections in white */
 	.contact-section h2, .contact-section p {
-    	    color: white; /* Makes text in contact section white */
+    	    color: #6351e7; /* Makes text in contact section white */
 	}
 
          #contact-form label, #contact-form input[type="submit"] {
-            color: white; /* Makes form labels and submit button text white */
+            color: #6351e7; /* Makes form labels and submit button text white */
         }
 
 	body {
@@ -125,7 +129,7 @@
 	    margin-top: auto;
         }
 
-        /* Chatbot styles */
+	 /* Chatbot styles */
         #chat-container {
             width: 100%;
             max-height: 60vh;
@@ -140,8 +144,9 @@
         }
 
         #chat-header {
-            background: var(--primary-bg-color, #0052d4);
+            background: var(--primary-bg-color, #6351e7);
             color: var(--primary-text-color, white);
+	    #color: #800080;
             padding: 0.5rem;
             text-align: center;
             border-top-left-radius: 15px;
@@ -158,7 +163,7 @@
         .message {
             margin-bottom: 20px;
             padding: 5px;
-            border-radius: 5px;
+            border-radius: 15px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
 	    background-color: #4364f7; /* Secondary color for messages */
             color: white;
@@ -166,18 +171,31 @@
 	    word-break: break-word; 
 	    
         }
-
-        .user-message, .bot-message {
+		
+	.user-message {
+    	    background-color: white; /* white color for user messages */
+            color: #6351e7;
             text-align: left;
-            background-color: var(--secondary-bg-color, #4364f7);
-            color: var(--primary-text-color, white);
-	    width: 100%;
-        }
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 10px;
+                                      
+         }
+        
+	.bot-message {
+    	    background-color: #6351e7; /* Green color for bot messages */
+            color: white;
+            text-align: left;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 10px;
+    
+         }
 
         #chat-input {
             display: flex;
             border-top: 1px solid #ccc;
-	    background: #f4f4f4; 
+	    background: #6351e7; 
         }
 
         #query {
@@ -195,13 +213,13 @@
 	
         #send-button {
             width: 80px;
-            background: var(--button-bg, #000);
+            background: var(--button-bg, #6351e7);
             color: var(--primary-text-color, white);
             border: none;
             cursor: pointer;
             margin-left: 5px
         }
-
+      
 	#contact-form {
     	    display: flex;
             flex-direction: column;
@@ -224,7 +242,7 @@
         }
 
 	#contact-form input[type="submit"] {
-    	    background-color: #0052d4; /* Primary color */
+    	    background-color: #6351e7; /* Primary color */
             color: white;
             padding: 10px;
             border: none;
@@ -234,7 +252,7 @@
          }
 
         #contact-form input[type="submit"]:hover {
-            background-color: #003d99; /* Darker shade on hover */
+            background-color: #6351e7; /* Darker shade on hover */
          }
 
 
