@@ -67,7 +67,7 @@
             font-size: 1rem;
             font-weight: bold;
             padding: 1rem; /* Reduced padding */
-            background: linear-gradient(to right, #0052d4, #4364f7, #6fb1fc);
+            background: linear-gradient(to right, #7242e5, #6351e7, #5361ea);
             color: white;
             text-align: center;
         }
@@ -91,7 +91,7 @@
             background: #f4f4f4;
          }
          .service-item {
-             background: white;
+             background: #6351e7;
              padding: 1rem;
              box-shadow: 0 4px 8px rgba(0,0,0,0.1);
              border-radius: 8px;
@@ -103,8 +103,15 @@
              box-shadow: 0 6px 12px rgba(0,0,0,0.2);
          }
 
-         .services h2, .services p {
-             color: blue;
+	 .services h3 {
+	     color: white;
+	 } 
+
+         .services h2 {
+	     color: #6351e7;
+	 } 
+	  .services p {
+             color: white;
          }
 
      
@@ -117,10 +124,9 @@
             position: relative;
         }
 
-       
 	 /* Chatbot styles */
         #chat-container {
-            width: 80%;
+            width: 100%;
             max-height: 60vh;
             background: white;
             border-radius: 15px;
@@ -133,41 +139,58 @@
         }
 
         #chat-header {
-            background: var(--primary-bg-color, #0052d4);
+            background: var(--primary-bg-color, #6351e7);
             color: var(--primary-text-color, white);
+	    #color: #800080;
             padding: 0.5rem;
             text-align: center;
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
         }
 
-
-	      #chat-box {
+        #chat-box {
             flex-grow: 1;
-            padding: 100px;
+            padding: 80px;
             overflow-y: auto;
+	    width: 100%;
         }
 
         .message {
             margin-bottom: 20px;
-            padding: 25px;
-            border-radius: 5px;
+            padding: 5px;
+            border-radius: 15px;
             box-shadow: 0 0 5px rgba(0,0,0,0.1);
 	    background-color: #4364f7; /* Secondary color for messages */
             color: white;
+	    max-width: calc(100% - 40px); 
+	    word-break: break-word; 
 	    
         }
-
-        .user-message, .bot-message {
+		
+	.user-message {
+    	    background-color: white; /* white color for user messages */
+            color: #6351e7;
             text-align: left;
-            background-color: var(--secondary-bg-color, #4364f7);
-            color: var(--primary-text-color, white);
-        }
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 10px;
+                                      
+         }
+        
+	.bot-message {
+    	    background-color: #6351e7; /* Green color for bot messages */
+            color: white;
+            text-align: left;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 10px;
+    
+         }
 
         #chat-input {
             display: flex;
-            border-top: 3px solid #ccc;
-	    background: #f4f4f4; 
+            border-top: 1px solid #ccc;
+	    background: #6351e7; 
         }
 
         #query {
@@ -185,14 +208,14 @@
 	
         #send-button {
             width: 80px;
-            background: var(--button-bg, #000);
+            background: var(--button-bg, #6351e7);
             color: var(--primary-text-color, white);
             border: none;
             cursor: pointer;
             margin-left: 5px
-        }	
+        }
 
-
+       
 	/* Responsive Design Adjustments */
 
 
@@ -239,6 +262,35 @@
             }
         }
 
+
+	@media screen and (max-width: 600px) {
+	    .service-item h3 {
+	        font-size: 16px; /* Smaller font size for mobile screens */
+	    }
+	    .service-item p {
+	        font-size: 12px; /* Smaller font size for mobile screens */
+	    }
+	}
+
+	 @media screen and (max-width: 600px) {
+	    .service-item {
+	        padding: 10px; /* Reduced padding */
+	        margin-bottom: 10px; /* Reduced margin */
+	    }
+	}
+
+	@media screen and (max-width: 600px) {
+	    .intro h1 {
+	        font-size: 14px; /* Smaller font size for headings on mobile screens */
+	    }
+	    .intro h2 {
+	        font-size: 16px; /* Smaller font size for headings on mobile screens */
+	    }
+	    .intro p {
+	        font-size: 12px; /* Smaller font size for paragraphs on mobile screens */
+	    }
+	}
+	
     </style>
 	
 </head>
