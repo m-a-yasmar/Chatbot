@@ -101,14 +101,14 @@
             color: white;
             text-align: center;
         }
-
-        .intro h1, .intro h2 {
+	.intro h1 {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.50rem;
 	    
         }
 
         .intro h2 {
+            color: white;
             font-size: 1.75rem;
         }
 
@@ -281,7 +281,7 @@
 	        font-size: 16px; /* Smaller font size for mobile screens */
 	    }
 	    .service-item p {
-	        font-size: 10px; /* Smaller font size for mobile screens */
+	        font-size: 12px; /* Smaller font size for mobile screens */
 	    }
 	}
 
@@ -291,6 +291,19 @@
 	        margin-bottom: 10px; /* Reduced margin */
 	    }
 	}
+
+	@media screen and (max-width: 600px) {
+	    .intro h1 {
+	        font-size: 14px; /* Smaller font size for headings on mobile screens */
+	    }
+	    .intro h2 {
+	        font-size: 16px; /* Smaller font size for headings on mobile screens */
+	    }
+	    .intro p {
+	        font-size: 12px; /* Smaller font size for paragraphs on mobile screens */
+	    }
+	}
+	
 
     </style>
 	
