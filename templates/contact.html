@@ -324,6 +324,8 @@
     <script type="text/javascript">
         // Ensure the DOM is fully loaded before executing scripts
         window.onload = function() {
+	    loadChatHistory();
+    	    setChatClearTimeout();
             // Initialize EmailJS
             emailjs.init("ajci8FDK0qRcFjxTD"); // Replace with your EmailJS user ID
 
@@ -479,11 +481,6 @@ function setChatClearTimeout() {
     chatClearTimeoutId = setTimeout(clearChatHistory, 900000);
 }
 
-window.onload = function() {
-    loadChatHistory();
-    setChatClearTimeout();
-    // ... other onload functionalities
-};
 
 function displayMessage(message, className) {
     const chatBox = document.getElementById('chat-box');
